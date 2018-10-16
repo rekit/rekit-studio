@@ -19,16 +19,16 @@ const chalk = require('chalk');
 const fs = require('fs-extra');
 const webpack = require('webpack');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
-const config = require('../config/webpack.config.prod');
+let config = require('../config/webpack.config.prod');
 const paths = require('../config/paths');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const printHostingInstructions = require('react-dev-utils/printHostingInstructions');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
-const measureFileSizesBeforeBuild =
-  FileSizeReporter.measureFileSizesBeforeBuild;
+const measureFileSizesBeforeBuild = FileSizeReporter.measureFileSizesBeforeBuild;
 const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
 const useYarn = fs.existsSync(paths.yarnLockFile);
 
@@ -41,6 +41,17 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
   process.exit(1);
 }
 
+config = {
+  ...config,
+  plugins: [
+    new webpack.DllReferencePlugin({
+      context: paths.appSrc,
+      manifest: require(paths.dllManifest),
+    }),
+    new AddAssetHtmlPlugin({ filepath: paths.resolveApp('build/static/js/rsdll.js') }),
+    ...config.plugins,
+  ],
+};
 // First, read the current file sizes in build directory.
 // This lets us display how much they changed later.
 measureFileSizesBeforeBuild(paths.appBuild)
@@ -64,9 +75,7 @@ measureFileSizesBeforeBuild(paths.appBuild)
             ' to learn more about each warning.'
         );
         console.log(
-          'To ignore, add ' +
-            chalk.cyan('// eslint-disable-next-line') +
-            ' to the line before.\n'
+          'To ignore, add ' + chalk.cyan('// eslint-disable-next-line') + ' to the line before.\n'
         );
       } else {
         console.log(chalk.green('Compiled successfully.\n'));
@@ -86,13 +95,7 @@ measureFileSizesBeforeBuild(paths.appBuild)
       const publicUrl = paths.publicUrl;
       const publicPath = config.output.publicPath;
       const buildFolder = path.relative(process.cwd(), paths.appBuild);
-      printHostingInstructions(
-        appPackage,
-        publicUrl,
-        publicPath,
-        buildFolder,
-        useYarn
-      );
+      printHostingInstructions(appPackage, publicUrl, publicPath, buildFolder, useYarn);
     },
     err => {
       console.log(chalk.red('Failed to compile.\n'));
@@ -107,14 +110,16 @@ function build(previousFileSizes) {
 
   let compiler = webpack(config);
   let lastPercentage = 0;
-  compiler.apply(new ProgressPlugin((percentage, msg) => {
-    percentage = Math.round(percentage * 10000) / 100;
-    if (/building modules/.test(msg) && percentage - lastPercentage < 8) {
-      return;
-    }
-    lastPercentage = percentage;
-    console.log(percentage + '%', msg);
-  }));
+  compiler.apply(
+    new ProgressPlugin((percentage, msg) => {
+      percentage = Math.round(percentage * 10000) / 100;
+      if (/building modules/.test(msg) && percentage - lastPercentage < 8) {
+        return;
+      }
+      lastPercentage = percentage;
+      console.log(percentage + '%', msg);
+    })
+  );
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       if (err) {
@@ -131,8 +136,7 @@ function build(previousFileSizes) {
       }
       if (
         process.env.CI &&
-        (typeof process.env.CI !== 'string' ||
-          process.env.CI.toLowerCase() !== 'false') &&
+        (typeof process.env.CI !== 'string' || process.env.CI.toLowerCase() !== 'false') &&
         messages.warnings.length
       ) {
         console.log(
@@ -143,6 +147,7 @@ function build(previousFileSizes) {
         );
         return reject(new Error(messages.warnings.join('\n\n')));
       }
+
       return resolve({
         stats,
         previousFileSizes,
@@ -153,6 +158,11 @@ function build(previousFileSizes) {
 }
 
 function copyPublicFolder() {
+  fs.copySync(paths.resolveApp('dll/rsdll.js'), paths.resolveApp('build/static/js/rsdll.js'));
+  fs.copySync(
+    paths.resolveApp('dll/rsdll.js.map'),
+    paths.resolveApp('build/static/js/rsdll.js.map')
+  );
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
     filter: file => file !== paths.appHtml,

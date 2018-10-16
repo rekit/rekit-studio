@@ -45,6 +45,7 @@ module.exports = {
   appIndexJs: resolveApp('src/index.js'),
   appIndexStyle: resolveApp('src/styles/index.less'),
   antdIndexStyle: require.resolve('antd/dist/antd.less'),
+  dllManifest: resolveApp('dll/manifest.json'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
   yarnLockFile: resolveApp('yarn.lock'),

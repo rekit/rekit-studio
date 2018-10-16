@@ -247,7 +247,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
-        from: '../../node_modules/monaco-editor/min/vs',
+        from: path.join(path.dirname(require.resolve('monaco-editor/package.json')), 'min/vs'),
         to: 'static/vs',
       },
     ]),
