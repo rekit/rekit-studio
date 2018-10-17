@@ -30,9 +30,10 @@ const args = parser.parseArgs();
 console.log(args);
 
 const prjRoot = path.isAbsolute(args.dir) ? args.dir : path.join(process.cwd(), args.dir);
+console.log(args);
 global.rekit = importFrom(prjRoot, 'rekit-core');
-console.log('abc', global.rekit);
-const configStudio = require('./configStudio');
+const configStudio = require('../src/server/configStudio');
+rekit.core.paths.setProjectRoot(prjRoot);
 
 // Start Rekit Studio
 const app = express();
@@ -40,7 +41,7 @@ const server = http.createServer(app);
 const studioRoot = path.join(__dirname, '../build');
 app.use(compression());
 app.use(express.static(studioRoot));
-app.use(express.static(rekit.core.paths.getProjectRoot()));
+app.use(express.static(prjRoot));
 configStudio(server, app);
 app.use(fallback('index.html', { root }));
 

@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const bodyParser = require('body-parser');
-const rekit = require('rekit-core');
 const chalk = require('chalk');
 const expressWs = require('express-ws');
 const helpers = require('./helpers');

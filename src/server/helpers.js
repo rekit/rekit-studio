@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const rekit = require('rekit-core');
 const _ = require('lodash');
 
 // const utils = rekitCore.utils;
