@@ -32,6 +32,7 @@ console.log(args);
 const prjRoot = path.isAbsolute(args.dir) ? args.dir : path.join(process.cwd(), args.dir);
 console.log(args);
 global.rekit = importFrom(prjRoot, 'rekit-core');
+// const rekit = require('rekit-core');
 const configStudio = require('../src/server/configStudio');
 rekit.core.paths.setProjectRoot(prjRoot);
 
@@ -40,8 +41,8 @@ const app = express();
 const server = http.createServer(app);
 const studioRoot = path.join(__dirname, '../build');
 app.use(compression());
-app.use(express.static(studioRoot));
-app.use(express.static(prjRoot));
+app.use(express.static(studioRoot)); // access files in Rekit Studio
+app.use(express.static(prjRoot)); // access files in project
 configStudio(server, app);
 app.use(fallback('index.html', { root }));
 
@@ -51,5 +52,5 @@ server.listen(parseInt(port, 10), err => {
     console.error(err);
   }
 
-  console.log(`The build server is listening at http://localhost:${port}/`);
+  console.log(`Rekit Studio is running at http://localhost:${port}/`);
 });

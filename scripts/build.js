@@ -27,6 +27,7 @@ const printHostingInstructions = require('react-dev-utils/printHostingInstructio
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const buildProdDll = require('./buildProdDll');
 
 const measureFileSizesBeforeBuild = FileSizeReporter.measureFileSizesBeforeBuild;
 const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
@@ -48,13 +49,14 @@ config = {
       context: paths.appSrc,
       manifest: require(paths.dllManifest),
     }),
-    new AddAssetHtmlPlugin({ filepath: paths.resolveApp('build/static/js/rsdll.js') }),
+    new AddAssetHtmlPlugin({ filepath: paths.resolveApp('dll/rsdll.js') }),
     ...config.plugins,
   ],
 };
 // First, read the current file sizes in build directory.
 // This lets us display how much they changed later.
 measureFileSizesBeforeBuild(paths.appBuild)
+  .then(buildProdDll)
   .then(previousFileSizes => {
     // Remove all content but keep the directory so that
     // if you're in it, you don't end up in Trash
@@ -82,13 +84,15 @@ measureFileSizesBeforeBuild(paths.appBuild)
       }
 
       console.log('File sizes after gzip:\n');
-      printFileSizesAfterBuild(
-        stats,
-        previousFileSizes,
-        paths.appBuild,
-        WARN_AFTER_BUNDLE_GZIP_SIZE,
-        WARN_AFTER_CHUNK_GZIP_SIZE
-      );
+      try {
+        printFileSizesAfterBuild(
+          stats,
+          previousFileSizes,
+          paths.appBuild,
+          WARN_AFTER_BUNDLE_GZIP_SIZE,
+          WARN_AFTER_CHUNK_GZIP_SIZE
+        );
+      } catch (e) {}
       console.log();
 
       const appPackage = require(paths.appPackageJson);
@@ -158,11 +162,11 @@ function build(previousFileSizes) {
 }
 
 function copyPublicFolder() {
-  fs.copySync(paths.resolveApp('dll/rsdll.js'), paths.resolveApp('build/static/js/rsdll.js'));
-  fs.copySync(
-    paths.resolveApp('dll/rsdll.js.map'),
-    paths.resolveApp('build/static/js/rsdll.js.map')
-  );
+  fs.copySync(paths.resolveApp('dll/manifest.json'), paths.resolveApp('build/dll-manifest.json'));
+  // fs.copySync(
+  //   paths.resolveApp('dll/rsdll.js.map'),
+  //   paths.resolveApp('build/static/js/rsdll.js.map')
+  // );
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
     filter: file => file !== paths.appHtml,

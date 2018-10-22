@@ -42,6 +42,6 @@ function buildProdDll() {
   });
 }
 
-buildProdDll();
+// buildProdDll();
 
 module.exports = buildProdDll;
