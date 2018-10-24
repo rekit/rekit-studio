@@ -10,7 +10,7 @@
   ],
   "main": "./lib/index.js",
   "bin": {
-    "rekit-studio": "./bin/start.js"
+    "rekit-studio": "./bin/index.js"
   },
   "repository": {
     "type": "git",
@@ -64,7 +64,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./scripts/start.js",
-    "serveBuild": "node ./bin/start.js",
+    "serveBuild": "node ./bin/index.js",
     "build": "node ./scripts/build.js",
     "npm:publish": "node ./tools/npm_publish.js",
     "test": "node ./tools/run_test.js",
