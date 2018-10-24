@@ -8,6 +8,7 @@
     "redux",
     "react-router"
   ],
+  "main": "./lib/index.js",
   "bin": {
     "rekit-studio": "./bin/start.js"
   },
