@@ -15,15 +15,17 @@ const pluginMap = {
   node,
 };
 
+window.__REKIT_PLUGINS.push(defaultPlugin, terminal);
+
 // Use global variable to store module state for workaround of HMR.
 if (!window.__REKIT_pluginNames) window.__REKIT_pluginNames = [];
 export default {
-  setPluginNames(names) {
-    window.__REKIT_pluginNames = names;
-  },
+  // setPluginNames(names) {
+  //   window.__REKIT_pluginNames = names;
+  // },
   getPlugins(prop) {
-    const plugins = window.__REKIT_pluginNames.map(name => pluginMap[name]);
-    if (!prop) return plugins;
+    const plugins = window.__REKIT_PLUGINS;
+    if (!prop) return _.compact(plugins);
     return plugins.filter(_.property(prop));
   },
   // getColor(type) {

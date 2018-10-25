@@ -19,7 +19,7 @@ export function fetchProjectData() {
         (res) => {
           // if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
           const prjData = res.data;
-          plugin.setPluginNames(prjData.plugins); // development time to load plugins
+          // plugin.setPluginNames(prjData.plugins); // development time to load plugins
           plugin.getPlugins('app.processProjectData').forEach(p => {
             p.app.processProjectData(prjData);
           });

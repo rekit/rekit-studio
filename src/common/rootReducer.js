@@ -2,6 +2,8 @@
 
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import _ from 'lodash';
+import plugin from './plugin';
 import homeReducer from '../features/home/redux/reducer';
 import commonReducer from '../features/common/redux/reducer';
 import rekitCmdsReducer from '../features/rekit-cmds/redux/reducer';
@@ -38,5 +40,14 @@ const reducerMap = {
   pluginTerminal: pluginTerminalReducer,
   pluginNode: pluginNodeReducer,
 };
+
+plugin.getPlugins('reducer').forEach(p => {
+  const k = _.camelCase(`plugin-${p.name}`);
+  if (!reducerMap[k]) {
+    reducerMap[k] = p.reducer;
+  } else {
+    console.error('Duplicated reducer key for plugin: ', p.name);
+  }
+});
 
 export default combineReducers(reducerMap);

@@ -49,7 +49,10 @@ config = {
       context: paths.appSrc,
       manifest: require(paths.dllManifest),
     }),
-    new AddAssetHtmlPlugin({ filepath: paths.resolveApp('dll/rsdll.js') }),
+    new AddAssetHtmlPlugin([
+      { filepath: paths.resolveApp('dll/rsdll.js') },
+      { filepath: paths.resolveApp('public/rekit-plugins.js') },
+    ]),
     ...config.plugins,
   ],
 };

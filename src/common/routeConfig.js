@@ -1,3 +1,4 @@
+import plugin from './plugin';
 import App from '../features/home/App';
 import { PageNotFound } from '../features/common';
 import homeRoute from '../features/home/route';
@@ -31,6 +32,10 @@ const childRoutes = [
   pluginTerminalRoute,
   pluginNodeRoute,
 ];
+
+plugin.getPlugins('routes').forEach(p => {
+  childRoutes.push(p.routes);
+});
 
 const routes = [
   {
