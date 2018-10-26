@@ -6,3 +6,4 @@ export { default as bottomDrawer } from './bottomDrawer';
 export { default as app } from './app';
 export { default as tab } from './tab';
 export { default as editor } from './editor';
+export const name = 'default';

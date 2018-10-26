@@ -1,6 +1,7 @@
 import WebTerminal from '../WebTerminal';
 export { default as reducer } from '../redux/reducer';
 export { default as route } from '../route';
+export const name = 'terminal';
 
 export const bottomDrawer = {
   getPanes() {

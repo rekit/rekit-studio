@@ -3,9 +3,9 @@ import _ from 'lodash';
 // This is temporialy used for Rekit Studio development.
 // In future plugins are dynamically loaded.
 
-// import * as defaultPlugin from '../features/plugin-default/ui';
-// import * as cra from '../features/plugin-cra/ui';
-// import * as terminal from '../features/plugin-terminal/ui';
+import * as defaultPlugin from '../features/plugin-default/ui';
+import * as cra from '../features/plugin-cra/ui';
+import * as terminal from '../features/plugin-terminal/ui';
 // import * as node from '../features/plugin-node/ui';
 
 // const pluginMap = {
@@ -15,7 +15,7 @@ import _ from 'lodash';
 //   node,
 // };
 
-// window.__REKIT_PLUGINS.push(defaultPlugin, terminal, cra);
+window.__REKIT_PLUGINS.push(defaultPlugin, cra, terminal);
 
 // Use global variable to store module state for workaround of HMR.
 // if (!window.__REKIT_pluginNames) window.__REKIT_pluginNames = [];

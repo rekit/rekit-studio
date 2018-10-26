@@ -33,21 +33,6 @@ const childRoutes = [
   // pluginNodeRoute,
 ];
 
-plugin.getPlugins('routes').forEach(p => {
-  childRoutes.push(p.routes);
-});
-
-const routes = [
-  {
-    path: '/',
-    component: App,
-    childRoutes: [
-      ...childRoutes,
-      { path: '*', name: 'Page not found', component: PageNotFound },
-    ].filter(r => r.component || (r.childRoutes && r.childRoutes.length > 0)),
-  },
-];
-
 function handleIndexRoute(route) {
   if (!route.childRoutes || !route.childRoutes.length) {
     return;
@@ -64,6 +49,23 @@ function handleIndexRoute(route) {
   route.childRoutes.forEach(handleIndexRoute);
 }
 
-routes.forEach(handleIndexRoute);
+export default () => {
+  plugin.getPlugins('routes').forEach(p => {
+    childRoutes.push(p.routes);
+  });
 
-export default routes;
+  const routes = [
+    {
+      path: '/',
+      component: App,
+      childRoutes: [
+        ...childRoutes,
+        { path: '*', name: 'Page not found', component: PageNotFound },
+      ].filter(r => r.component || (r.childRoutes && r.childRoutes.length > 0)),
+    },
+  ];
+
+  routes.forEach(handleIndexRoute);
+
+  return routes;
+};

@@ -41,13 +41,15 @@ const reducerMap = {
   // pluginNode: pluginNodeReducer,
 };
 
-plugin.getPlugins('reducer').forEach(p => {
-  const k = _.camelCase(`plugin-${p.name}`);
-  if (!reducerMap[k]) {
-    reducerMap[k] = p.reducer;
-  } else {
-    console.error('Duplicated reducer key for plugin: ', p.name);
-  }
-});
+export default () => {
+  plugin.getPlugins('reducer').forEach(p => {
+    const k = _.camelCase(`plugin-${p.name}`);
+    if (!reducerMap[k]) {
+      reducerMap[k] = p.reducer;
+    } else {
+      console.error('Duplicated reducer key for plugin: ', p.name);
+    }
+  });
 
-export default combineReducers(reducerMap);
+  return combineReducers(reducerMap);
+};

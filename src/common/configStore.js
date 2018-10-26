@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 export default function configureStore(initialState) {
-  const store = createStore(rootReducer, initialState, compose(
+  const store = createStore(rootReducer(), initialState, compose(
     applyMiddleware(...middlewares),
     devToolsExtension
   ));
@@ -36,7 +36,7 @@ export default function configureStore(initialState) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('./rootReducer', () => {
       const nextRootReducer = require('./rootReducer').default; // eslint-disable-line
-      store.replaceReducer(nextRootReducer);
+      store.replaceReducer(nextRootReducer());
     });
   }
 

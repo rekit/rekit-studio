@@ -3,3 +3,4 @@ export { default as ElementDiagram } from './ElementDiagram';
 export { default as app } from './app';
 export { default as RouteRulesView } from './RouteRulesView';
 export { default as Aa } from './Aa';
+export const name = 'cra';
