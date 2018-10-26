@@ -9,16 +9,15 @@ import rekitToolsRoute from '../features/rekit-tools/route';
 import configRoute from '../features/config/route';
 import layoutRoute from '../features/layout/route';
 import editorRoute from '../features/editor/route';
-import pluginCraRoute from '../features/plugin-cra/route';
 import coreRoute from '../features/core/route';
-import pluginDefaultRoute from '../features/plugin-default/route';
-import pluginTerminalRoute from '../features/plugin-terminal/route';
-import pluginNodeRoute from '../features/plugin-node/route';
+// import pluginCraRoute from '../features/plugin-cra/route';
+// import pluginDefaultRoute from '../features/plugin-default/route';
+// import pluginTerminalRoute from '../features/plugin-terminal/route';
+// import pluginNodeRoute from '../features/plugin-node/route';
 
 // NOTE: DO NOT CHANGE the 'childRoutes' name and the declaration pattern.
 // This is used for Rekit cmds to register routes for new features, remove features, etc.
 const childRoutes = [
-  pluginCraRoute,
   homeRoute,
   commonRoute,
   rekitCmdsRoute,
@@ -28,9 +27,10 @@ const childRoutes = [
   layoutRoute,
   editorRoute,
   coreRoute,
-  pluginDefaultRoute,
-  pluginTerminalRoute,
-  pluginNodeRoute,
+  // pluginCraRoute,
+  // pluginDefaultRoute,
+  // pluginTerminalRoute,
+  // pluginNodeRoute,
 ];
 
 plugin.getPlugins('routes').forEach(p => {

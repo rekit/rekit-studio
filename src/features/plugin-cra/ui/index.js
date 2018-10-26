@@ -1,3 +1,5 @@
+export { default as reducer } from '../redux/reducer';
+export { default as route } from '../route';
 export { default as projectExplorer } from './projectExplorer';
 export { default as form } from './form';
 export { default as tab } from './tab';

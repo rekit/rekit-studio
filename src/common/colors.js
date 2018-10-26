@@ -6,5 +6,5 @@ export default (type, light) => {
     return prev;
   }, {});
 
-  return colors[type] || colors.file;
+  return colors[type] || colors.file || '#ddd';
 };

@@ -14,7 +14,8 @@ const {
   prepareUrls,
 } = require('react-dev-utils/WebpackDevServerUtils');
 // const openBrowser = require('react-dev-utils/openBrowser');
-const configStudio = require('../src/server/configStudio');
+// const configStudio = require('../src/server/configStudio');
+const configStudio = require('../lib/configStudio');
 const paths = require('../config/paths');
 const createDevServerConfig = require('../config/webpackDevServer.config');
 const buildDll = require('./buildDll');
@@ -53,7 +54,7 @@ function _startDevServer(port) {
 
   // devServer.use(rekitMiddleWare()(devServer.listeningApp, devServer.app));
   configStudio(devServer.listeningApp, devServer.app);
-  devServer.use(express.static(rekit.core.paths.getProjectRoot()));
+  // devServer.use(express.static(rekit.core.paths.getProjectRoot()));
   // Launch WebpackDevServer.
   devServer.listen(port, HOST, err => {
     if (err) {

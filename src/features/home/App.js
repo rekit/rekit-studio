@@ -38,7 +38,7 @@ export class App extends Component {
     openTabs: [],
   };
 
-  componentDidMount() {console.log('app did mount');
+  componentDidMount() {
     this.props.actions
       .fetchProjectData()
       .then(() => {
@@ -102,7 +102,7 @@ export class App extends Component {
     );
   }
 
-  render() {console.log('app render.');
+  render() {
     if (!this.props.elementById || !this.props.projectName) {
       return this.renderLoading();
     }

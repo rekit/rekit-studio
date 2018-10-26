@@ -12,11 +12,11 @@ import rekitToolsReducer from '../features/rekit-tools/redux/reducer';
 import configReducer from '../features/config/redux/reducer';
 import layoutReducer from '../features/layout/redux/reducer';
 import editorReducer from '../features/editor/redux/reducer';
-import pluginCraReducer from '../features/plugin-cra/redux/reducer';
+// import pluginCraReducer from '../features/plugin-cra/redux/reducer';
 import coreReducer from '../features/core/redux/reducer';
-import pluginDefaultReducer from '../features/plugin-default/redux/reducer';
-import pluginTerminalReducer from '../features/plugin-terminal/redux/reducer';
-import pluginNodeReducer from '../features/plugin-node/redux/reducer';
+// import pluginDefaultReducer from '../features/plugin-default/redux/reducer';
+// import pluginTerminalReducer from '../features/plugin-terminal/redux/reducer';
+// import pluginNodeReducer from '../features/plugin-node/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
 // This is used for Rekit cmds to register new features, remove features, etc.
@@ -34,11 +34,11 @@ const reducerMap = {
   config: configReducer,
   layout: layoutReducer,
   editor: editorReducer,
-  pluginCra: pluginCraReducer,
+  // pluginCra: pluginCraReducer,
   core: coreReducer,
-  pluginDefault: pluginDefaultReducer,
-  pluginTerminal: pluginTerminalReducer,
-  pluginNode: pluginNodeReducer,
+  // pluginDefault: pluginDefaultReducer,
+  // pluginTerminal: pluginTerminalReducer,
+  // pluginNode: pluginNodeReducer,
 };
 
 plugin.getPlugins('reducer').forEach(p => {
