@@ -14,8 +14,9 @@ import * as terminal from '../features/plugin-terminal/ui';
 //   terminal,
 //   node,
 // };
-
-window.__REKIT_PLUGINS.push(defaultPlugin, cra, terminal);
+if (!_.find(window.__REKIT_PLUGINS, { name: 'default' })) {
+  window.__REKIT_PLUGINS.push(defaultPlugin, cra, terminal);
+}
 
 // Use global variable to store module state for workaround of HMR.
 // if (!window.__REKIT_pluginNames) window.__REKIT_pluginNames = [];

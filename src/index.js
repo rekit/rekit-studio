@@ -63,6 +63,6 @@ window.onload = () => renderApp(<Root store={store.getStore()} routeConfig={rout
 if (module.hot) {
   module.hot.accept('./common/routeConfig', () => {
     const nextRouteConfig = require('./common/routeConfig').default; // eslint-disable-line
-    renderApp(<Root store={store} routeConfig={nextRouteConfig} />);
+    renderApp(<Root store={store.getStore()} routeConfig={nextRouteConfig()} />);
   });
 }
