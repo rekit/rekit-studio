@@ -42,20 +42,6 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
   process.exit(1);
 }
 
-config = {
-  ...config,
-  plugins: [
-    new webpack.DllReferencePlugin({
-      context: paths.appSrc,
-      manifest: require(paths.dllManifest),
-    }),
-    new AddAssetHtmlPlugin([
-      { filepath: paths.resolveApp('dll/rsdll.js') },
-      { filepath: paths.resolveApp('public/rekit-plugins.js') },
-    ]),
-    ...config.plugins,
-  ],
-};
 // First, read the current file sizes in build directory.
 // This lets us display how much they changed later.
 measureFileSizesBeforeBuild(paths.appBuild)
@@ -114,7 +100,20 @@ measureFileSizesBeforeBuild(paths.appBuild)
 // Create the production build and print the deployment instructions.
 function build(previousFileSizes) {
   console.log('Creating an optimized production build...');
-
+  config = {
+    ...config,
+    plugins: [
+      new webpack.DllReferencePlugin({
+        context: paths.appSrc,
+        manifest: require(paths.dllManifest),
+      }),
+      new AddAssetHtmlPlugin([
+        { filepath: paths.resolveApp('dll/rsdll.js') },
+        { filepath: paths.resolveApp('public/rekit-plugins.js') },
+      ]),
+      ...config.plugins,
+    ],
+  };
   let compiler = webpack(config);
   let lastPercentage = 0;
   compiler.apply(
@@ -165,7 +164,7 @@ function build(previousFileSizes) {
 }
 
 function copyPublicFolder() {
-  fs.copySync(paths.resolveApp('dll/manifest.json'), paths.resolveApp('build/dll-manifest.json'));
+  fs.copySync(paths.resolveApp('dll'), paths.resolveApp('build'));
   // fs.copySync(
   //   paths.resolveApp('dll/rsdll.js.map'),
   //   paths.resolveApp('build/static/js/rsdll.js.map')
