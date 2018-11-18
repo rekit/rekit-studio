@@ -381,6 +381,21 @@ function getProjectData() {
     elements.push(ele.id);
     elementById[ele.id] = ele;
   });
+  const folders = config.getRekitConfig().folders || [];
+  folders.forEach(f => {
+    const res = files.readDir(paths.map(f));
+    Object.assign(elementById, res.elementById);
+
+    const folderEle = {
+      type: 'folder-alias',
+      id: 'v:folder-' + f,
+      name: f,
+      target: f,
+      children: res.elements,
+    };
+    elementById[folderEle.id] = folderEle;
+    elements.splice(1, 0, folderEle.id);
+  });
   return { elements, elementById };
 }
 
