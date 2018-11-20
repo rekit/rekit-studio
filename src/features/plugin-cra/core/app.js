@@ -396,6 +396,7 @@ function getProjectData() {
     elementById[folderEle.id] = folderEle;
     elements.splice(1, 0, folderEle.id);
   });
+
   return { elements, elementById };
 }
 

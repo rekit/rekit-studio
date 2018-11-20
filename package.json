@@ -59,6 +59,7 @@
     "plugins": [
       "/Users/pwang7/workspace/rekit-studio/src/features/plugin-cra"
     ],
+    "folders": ["bin", "scripts", "lib"],
     "css": "less"
   },
   "license": "MIT",
