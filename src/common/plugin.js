@@ -6,6 +6,7 @@ import _ from 'lodash';
 import * as defaultPlugin from '../features/plugin-default/ui';
 import * as cra from '../features/plugin-cra/ui';
 import * as terminal from '../features/plugin-terminal/ui';
+import * as scripts from '../features/plugin-scripts/ui';
 // import * as node from '../features/plugin-node/ui';
 
 // const pluginMap = {
@@ -15,7 +16,7 @@ import * as terminal from '../features/plugin-terminal/ui';
 //   node,
 // };
 if (!_.find(window.__REKIT_PLUGINS, { name: 'default' })) {
-  window.__REKIT_PLUGINS.push(defaultPlugin, cra, terminal);
+  window.__REKIT_PLUGINS.push(defaultPlugin, cra, terminal, scripts);
 }
 
 // Use global variable to store module state for workaround of HMR.

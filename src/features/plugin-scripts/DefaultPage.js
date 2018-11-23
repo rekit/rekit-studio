@@ -4,16 +4,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 
-export class Jj extends Component {
+export class DefaultPage extends Component {
   static propTypes = {
-    pluginTerminal: PropTypes.object.isRequired,
+    pluginScripts: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
   render() {
     return (
-      <div className="plugin-terminal-jj">
-        Page Content: plugin-terminal/Jj
+      <div className="plugin-scripts-default-page">
+        Page Content: plugin-scripts/DefaultPage
       </div>
     );
   }
@@ -22,7 +22,7 @@ export class Jj extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    pluginTerminal: state.pluginTerminal,
+    pluginScripts: state.pluginScripts,
   };
 }
 
@@ -36,4 +36,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Jj);
+)(DefaultPage);

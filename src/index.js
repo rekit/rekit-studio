@@ -33,7 +33,10 @@ if (process.env.NODE_ENV !== 'test') {
         });
         break;
       default:
-        console.warn('unknown socket data type: ', data.type);
+        store.dispatch({
+          type: 'ON_SOCKET_MESSAGE',
+          data,
+        });
         break;
     }
   };

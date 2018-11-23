@@ -51,7 +51,7 @@ export class OutputView extends Component {
               onClick={this.props.actions.clearOutput}
             />
         <ul>
-          {output.length === 0 && <li key="empty">No output.</li>}
+          {output.length === 0 && <li key="empty" className="empty">No output.</li>}
           {output.map(item => (
             <li key={item.key} dangerouslySetInnerHTML={{ __html: item.text }} />
           ))}

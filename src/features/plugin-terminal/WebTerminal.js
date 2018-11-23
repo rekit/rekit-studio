@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import * as fit from 'xterm/lib/addons/fit/fit';
 import * as attach from 'xterm/lib/addons/attach/attach';
 import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
 import { Terminal } from 'xterm';
 
-let term, protocol, socketURL, socket, pid;
+// let protocol, socketURL, socket, pid;
 
+const terms = {};
 const terminalOptions = {
   cols: 40,
   rows: 20,
   fontSize: 12,
   lineHeight: 1,
   cursorBlink: true,
+  disableStdin: false,
+  cursorStyle: 'block',
   fontFamily: "'Andale Mono', 'Courier New', 'Courier', monospace",
   theme: {
     foreground: '#7af950',
@@ -23,24 +27,24 @@ const terminalOptions = {
   mouseEvents: true,
 };
 
-function createTerminal(node) {
+function createTerminal(node, id) {
   Terminal.applyAddon(attach);
   Terminal.applyAddon(fit);
   Terminal.applyAddon(winptyCompat);
-  term = new Terminal(terminalOptions);
+  const term = new Terminal(terminalOptions);
   term.on('resize', function(size) {
-    if (!pid) {
+    if (!term.pid) {
       return;
     }
     var cols = size.cols,
       rows = size.rows,
-      url = '/terminals/' + pid + '/size?cols=' + cols + '&rows=' + rows;
+      url = '/terminals/' + term.pid + '/size?cols=' + cols + '&rows=' + rows;
 
     fetch(url, { method: 'POST' });
   });
   const location = document.location;
-  protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
-  socketURL =
+  const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
+  let socketURL =
     protocol + location.hostname + (location.port ? ':' + location.port : '') + '/terminals/';
 
   term.open(node);
@@ -55,42 +59,67 @@ function createTerminal(node) {
       res
     ) {
       res.text().then(function(processId) {
-        pid = processId;
+        term.pid = processId;
         socketURL += processId;
-        socket = new WebSocket(socketURL);
-        socket.onopen = runRealTerminal;
+        const socket = new WebSocket(socketURL);
+        socket.onopen = () => {
+          term.attach(socket);
+          term._initialized = true;
+        };
         // socket.onclose = runFakeTerminal;
         // socket.onerror = runFakeTerminal;
       });
     });
   }, 0);
+  return term;
 }
 
-function runRealTerminal() {
-  term.attach(socket);
-  term._initialized = true;
-}
+// function runRealTerminal() {
+//   term.attach(socket);
+//   term._initialized = true;
+// }
 
 export default class WebTerminal extends Component {
-  componentDidMount() {
-    window.addEventListener('resize', this.handleWindowResize);
-    if (!term) {
+  static propTypes = {
+    id: PropTypes.string,
+    onload: PropTypes.func,
+  };
+  static defaultProps = {
+    id: '_default_terminal',
+    onload() {},
+  };
+  getTerm() {
+    const { id } = this.props;
+    if (!terms[id]) {
       const div = document.createElement('div');
       this.container.appendChild(div);
-      createTerminal(div);
-    } else {
-      this.container.appendChild(term.element.parentNode);
+      terms[id] = createTerminal(div, id);
     }
+    return terms[id];
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.handleWindowResize);
+    const term = this.getTerm();
+    // if (!term) {
+    //   const div = document.createElement('div');
+    //   this.container.appendChild(div);
+    //   createTerminal(div);
+    // } else {
+    this.container.appendChild(term.element.parentNode);
+    // }
     term.fit();
     term.focus();
+    this.props.onload(term);
   }
 
   componentWillUnmount() {
+    const term = this.getTerm();
     if (term) this.container.removeChild(term.element.parentNode);
     window.removeEventListener('resize', this.handleWindowResize);
   }
 
   handleWindowResize = _.debounce(() => {
+    const term = this.getTerm();
     term.fit();
   }, 300);
 
