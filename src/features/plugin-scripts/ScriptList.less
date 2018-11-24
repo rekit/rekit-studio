@@ -4,10 +4,7 @@
   background-color: #111;
   border-right: 1px solid #333;
   height: 100%;
-  width: 300px;
-  position: absolute;
-  left: 0;
-  top: 0;
+  width: 100%;
   .scroll-style;
   overflow: auto;
   ul,
@@ -23,6 +20,9 @@
     font-size: 12px;
     font-weight: lighter;
     color: #aaa;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &:hover {
       background-color: #090909;
     }

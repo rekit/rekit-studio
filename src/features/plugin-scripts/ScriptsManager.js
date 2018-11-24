@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import SplitPane from 'react-split-pane/lib/SplitPane';
+import Pane from 'react-split-pane/lib/Pane';
 import { runScript, stopScript } from './redux/actions';
-import { ScriptList } from './';
-import { OutputView } from './';
+import { storage } from '../common/utils';
+import { ScriptList, OutputView } from './';
 
 // const scripts = [
 //   { name: 'start', script: 'node scripts/start.js' },
@@ -30,6 +32,20 @@ export class ScriptsManager extends Component {
     current: 'start',
   };
 
+  // getListWidth() {
+  //   return parseInt(storage.local.getItem('pluginScripts.listWidth') || 100, 10) || 100;
+  // }
+
+  getSizesState() {
+    return storage.local.getItem('layoutSizes') || {};
+  }
+
+  handleResizeEnd = (paneId, sizes) => {
+    const sizesState = this.getSizesState();
+    sizesState[paneId] = sizes;
+    storage.local.setItem('layoutSizes', sizesState);
+  };
+
   handleStart = name => {
     console.log('start script', name);
     this.props.actions.runScript(name);
@@ -47,20 +63,24 @@ export class ScriptsManager extends Component {
   };
 
   render() {
-
+    const sizes = this.getSizesState()['plugin-scripts-panel'] || [];
     return (
       <div className="plugin-scripts-scripts-manager">
-        <ScriptList
-          scripts={this.props.scripts}
-          onStart={this.handleStart}
-          onStop={this.handleStop}
-          onSelect={this.handleSelect}
-          running={this.props.running}
-          current={this.state.current}
-        />
-        <div className="output-container">
-          <OutputView type="script" name={this.state.current} />
-        </div>
+        <SplitPane onResizeEnd={sizes => this.handleResizeEnd('plugin-scripts-panel', sizes)}>
+          <Pane minSize="100px" maxSize="80%" size={sizes[0] || '300px'}>
+            <ScriptList
+              scripts={this.props.scripts}
+              onStart={this.handleStart}
+              onStop={this.handleStop}
+              onSelect={this.handleSelect}
+              running={this.props.running}
+              current={this.state.current}
+            />
+          </Pane>
+          <Pane className="output-container" size={sizes[1] || 1}>
+            <OutputView type="script" name={this.state.current} />
+          </Pane>
+        </SplitPane>
       </div>
     );
   }
