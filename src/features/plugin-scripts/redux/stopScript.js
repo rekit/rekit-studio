@@ -4,11 +4,13 @@ import {
   PLUGIN_SCRIPTS_STOP_SCRIPT_FAILURE,
   PLUGIN_SCRIPTS_STOP_SCRIPT_DISMISS_ERROR,
 } from './constants';
+import axios from 'axios';
 
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
 // If you prefer redux-saga, you can use rekit-plugin-redux-saga: https://github.com/supnate/rekit-plugin-redux-saga
-export function stopScript(args = {}) {
-  return (dispatch) => { // optionally you can have getState as the second argument
+export function stopScript(name) {
+  return dispatch => {
+    // optionally you can have getState as the second argument
     dispatch({
       type: PLUGIN_SCRIPTS_STOP_SCRIPT_BEGIN,
     });
@@ -21,23 +23,23 @@ export function stopScript(args = {}) {
       // doRequest is a placeholder Promise. You should replace it with your own logic.
       // See the real-word example at:  https://github.com/supnate/rekit/blob/master/src/features/home/redux/fetchRedditReactjsList.js
       // args.error here is only for test coverage purpose.
-      const doRequest = args.error ? Promise.reject(new Error()) : Promise.resolve();
+      const doRequest = axios.post('/api/stop-script', { name });
       doRequest.then(
-        (res) => {
+        res => {
           dispatch({
             type: PLUGIN_SCRIPTS_STOP_SCRIPT_SUCCESS,
-            data: res,
+            data: { name },
           });
           resolve(res);
         },
         // Use rejectHandler as the second argument so that render errors won't be caught.
-        (err) => {
+        err => {
           dispatch({
             type: PLUGIN_SCRIPTS_STOP_SCRIPT_FAILURE,
             data: { error: err },
           });
           reject(err);
-        },
+        }
       );
     });
 
@@ -65,10 +67,13 @@ export function reducer(state, action) {
 
     case PLUGIN_SCRIPTS_STOP_SCRIPT_SUCCESS:
       // The request is success
+      const running = state.running;
+      delete running[action.data.name];
       return {
         ...state,
         stopScriptPending: false,
         stopScriptError: null,
+        running: running,
       };
 
     case PLUGIN_SCRIPTS_STOP_SCRIPT_FAILURE:

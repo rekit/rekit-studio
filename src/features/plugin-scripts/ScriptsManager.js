@@ -35,7 +35,7 @@ export class ScriptsManager extends Component {
     this.props.actions.runScript(name);
   };
   handleStop = name => {
-    this.props.actions.runScript(name);
+    this.props.actions.stopScript(name);
   };
   handleSelect = name => {
     this.setState({ current: name });
