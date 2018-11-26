@@ -11,6 +11,7 @@ import layoutRoute from '../features/layout/route';
 import editorRoute from '../features/editor/route';
 import coreRoute from '../features/core/route';
 import pluginScriptsRoute from '../features/plugin-scripts/route';
+import tasksRoute from '../features/tasks/route';
 // import pluginCraRoute from '../features/plugin-cra/route';
 // import pluginDefaultRoute from '../features/plugin-default/route';
 // import pluginTerminalRoute from '../features/plugin-terminal/route';
@@ -29,6 +30,7 @@ const childRoutes = [
   editorRoute,
   coreRoute,
   pluginScriptsRoute,
+  tasksRoute,
   // pluginCraRoute,
   // pluginDefaultRoute,
   // pluginTerminalRoute,

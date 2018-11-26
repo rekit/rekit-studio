@@ -9,32 +9,16 @@ import { runScript, stopScript } from './redux/actions';
 import { storage } from '../common/utils';
 import { ScriptList, OutputView } from './';
 
-// const scripts = [
-//   { name: 'start', script: 'node scripts/start.js' },
-//   { name: 'build', script: 'node scripts/start.js' },
-//   { name: 'test2', script: 'node scripts/start.js' },
-//   { name: 'serveBuild', script: 'node scripts/start.js' },
-//   { name: 'docs:build', script: 'node scripts/start.js' },
-//   { name: 'publish', script: 'node scripts/start.js' },
-// ];
 export class ScriptsManager extends Component {
   static propTypes = {
-    scripts: PropTypes.object.isRequired,
+    scripts: PropTypes.array.isRequired,
     running: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
-  // constructor(props) {
-  //   super(props);
-  // }
-
   state = {
     current: 'start',
   };
-
-  // getListWidth() {
-  //   return parseInt(storage.local.getItem('pluginScripts.listWidth') || 100, 10) || 100;
-  // }
 
   getSizesState() {
     return storage.local.getItem('layoutSizes') || {};

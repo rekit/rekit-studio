@@ -14,6 +14,7 @@ import layoutReducer from '../features/layout/redux/reducer';
 import editorReducer from '../features/editor/redux/reducer';
 // import pluginCraReducer from '../features/plugin-cra/redux/reducer';
 import coreReducer from '../features/core/redux/reducer';
+import tasksReducer from '../features/tasks/redux/reducer';
 // import pluginScriptsReducer from '../features/plugin-scripts/redux/reducer';
 // import pluginDefaultReducer from '../features/plugin-default/redux/reducer';
 // import pluginTerminalReducer from '../features/plugin-terminal/redux/reducer';
@@ -37,6 +38,7 @@ const reducerMap = {
   editor: editorReducer,
   // pluginCra: pluginCraReducer,
   core: coreReducer,
+  tasks: tasksReducer,
   // pluginScripts: pluginScriptsReducer,
   // pluginDefault: pluginDefaultReducer,
   // pluginTerminal: pluginTerminalReducer,

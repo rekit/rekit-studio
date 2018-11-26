@@ -7,10 +7,9 @@ import { OutputView as HomeOutputView } from '../home/OutputView';
 
 export class OutputView extends Component {
   static propTypes = {
-    pluginScripts: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
-    output: PropTypes.array.isRequired,
+    output: PropTypes.object.isRequired,
   };
 
   clearOutput = () => {
