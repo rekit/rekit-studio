@@ -27,7 +27,7 @@ function getFileProps(file) {
 
   // Files under redux folder are all actions excepts actions.js|constants.js|reducer.js|initialState.js
   if (
-    /^src\/features\/\w+\/redux\/[\w.]+$/.test(file) &&
+    /^src\/features\/[\w\d-]+\/redux\/[\w.]+$/.test(file) &&
     !['actions.js', 'constants.js', 'reducer.js', 'initialState.js'].includes(name)
   ) {
     isAction = true;
@@ -156,6 +156,7 @@ function getActions(feature) {
   actions.forEach(c => {
     elementById[c.id] = c;
   });
+  console.log('actions: ', actions.length, feature);
   return actions.map(c => c.id);
 }
 
