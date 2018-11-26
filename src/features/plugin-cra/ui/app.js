@@ -21,8 +21,6 @@ const iconMap = {
   component: 'appstore-o',
   components: 'appstore-o',
   'folder-alias': 'folder',
-  folder: 'folder',
-  file: 'file',
   routes: 'sharealt',
   plugin: 'plugin',
 };

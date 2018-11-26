@@ -1,5 +1,5 @@
 export default {
-  processProjectData(prjData) {
+  processProjectData(prjData) {console.log('process prj data')
     Object.values(prjData.elementById).forEach(ele => {
       if (ele.type === 'file') {
         switch (ele.ext) {
