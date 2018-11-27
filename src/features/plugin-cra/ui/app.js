@@ -26,7 +26,7 @@ const iconMap = {
 };
 
 const getFeature = file => {
-  return /^src\/features\/\w+\//.test(file) ? file.split('/')[2] : null;
+  return /^(v:)?src\/features\/[\w-_\d]+(\/|$)/.test(file) ? file.split('/')[2] : null;
 };
 
 export default {
@@ -46,6 +46,7 @@ export default {
       }, {});
 
     Object.values(prjData.elementById).forEach(ele => {
+      ele.feature = ele.type === 'feature' ? ele.name : getFeature(ele.id);
       if (ele.type && iconMap[ele.type]) {
         ele.icon = iconMap[ele.type];
         ele.iconColor = colorMap[ele.type];
@@ -104,10 +105,10 @@ export default {
         case 'routes':
           ele.count = ele.routes.length;
           break;
-        case 'file':
-        case 'folder':
-          ele.feature = getFeature(ele.id);
-          break;
+        // case 'file':
+        // case 'folder':
+        //   ele.feature = getFeature(ele.id);
+        //   break;
         default:
           break;
       }

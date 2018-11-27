@@ -5,7 +5,8 @@ import store from '../../../common/store';
 
 const Option = Select.Option;
 
-const createSelectOptions = options => options.map(opt => <Option key={opt.value || opt.name}>{opt.name}</Option>);
+const createSelectOptions = options =>
+  options.map(opt => <Option key={opt.value || opt.name}>{opt.name}</Option>);
 
 const byId = id => store.getState().home.elementById[id];
 const parentElement = id => byId(byId(id).parent);
@@ -55,6 +56,9 @@ const nameMeta = () => ({
 export default {
   fillMeta(args) {
     switch (args.formId) {
+      case 'core.element.add.feature':
+        args.meta.elements.push(nameMeta(args));
+        break;
       case 'core.element.add.component':
         args.meta.elements.push(
           featureMeta(args),
@@ -74,16 +78,12 @@ export default {
 
         break;
       case 'core.element.add.action':
-        args.meta.elements.push(
-          featureMeta(args),
-          nameMeta(args),
-          {
-            key: 'async',
-            label: 'Async',
-            widget: Checkbox,
-            initialValue: false,
-          }
-        );
+        args.meta.elements.push(featureMeta(args), nameMeta(args), {
+          key: 'async',
+          label: 'Async',
+          widget: Checkbox,
+          initialValue: false,
+        });
 
         break;
       default:

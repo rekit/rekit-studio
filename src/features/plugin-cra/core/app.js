@@ -156,7 +156,6 @@ function getActions(feature) {
   actions.forEach(c => {
     elementById[c.id] = c;
   });
-  console.log('actions: ', actions.length, feature);
   return actions.map(c => c.id);
 }
 

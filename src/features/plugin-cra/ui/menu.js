@@ -11,7 +11,7 @@ const menuItems = {
   addAction: { name: 'Add Action', key: 'add-action' },
   addComponent: { name: 'Add Component', key: 'add-component' },
   addFeature: { name: 'Add Feature', key: 'add-feature' },
-  del: { name: 'Delete', key: 'del-component-action' },
+  del: { name: 'Delete', key: 'del-element-action' },
   move: { name: 'Move', key: 'move-component-action' },
   rename: { name: 'Rename', key: 'rename-component-action' },
   showTest: { name: 'Unit Test', key: 'show-test' },
@@ -51,8 +51,16 @@ export default {
       }
     },
     handleMenuClick({ elementId, key }) {
-      const ele = byId(elementId);
+      // const ele = byId(elementId);
       switch (key) {
+        case 'add-feature': {
+          showDialog('core.element.add.feature', 'Add Feature', {
+            action: 'add',
+            targetId: elementId,
+            elementType: 'feature',
+          });
+          break;
+        }
         case 'add-component': {
           showDialog('core.element.add.component', 'Add Component', {
             action: 'add',
@@ -83,11 +91,12 @@ export default {
           });
           break;
         }
-        case 'del-component-action': {
+        case 'del-element-action': {
           Modal.confirm({
             title: 'Are you sure to delete the element?',
             onOk() {
               const ele = byId(elementId);
+              console.log('delete: ', ele);
               if (!ele) {
                 Modal.error({
                   title: 'No element to delete',
@@ -95,7 +104,23 @@ export default {
                 });
                 return;
               }
-              const name = ele.parts[0].replace(/^src\/features\/(redux\/)?|\.jsx?$/g, '');
+              // const name = ele.parts[0].replace(/^src\/features\/(redux\/)?|\.jsx?$/g, '');
+              let name = null;
+              switch (ele.type) {
+                case 'feature':
+                  name = ele.name;
+                  break;
+                case 'component':
+                case 'action':
+                  name = `${ele.feature}/${ele.name}`;
+                  break;
+                default:
+                  Modal.error({
+                    title: 'Unknown element type to delete.',
+                    content: `Element type not supported to delete: ${ele.type}`,
+                  });
+                  return;
+              }
               execCoreCommand({
                 commandName: 'remove',
                 type: ele.type,
