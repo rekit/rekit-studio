@@ -58,9 +58,11 @@ export class DepsView extends Component {
     let dependents = [...(depsData.dependents[ele.id] || [])];
 
     dependencies = dependencies.filter(
-      d => !(byId(d) && byId(d).owner && byId(d).owner === ele.owner)
+      d => byId(d) && !(byId(d).owner && byId(d).owner === ele.owner)
     );
-    dependents = dependents.filter(d => !(byId(d) && byId(d).owner && byId(d).owner === ele.owner));
+    dependents = dependents.filter(
+      d => byId(d) && !(byId(d).owner && byId(d).owner === ele.owner)
+    );
 
     const sort = deps => {
       deps.sort((dep1, dep2) => {

@@ -36,8 +36,9 @@ function removeFromIndex(ele) {
 }
 
 function renameInIndex(feature, oldName, newName) {
-  const targetPath = utils.mapFeatureFile(feature, 'index.js');
-  refactor.updateFile(targetPath, ast =>
+  const indexPath = `src/features/${feature}/index.js`;
+  // const targetPath = utils.mapFeatureFile(feature, 'index.js');
+  refactor.updateFile(indexPath, ast =>
     [].concat(
       refactor.renameExportSpecifier(ast, oldName, newName, `./${oldName}`),
       refactor.renameModuleSource(ast, `./${oldName}`, `./${newName}`)
@@ -279,7 +280,7 @@ function removeFromStyle(ele) {
 }
 
 function renameInStyle(feature, oldName, newName) {
-  const targetPath = utils.mapFeatureFile(feature, 'style.' + utils.getCssExt());
+  const targetPath = `src/features/${feature}/style.${config.style}`;
   refactor.renameStyleImport(targetPath, `./${oldName}`, `./${newName}`);
 }
 

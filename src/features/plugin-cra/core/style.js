@@ -63,32 +63,32 @@ function remove(ele) {
  * @alias module:style.remove
  *
  **/
-function move(source, target) {
+function move(sourceEle, targetEle) {
   // 1. Move File.less to the destination
   // 2. Rename css class name
   // 3. Update references in the style.less
 
-  source.feature = _.kebabCase(source.feature);
-  source.name = _.pascalCase(source.name);
-  target.feature = _.kebabCase(target.feature);
-  target.name = _.pascalCase(target.name);
+  // source.feature = _.kebabCase(source.feature);
+  // source.name = _.pascalCase(source.name);
+  // target.feature = _.kebabCase(target.feature);
+  // target.name = _.pascalCase(target.name);
 
-  const srcPath = utils.mapComponent(source.feature, source.name) + '.' + utils.getCssExt();
-  const targetPath = utils.mapComponent(target.feature, target.name) + '.' + utils.getCssExt();
-  vio.move(srcPath, targetPath);
+  // const srcPath = utils.mapComponent(source.feature, source.name) + '.' + utils.getCssExt();
+  // const targetPath = utils.mapComponent(target.feature, target.name) + '.' + utils.getCssExt();
+  vio.move(sourceEle.stylePath, targetEle.stylePath);
 
-  let lines = vio.getLines(targetPath);
-  const oldCssClass = `${_.kebabCase(source.feature)}-${_.kebabCase(source.name)}`;
-  const newCssClass = `${_.kebabCase(target.feature)}-${_.kebabCase(target.name)}`;
+  let lines = vio.getLines(targetEle.stylePath);
+  const oldCssClass = `${_.kebabCase(sourceEle.feature)}-${_.kebabCase(sourceEle.name)}`;
+  const newCssClass = `${_.kebabCase(targetEle.feature)}-${_.kebabCase(targetEle.name)}`;
 
   lines = lines.map(line => line.replace(`.${oldCssClass}`, `.${newCssClass}`));
-  vio.save(targetPath, lines);
+  vio.save(targetEle.stylePath, lines);
 
-  if (source.feature === target.feature) {
-    entry.renameInStyle(source.feature, source.name, target.name);
+  if (sourceEle.feature === targetEle.feature) {
+    entry.renameInStyle(sourceEle.feature, sourceEle.name, targetEle.name);
   } else {
-    entry.removeFromStyle(source.feature, source.name);
-    entry.addToStyle(target.feature, target.name);
+    entry.removeFromStyle(sourceEle.feature, sourceEle.name);
+    entry.addToStyle(targetEle.feature, targetEle.name);
   }
 }
 

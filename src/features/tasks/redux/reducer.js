@@ -41,6 +41,8 @@ export default function reducer(state = initialState, action) {
             },
           };
         }
+      } else {
+        newState = state;
       }
       break;
     default:
