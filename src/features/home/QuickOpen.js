@@ -168,10 +168,10 @@ export class QuickOpen extends Component {
         <div className="quick-open-result" ref={n => (this.resultsNode = n)}>
           <ul>
             {this.state.results.length === 0 && <li className="no-results is-selected">No results found.</li>}
-            {this.state.results.map((item, i) => (
+            {this.state.results.slice(0, 50).map((item, i) => (
               <li
                 className={i === this.state.selectedIndex ? 'is-selected' : ''}
-                key={item.obj.file}
+                key={item.target}
                 onClick={() => this.handleItemClick(i)}
               >
                 {item.obj.icon && <SvgIcon type={item.obj.icon} style={{ fill: item.obj.iconColor || '#ccc' }} />}
