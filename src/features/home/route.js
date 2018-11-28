@@ -4,6 +4,7 @@ import {
   HomePage,
   WelcomePage,
   AllRoutesPage,
+  A1,
 } from './';
 
 export default {
@@ -15,5 +16,6 @@ export default {
     { path: '/all-routes', name: 'All Routes', component: AllRoutesPage },
     { path: '/element/:elementId/:view?', name: 'Element page', component: ElementPage },
     { path: '/:feature/routes/:type?', name: 'Routes page', component: RoutesPage },
+    { path: 'a1', component: A1 },
   ],
 };

@@ -5,8 +5,10 @@ function add(filePath) {
   vio.save(filePath, '');
 }
 
-function move(source, dest) {
-  
+function move(source, target) {
+  if (vio.fileExists(target)) throw new Error('File already exists: ' + target);
+  if (!vio.fileExists(source)) throw new Error('File doesn\'t exist: ' + source);
+  vio.move(source, target);
 }
 
 function remove(filePath) {

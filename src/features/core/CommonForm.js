@@ -38,6 +38,13 @@ export class CommonForm extends Component {
           if (node && node.focus) node.focus();
         });
       }
+
+      if (ele.autoSelect) {
+        requestAnimationFrame(() => {
+          const node = document.getElementById(ele.key);
+          if (node && node.select) node.select();
+        });
+      }
     });
   }
 

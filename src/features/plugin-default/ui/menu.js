@@ -9,8 +9,8 @@ const byId = id => store.getState().home.elementById[id];
 
 const menuItems = {
   del: { name: 'Delete', key: 'del-file-folder' },
-  move: { name: 'Move', key: 'move' },
-  rename: { name: 'Rename', key: 'rename' },
+  // move: { name: 'Move', key: 'move' },
+  rename: { name: 'Rename', key: 'rename-file-folder' },
   newFile: { name: 'New File', key: 'new-file' },
   newFolder: { name: 'New Folder', key: 'new-folder' },
 };
@@ -53,8 +53,15 @@ export default {
           });
           break;
         }
-        case 'move': {
-          showDialog('core.element.move.component', 'Move', {
+        // case 'move': {
+        //   showDialog('core.element.move.component', 'Move', {
+        //     action: 'move',
+        //     targetId: elementId,
+        //   });
+        //   break;
+        // }
+        case 'rename-file-folder': {
+          showDialog('core.element.rename.file-folder', 'Rename', {
             action: 'move',
             targetId: elementId,
           });

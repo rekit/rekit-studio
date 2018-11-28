@@ -5,8 +5,10 @@ function add(folder) {
   vio.mkdir(folder);
 }
 
-function move(source, dest) {
-  
+function move(source, target) {
+  if (vio.fileExists(target)) throw new Error('Folder already exists: ' + target);
+  if (!vio.fileExists(source)) throw new Error('Folder doesn\'t exist: ' + source);
+  vio.move(source, target);
 }
 
 function remove(folder) {
