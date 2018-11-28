@@ -369,7 +369,7 @@ function getProjectData() {
 
   const eleMisc = {
     type: 'folder-alias',
-    id: 'v:root-misc',
+    id: 'v:_src-misc',
     name: 'Misc',
     target: 'src',
     children: srcFiles.elements.filter(eid => eid !== 'src/features'),
