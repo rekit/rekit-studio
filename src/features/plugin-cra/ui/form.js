@@ -29,7 +29,7 @@ const getInitialFeature = args => {
       return parentElement(targetEle.id).name;
     }
     if (/^action|component$/.test(targetEle.type)) {
-      return parentElement(parentElement(targetEle.id).id).name;
+      return targetEle.feature;
     }
   }
 
@@ -51,6 +51,16 @@ const nameMeta = () => ({
   widget: Input,
   autoFocus: true,
   required: true,
+});
+
+const newNameMeta = args => ({
+  key: 'name',
+  label: 'New Name',
+  widget: Input,
+  autoFocus: true,
+  autoSelect: true,
+  required: true,
+  initialValue: args.initialValue,
 });
 
 export default {
@@ -77,6 +87,12 @@ export default {
         );
 
         break;
+      case 'core.element.move.component-action': {
+        const ele = byId(args.context.targetId);
+        args.meta.elements.push(featureMeta(args), newNameMeta({ initialValue: ele.name }));
+
+        break;
+      }
       case 'core.element.add.action':
         args.meta.elements.push(featureMeta(args), nameMeta(args), {
           key: 'async',
@@ -107,6 +123,16 @@ export default {
           type: context.elementType,
           name: `${values.feature}/${values.name}`.replace(/\/+/g, '/'),
         };
+      case 'core.element.move.component-action':{
+        const ele = byId(context.targetId);
+        return {
+          ...values,
+          commandName: context.action,
+          type: ele.type,
+          source: `${ele.feature}/${ele.name}`,
+          target: `${values.feature}/${values.name}`,
+        };
+      }
       default:
         break;
     }

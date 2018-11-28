@@ -55,12 +55,12 @@ function move(source, target, args) {
   if (sourceEle.feature === targetEle.feature) {
     entry.renameInIndex(sourceEle.feature, sourceEle.name, targetEle.name);
   } else {
-    entry.removeFromIndex(sourceEle.feature, sourceEle.name);
-    entry.addToIndex(targetEle.feature, targetEle.name);
+    entry.removeFromIndex(sourceEle);
+    entry.addToIndex(targetEle);
   }
 
   style.move(sourceEle, targetEle, args);
-  // route.move(source, target, args);
+  route.move(source, target, args);
 }
 
 module.exports = {

@@ -64,12 +64,13 @@ export default {
           showDialog('core.element.rename.file-folder', 'Rename', {
             action: 'move',
             targetId: elementId,
+            elementType: byId(elementId).type,
           });
           break;
         }
         case 'del-file-folder': {
           const ele = byId(elementId);
-          
+
           Modal.confirm({
             title: `Are you sure to delete the ${ele.type}?`,
             onOk() {

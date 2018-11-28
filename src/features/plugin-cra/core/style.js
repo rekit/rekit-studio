@@ -87,8 +87,8 @@ function move(sourceEle, targetEle) {
   if (sourceEle.feature === targetEle.feature) {
     entry.renameInStyle(sourceEle.feature, sourceEle.name, targetEle.name);
   } else {
-    entry.removeFromStyle(sourceEle.feature, sourceEle.name);
-    entry.addToStyle(targetEle.feature, targetEle.name);
+    entry.removeFromStyle(sourceEle);
+    entry.addToStyle(targetEle);
   }
 }
 

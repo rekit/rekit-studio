@@ -12,8 +12,8 @@ const menuItems = {
   addComponent: { name: 'Add Component', key: 'add-component' },
   addFeature: { name: 'Add Feature', key: 'add-feature' },
   del: { name: 'Delete', key: 'del-element-action' },
-  move: { name: 'Move', key: 'move-component-action' },
-  rename: { name: 'Rename', key: 'rename-component-action' },
+  // move: { name: 'Move', key: 'move-component-action' },
+  rename: { name: 'Rename', key: 'move-component-action' },
   showTest: { name: 'Unit Test', key: 'show-test' },
   runTest: { name: 'Run Test', key: 'run-test' },
   runTests: { name: 'Run Tests', key: 'run-tests' },
@@ -25,6 +25,7 @@ const menuItems = {
 export default {
   contextMenu: {
     fillMenuItems(items, { elementId }) {
+      console.log('fille menu items: ', elementId);
       const ele = byId(elementId);
       if (!ele) return;
       switch (ele.type) {
@@ -38,13 +39,13 @@ export default {
           items.push(menuItems.addComponent);
           break;
         case 'component':
-          items.push(menuItems.rename, menuItems.move, menuItems.runTest, menuItems.del);
+          items.push(menuItems.rename, menuItems.del);
           break;
         case 'actions':
           items.push(menuItems.addAction);
           break;
         case 'action':
-          items.push(menuItems.rename, menuItems.move, menuItems.runTest, menuItems.del);
+          items.push(menuItems.rename, menuItems.del);
           break;
         default:
           break;
@@ -77,20 +78,21 @@ export default {
           });
           break;
         }
-        case 'rename': {
-          showDialog('core.element.move.component', 'Rename', {
-            action: 'rename',
-            targetId: elementId,
-          });
-          break;
-        }
-        case 'move': {
-          showDialog('core.element.move.component', 'Move', {
+        case 'move-component-action': {
+          showDialog('core.element.move.component-action', 'Move', {
             action: 'move',
             targetId: elementId,
+            elementType: byId(elementId).type,
           });
           break;
         }
+        // case 'move': {
+        //   showDialog('core.element.move.component', 'Move', {
+        //     action: 'move',
+        //     targetId: elementId,
+        //   });
+        //   break;
+        // }
         case 'del-element-action': {
           Modal.confirm({
             title: 'Are you sure to delete the element?',
