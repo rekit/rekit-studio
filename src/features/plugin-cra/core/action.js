@@ -38,6 +38,55 @@ function remove(elePath, args) {
 function move(source, target, args) {
   if (args.async) return moveAsync(source, target, args);
   console.log('moving action: ', source, target, args);
+  const sourceEle = parseElePath(source, 'action');
+  assert.notEmpty(source.feature, 'feature');
+  assert.notEmpty(source.name, 'action name');
+  assert.featureExist(source.feature);
+  assert.notEmpty(target.feature, 'feature');
+  assert.notEmpty(target.name, 'action name');
+  assert.featureExist(target.feature);
+
+  // const targetPath = utils.mapReduxFile(source.feature, source.name);
+  // if (_.get(refactor.getRekitProps(targetPath), 'action.isAsync')) {
+  //   moveAsync(source, target);
+  //   return;
+  // }
+
+  source.feature = _.kebabCase(source.feature);
+  source.name = _.camelCase(source.name);
+  target.feature = _.kebabCase(target.feature);
+  target.name = _.camelCase(target.name);
+
+  const srcPath = utils.mapReduxFile(source.feature, source.name);
+  const destPath = utils.mapReduxFile(target.feature, target.name);
+  vio.move(srcPath, destPath);
+
+  const oldActionType = utils.getActionType(source.feature, source.name);
+  const newActionType = utils.getActionType(target.feature, target.name);
+
+  refactor.updateFile(destPath, ast => [].concat(
+    refactor.renameFunctionName(ast, source.name, target.name),
+    refactor.renameImportSpecifier(ast, oldActionType, newActionType)
+  ));
+
+  if (source.feature === target.feature) {
+    entry.renameInActions(source.feature, source.name, target.name);
+    // update the import path in actions.js
+    // const targetPath = utils.mapReduxFile(source.feature, 'actions');
+    // refactor.renameModuleSource(targetPath, `./${source.name}`, `./${target.name}`);
+
+    entry.renameInReducer(source.feature, source.name, target.name);
+    constant.rename(source.feature, oldActionType, newActionType);
+  } else {
+    entry.removeFromActions(source.feature, source.name);
+    entry.addToActions(target.feature, target.name);
+
+    entry.removeFromReducer(source.feature, source.name);
+    entry.addToReducer(target.feature, target.name);
+
+    constant.remove(source.feature, oldActionType);
+    constant.add(target.feature, newActionType);
+  }
 }
 
 function addAsync(elePath, args = {}) {
