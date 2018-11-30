@@ -136,6 +136,16 @@ export default {
           target: `${values.feature}/${values.name}`,
         };
       }
+      case 'core.element.move.feature': {
+        const ele = byId(context.targetId);
+        return {
+          ...values,
+          commandName: 'move',
+          type: 'feature',
+          source: ele.name,
+          target: values.name,
+        };
+      }
       default:
         break;
     }
