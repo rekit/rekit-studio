@@ -14,6 +14,7 @@ const menuItems = {
   del: { name: 'Delete', key: 'del-element-action' },
   // move: { name: 'Move', key: 'move-component-action' },
   rename: { name: 'Rename', key: 'move-component-action' },
+  renameFeature: { name: 'Rename', key: 'move-feature' },
   showTest: { name: 'Unit Test', key: 'show-test' },
   runTest: { name: 'Run Test', key: 'run-test' },
   runTests: { name: 'Run Tests', key: 'run-tests' },
@@ -33,7 +34,7 @@ export default {
           items.push(menuItems.addFeature);
           break;
         case 'feature':
-          items.push(menuItems.addComponent, menuItems.addAction, menuItems.rename, menuItems.del);
+          items.push(menuItems.addComponent, menuItems.addAction, menuItems.renameFeature, menuItems.del);
           break;
         case 'components':
           items.push(menuItems.addComponent);
@@ -79,10 +80,18 @@ export default {
           break;
         }
         case 'move-component-action': {
-          showDialog('core.element.move.component-action', 'Move', {
+          showDialog('core.element.move.component-action', 'Rename', {
             action: 'move',
             targetId: elementId,
             elementType: byId(elementId).type,
+          });
+          break;
+        }
+        case 'move-feature': {
+          showDialog('core.element.move.feature', 'Rename', {
+            action: 'move',
+            targetId: elementId,
+            elementType: 'feature',
           });
           break;
         }

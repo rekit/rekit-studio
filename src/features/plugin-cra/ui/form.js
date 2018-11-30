@@ -69,6 +69,9 @@ export default {
       case 'core.element.add.feature':
         args.meta.elements.push(nameMeta(args));
         break;
+      case 'core.element.move.feature':
+        args.meta.elements.push(newNameMeta({ initialValue: byId(args.context.targetId).name }));
+        break;
       case 'core.element.add.component':
         args.meta.elements.push(
           featureMeta(args),
@@ -123,7 +126,7 @@ export default {
           type: context.elementType,
           name: `${values.feature}/${values.name}`.replace(/\/+/g, '/'),
         };
-      case 'core.element.move.component-action':{
+      case 'core.element.move.component-action': {
         const ele = byId(context.targetId);
         return {
           ...values,
