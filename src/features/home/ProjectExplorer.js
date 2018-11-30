@@ -101,7 +101,7 @@ export class ProjectExplorer extends Component {
       iconStyle.fill = nodeData.iconColor;
     }
     return (
-      <span onDoubleClick={this.handleTreeNodeDoubleClick}>
+      <span>
         {nodeData.icon && <SvgIcon type={nodeData.icon} style={iconStyle} />}
         <label>
           {nodeData.name}
@@ -122,12 +122,15 @@ export class ProjectExplorer extends Component {
       </span>
     );
   }
+      // otherProps={{ onDoubleClick: () => console.log('tree node double click') }}
+
   renderTreeNode = (nodeData, depth = 1) => (
     <TreeNode
       key={nodeData.key}
       title={this.renderTreeNodeTitle(nodeData)}
       className={classnames(nodeData.className, `tree-node-depth-${depth}`)}
       isLeaf={!nodeData.children || !nodeData.children.length}
+      
     >
       {nodeData.children && nodeData.children.map(d => this.renderTreeNode(d, depth + 1))}
     </TreeNode>
@@ -156,6 +159,7 @@ export class ProjectExplorer extends Component {
         ref={node => {
           this.rootNode = node;
         }}
+        onDoubleClick={this.handleTreeNodeDoubleClick}
       >
         {treeNodes.length > 0 ? (
           <Tree
