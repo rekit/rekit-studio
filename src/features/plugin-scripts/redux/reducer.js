@@ -41,7 +41,7 @@ export default function reducer(state = initialState, action) {
         }
         if (payload.type === 'output') {
           let arr = (state.output[payload.name] || []).slice();
-          arr.push(payload.output);
+          arr.push.apply(arr, payload.output.split(/[\r\n]+/));
           if (arr.length > 200) arr = arr.slice(-200);
           newState = {
             ...state,
@@ -54,7 +54,7 @@ export default function reducer(state = initialState, action) {
       } else {
         newState = state;
       }
-      
+
       break;
 
     default:
