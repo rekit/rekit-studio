@@ -79,7 +79,10 @@ function removeFromRoute(feature, component) {
   const targetPath = utils.mapFeatureFile(feature, 'route.js');
   const lines = vio.getLines(targetPath);
   refactor.removeLines(lines, `  ${_.pascalCase(component)},`);
-  const removed = refactor.removeLines(lines, new RegExp(`component: ${_.pascalCase(component)}[ ,}]`));
+  const removed = refactor.removeLines(
+    lines,
+    new RegExp(`component: ${_.pascalCase(component)}[ ,}]`)
+  );
   vio.save(targetPath, lines);
   return removed;
 }
@@ -95,7 +98,11 @@ function moveRoute(source, dest) {
     const changes = [].concat(
       refactor.renameImportSpecifier(ast, oldName, newName),
       refactor.renameStringLiteral(ast, _.kebabCase(oldName), _.kebabCase(newName)), // Rename path
-      refactor.renameStringLiteral(ast, _.upperFirst(_.lowerCase(oldName)), _.upperFirst(_.lowerCase(newName))) // Rename name
+      refactor.renameStringLiteral(
+        ast,
+        _.upperFirst(_.lowerCase(oldName)),
+        _.upperFirst(_.lowerCase(newName))
+      ) // Rename name
     );
     const code = refactor.updateSourceCode(vio.getContent(targetPath), changes);
     vio.save(targetPath, code);
@@ -138,11 +145,14 @@ function removeFromActions(feature, name, actionFile) {
 function renameInActions(feature, oldName, newName, actionFile) {
   // Rename export { xxx, xxxx } from './actionFile'
   // if actionFile is provided, it will be used as moudle source
-  oldName = _.camelCase(oldName);
-  newName = _.camelCase(newName);
 
-  const targetPath = utils.mapReduxFile(feature, 'actions');
-  refactor.renameExportSpecifier(targetPath, oldName, newName, `./${_.camelCase(actionFile || oldName)}`);
+  const targetPath = `src/features/${feature}/redux/actions.js`;
+  refactor.renameExportSpecifier(
+    targetPath,
+    oldName,
+    newName,
+    `./${_.camelCase(actionFile || oldName)}`
+  );
   if (!actionFile) refactor.renameModuleSource(targetPath, `./${oldName}`, `./${newName}`);
 }
 
@@ -157,7 +167,8 @@ function addToReducer(feature, action) {
 }
 
 function renameInReducer(feature, oldName, newName) {
-  const targetPath = utils.mapReduxFile(feature, 'reducer');
+  const targetPath = `src/features/${feature}/redux/reducer.js`;
+
   refactor.updateFile(targetPath, ast =>
     [].concat(
       refactor.renameImportAsSpecifier(ast, `${oldName}Reducer`, `${newName}Reducer`),
@@ -202,7 +213,12 @@ function addToRootReducer(feature) {
         `../features/${feature}/redux/reducer`,
         `${_.camelCase(feature)}Reducer`
       ),
-      refactor.addObjectProperty(ast, 'reducerMap', _.camelCase(feature), `${_.camelCase(feature)}Reducer`)
+      refactor.addObjectProperty(
+        ast,
+        'reducerMap',
+        _.camelCase(feature),
+        `${_.camelCase(feature)}Reducer`
+      )
     )
   );
 }
@@ -211,8 +227,17 @@ function renameInRootReducer(oldFeature, newFeature) {
   const targetPath = 'src/common/rootReducer.js';
   refactor.updateFile(targetPath, ast =>
     [].concat(
-      refactor.renameImportSpecifier(ast, `${_.camelCase(oldFeature)}Reducer`, `${_.camelCase(newFeature)}Reducer`),
-      refactor.renameObjectProperty(ast, 'reducerMap', _.camelCase(oldFeature), _.camelCase(newFeature)),
+      refactor.renameImportSpecifier(
+        ast,
+        `${_.camelCase(oldFeature)}Reducer`,
+        `${_.camelCase(newFeature)}Reducer`
+      ),
+      refactor.renameObjectProperty(
+        ast,
+        'reducerMap',
+        _.camelCase(oldFeature),
+        _.camelCase(newFeature)
+      ),
       refactor.renameModuleSource(
         ast,
         `../features/${_.kebabCase(oldFeature)}/redux/reducer`,
@@ -247,7 +272,11 @@ function renameInRouteConfig(oldFeature, newFeature) {
   const targetPath = 'src/common/routeConfig.js';
   refactor.updateFile(targetPath, ast =>
     [].concat(
-      refactor.renameImportSpecifier(ast, `${_.camelCase(oldFeature)}Route`, `${_.camelCase(newFeature)}Route`),
+      refactor.renameImportSpecifier(
+        ast,
+        `${_.camelCase(oldFeature)}Route`,
+        `${_.camelCase(newFeature)}Route`
+      ),
       refactor.renameModuleSource(
         ast,
         `../features/${_.kebabCase(oldFeature)}/route`,
@@ -275,7 +304,7 @@ function addToStyle(ele) {
 
 function removeFromStyle(ele) {
   const targetPath = `src/features/${ele.feature}/style.${config.style}`;
-  const modulePath = `.${ele.path.substring(ele.path.indexOf('/'))}`;  
+  const modulePath = `.${ele.path.substring(ele.path.indexOf('/'))}`;
   refactor.removeStyleImport(targetPath, modulePath);
 }
 
