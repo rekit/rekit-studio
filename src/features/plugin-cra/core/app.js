@@ -397,6 +397,22 @@ function getProjectData() {
     elements.splice(1, 0, folderEle.id);
   });
 
+  const extraFiles = config.getRekitConfig().files || [];
+  extraFiles.forEach(f => {
+    const fileEle = files.getFileElement(paths.map(f));
+    // Object.assign(elementById, { [fileEle.id]: fileEle });
+
+    // const folderEle = {
+    //   type: 'folder-alias',
+    //   id: 'v:folder-' + f,
+    //   name: f,
+    //   target: f,
+    //   children: res.elements,
+    // };
+    elementById[fileEle.id] = fileEle;
+    elements.push(fileEle.id);
+  });
+
   return { elements, elementById };
 }
 

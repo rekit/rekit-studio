@@ -12,6 +12,7 @@ export const getTreeData = createSelector(
     const byId = id => elementById[id] || null;
     const getTreeNode = elementId => {
       const element = byId(elementId);
+      if (!element) console.log('element id not exist: ', elementId);
       return {
         ...element,
         key: elementId,

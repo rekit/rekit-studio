@@ -58,6 +58,7 @@
     "buildPort": 6079,
     "plugins": [],
     "folders": ["bin", "scripts", "lib"],
+    "files": ["package.json"],
     "css": "less"
   },
   "license": "MIT",

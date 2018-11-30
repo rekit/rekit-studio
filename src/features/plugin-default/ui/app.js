@@ -1,10 +1,12 @@
 export default {
-  processProjectData(prjData) {console.log('process prj data')
+  processProjectData(prjData) {
     Object.values(prjData.elementById).forEach(ele => {
       if (ele.type === 'file') {
         switch (ele.ext) {
           case 'js':
           case 'svg':
+          case 'html':
+          case 'json':
           case 'less':
             ele.icon = `file_type_${ele.ext}`;
             break;
