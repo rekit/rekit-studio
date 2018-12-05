@@ -57,8 +57,14 @@
     "devPort": 6078,
     "buildPort": 6079,
     "plugins": [],
-    "folders": ["bin", "scripts", "lib"],
-    "files": ["package.json"],
+    "folders": [
+      "bin",
+      "scripts",
+      "lib"
+    ],
+    "files": [
+      "package.json"
+    ],
     "css": "less"
   },
   "license": "MIT",
@@ -72,14 +78,17 @@
     "build:test": "node ./tools/server.js -m build"
   },
   "files": [
-    "dist",
-    "middleware"
+    "bin",
+    "build",
+    "lib",
+    "src"
   ],
   "dependencies": {
     "body-parser": "^1.18.2",
     "compression": "^1.7.3",
     "express-ws": "^4.0.0",
     "lodash": "^4.17.10",
+    "import-from": "^2.1.0",
     "node-pty": "^0.7.6",
     "package-json": "^4.0.1",
     "prettier": "^1.14.2",
@@ -127,11 +136,9 @@
     "fuzzysort": "^1.1.4",
     "html-webpack-plugin": "2.29.0",
     "immutability-helper": "^2.7.1",
-    "import-from": "^2.1.0",
     "jest": "20.0.4",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
-    "lodash": "^4.17.5",
     "monaco-editor": "^0.14.3",
     "monaco-editor-webpack-plugin": "^1.5.1",
     "nock": "^9.2.3",
