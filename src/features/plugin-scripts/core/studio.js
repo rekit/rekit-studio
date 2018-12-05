@@ -21,7 +21,7 @@ function config(server, app, args) {
       res.end();
       return;
     }
-    const child = spawn('yarn', ['run', name], {
+    const child = spawn('npm', ['run', name], {
       cwd: rekit.core.paths.getProjectRoot(),
       stdio: 'pipe',
     });
