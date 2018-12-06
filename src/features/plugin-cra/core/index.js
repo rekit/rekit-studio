@@ -6,6 +6,8 @@ const hooks = require('./hooks');
 
 module.exports = {
   name: 'cra',
+  appType: 'rekit-cra',
+  isAppPlugin: true,
   app,
   hooks,
   elements: {

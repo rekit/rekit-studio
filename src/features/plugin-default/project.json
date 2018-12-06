@@ -1,0 +1,18 @@
+{
+  "name": "Rekit React",
+  "description": "Feature oriented architecture based on Create React App.",
+  "git-url": "https://github.com/supnate/repo.git",
+  "homepage": "https://github.com/supnate",
+  "arguments": {
+    "css": {
+      "type": "string",
+      "oneof": ["scss", "less"],
+      "help": ""
+    },
+    "redux": {
+      "type": "string",
+      "oneof": ["thunk", "saga"],
+      "help": ""
+    },
+  }
+}

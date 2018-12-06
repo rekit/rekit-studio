@@ -58,8 +58,12 @@ parser.addArgument(['--dir', '-d'], {
 });
 
 const args = parser.parseArgs();
-
-if (args.dir) require('rekit-core').core.paths.setProjectRoot(args.dir);
+const rekit = require('rekit-core');
+rekit.core.plugin.addPlugin(require('../src/features/plugin-default/core'));
+rekit.core.plugin.addPlugin(require('../src/features/plugin-terminal/core'));
+rekit.core.plugin.addPlugin(require('../src/features/plugin-scripts/core'));
+rekit.core.plugin.addPlugin(require('../src/features/plugin-cra/core'));
+if (args.dir) rekit.core.paths.setProjectRoot(args.dir);
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 process.stdout.isTTY = false;
