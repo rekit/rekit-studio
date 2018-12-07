@@ -1,7 +1,7 @@
 
 
 module.exports = {
-  name: 'node',
+  name: 'ebay-node',
   app: require('./app'),
   deps: require('./deps'),
   isAppPlugin: true,

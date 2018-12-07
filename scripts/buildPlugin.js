@@ -18,16 +18,8 @@ const fs = require('fs-extra');
 const webpack = require('webpack');
 let config = require('../config/webpack.config.prod');
 const printBuildError = require('react-dev-utils/printBuildError');
+const paths = require('../config/paths');
 
-// fs.emptyDirSync(paths.appBuild);
-// copyPublicFolder();
-// build().catch(err => {
-//   console.log(chalk.red('Failed to compile.\n'));
-//   printBuildError(err);
-//   process.exit(1);
-// });
-
-// Create the production build and print the deployment instructions.
 function buildPlugin(pluginDir) {
   console.log('Creating an optimized production build...');
 
@@ -42,7 +34,7 @@ function buildPlugin(pluginDir) {
     plugins: [
       ...config.plugins,
       new webpack.DllReferencePlugin({
-        context: path.join(pluginDir, 'src'),
+        context: paths.appSrc,
         manifest: require('../build/dll-manifest.json'),
       }),
     ],

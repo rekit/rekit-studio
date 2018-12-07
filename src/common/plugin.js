@@ -4,12 +4,12 @@ import _ from 'lodash';
 // In future plugins are dynamically loaded.
 
 // For built in plugins, defined here, internal plugins could depend others easily
-import * as defaultPlugin from '../features/plugin-default/plugin';
-import * as terminal from '../features/plugin-terminal/plugin';
-import * as scripts from '../features/plugin-scripts/plugin';
+import '../features/plugin-default/plugin';
+import '../features/plugin-terminal/plugin';
+import '../features/plugin-scripts/plugin';
 
 if (!_.find(window.__REKIT_PLUGINS, { name: 'default' })) {
-  window.__REKIT_PLUGINS.push(defaultPlugin, terminal, scripts);
+  // window.__REKIT_PLUGINS.push(defaultPlugin, terminal, scripts);
 }
 
 // Use global variable to store module state for workaround of HMR.
