@@ -59,8 +59,11 @@
     "appType": "rekit-cra",
     "plugins": [],
     "folders": [
+      "build",
       "bin",
       "scripts",
+      "config",
+      "dll",
       "lib"
     ],
     "files": [
@@ -91,8 +94,8 @@
     "chalk": "1.1.3",
     "compression": "^1.7.3",
     "express": "^4.0.1",
-    "express-ws": "^4.0.0",
     "express-history-api-fallback": "^2.2.1",
+    "express-ws": "^4.0.0",
     "import-from": "^2.1.0",
     "lodash": "^4.17.10",
     "node-pty": "^0.7.6",
@@ -135,7 +138,6 @@
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-jsx-a11y": "5.1.1",
     "eslint-plugin-react": "7.4.0",
-    
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "1.1.5",
     "fs-extra": "3.0.1",
@@ -171,6 +173,7 @@
     "sw-precache-webpack-plugin": "0.11.4",
     "tinygradient": "^0.4.0",
     "url-loader": "0.6.2",
+    "virtual-module-webpack-plugin": "^0.4.0",
     "webpack": "3.12.0",
     "webpack-dev-server": "2.9.4",
     "webpack-manifest-plugin": "1.3.2",

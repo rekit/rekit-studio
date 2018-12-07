@@ -1,0 +1,7 @@
+{
+  "name": "rekit-plugin-cra",
+  "rekit": {
+    "appType": "rekit-cra",
+    "isAppPlugin": true
+  }
+}

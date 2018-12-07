@@ -165,6 +165,7 @@ function build(previousFileSizes) {
 
 function copyPublicFolder() {
   fs.copySync(paths.resolveApp('dll'), paths.resolveApp('build'));
+  fs.move(paths.resolveApp('dll/manifest.json'), paths.resolveApp('build/dll-manifest.json'))
   // fs.copySync(
   //   paths.resolveApp('dll/rsdll.js.map'),
   //   paths.resolveApp('build/static/js/rsdll.js.map')

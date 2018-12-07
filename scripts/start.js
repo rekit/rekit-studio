@@ -63,6 +63,7 @@ rekit.core.plugin.addPlugin(require('../src/features/plugin-default/core'));
 rekit.core.plugin.addPlugin(require('../src/features/plugin-terminal/core'));
 rekit.core.plugin.addPlugin(require('../src/features/plugin-scripts/core'));
 rekit.core.plugin.addPlugin(require('../src/features/plugin-cra/core'));
+rekit.core.plugin.addPlugin(require('../src/features/plugin-node/core'));
 if (args.dir) rekit.core.paths.setProjectRoot(args.dir);
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
