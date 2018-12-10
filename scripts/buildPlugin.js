@@ -61,5 +61,5 @@ function copyPublicFolder(prjDir) {
   if (fs.existsSync(`${prjDir}/public`)) fs.copySync(`${prjDir}/public`, `${prjDir}/build`);
 }
 
-buildPlugin('/Users/pwang7/workspace/rekit-studio/src/features/plugin-cra');
+buildPlugin('/Users/pwang7/workspace/rekit-studio/src/features/plugin-node');
 module.exports = buildPlugin;
