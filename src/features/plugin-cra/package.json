@@ -1,5 +1,11 @@
 {
   "name": "rekit-react",
   "appType": "rekit-react",
+  "featureFiles": [
+    "src/Root.js",
+    "src/features",
+    "src/common/rootReducer.js",
+    "src/common/routeConfig.js"
+  ],
   "isAppPlugin": true
 }
