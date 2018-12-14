@@ -269,7 +269,6 @@ function getFeatures() {
   // return _.toArray(shell.ls(rekit.core.paths.map('src/features')));
   const elements = [];
   const eles = elementById['src/features'].children.map(eid => elementById[eid]);
-
   eles.forEach(ele => {
     if (ele.type !== 'folder') {
       elements.push(ele.id);

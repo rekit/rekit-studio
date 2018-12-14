@@ -26,6 +26,7 @@ parser.addArgument(['--dir', '-d'], {
 const args = parser.parseArgs();
 
 const prjRoot = path.isAbsolute(args.dir) ? args.dir : path.join(process.cwd(), args.dir);
+
 rekit.core.paths.setProjectRoot(prjRoot);
 
 start({ projectRoot: prjRoot, port: args.port });

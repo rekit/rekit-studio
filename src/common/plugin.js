@@ -7,6 +7,7 @@ import _ from 'lodash';
 import '../features/plugin-default/plugin';
 import '../features/plugin-terminal/plugin';
 import '../features/plugin-scripts/plugin';
+import '../features/plugin-cra/plugin'; // dev time
 
 if (!_.find(window.__REKIT_PLUGINS, { name: 'default' })) {
   // window.__REKIT_PLUGINS.push(defaultPlugin, terminal, scripts);

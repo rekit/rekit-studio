@@ -5,9 +5,6 @@ const action = require('./action');
 const hooks = require('./hooks');
 
 module.exports = {
-  name: 'cra',
-  appType: 'rekit-react',
-  isAppPlugin: true,
   app,
   hooks,
   elements: {
