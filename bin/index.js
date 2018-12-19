@@ -15,12 +15,18 @@ const parser = new ArgumentParser({
 
 parser.addArgument(['--port', '-p'], {
   help: 'The port to run Rekit Studio.',
-  defaultValue: 6076,
+  defaultValue: rekit.core.config.getRekitConfig().devPort || 6076,
 });
 
 parser.addArgument(['--dir', '-d'], {
   help: 'The project dir loaded by Rekit Studio.',
   defaultValue: '.',
+});
+
+parser.addArgument(['--dev-plugins'], {
+  dest: 'devPlugins',
+  help: 'When starting a project, if load plugins in dev time from plugin projects.',
+  defaultValue: 'null',
 });
 
 const args = parser.parseArgs();
@@ -29,4 +35,4 @@ const prjRoot = path.isAbsolute(args.dir) ? args.dir : path.join(process.cwd(), 
 
 rekit.core.paths.setProjectRoot(prjRoot);
 
-start({ projectRoot: prjRoot, port: args.port });
+start({ projectRoot: prjRoot, port: args.port, devPlugins: args.devPlugins });
