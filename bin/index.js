@@ -23,9 +23,15 @@ parser.addArgument(['--dir', '-d'], {
   defaultValue: '.',
 });
 
-parser.addArgument(['--dev-plugins'], {
-  dest: 'devPlugins',
+parser.addArgument(['--dev-plugins-dir'], {
+  dest: 'devPluginsDir',
   help: 'When starting a project, if load plugins in dev time from plugin projects.',
+  defaultValue: 'null',
+});
+
+parser.addArgument(['--plugins-dir'], {
+  dest: 'pluginsDir',
+  help: 'When starting a project, load plugins from these dirs.',
   defaultValue: 'null',
 });
 
@@ -35,4 +41,4 @@ const prjRoot = path.isAbsolute(args.dir) ? args.dir : path.join(process.cwd(), 
 
 rekit.core.paths.setProjectRoot(prjRoot);
 
-start({ projectRoot: prjRoot, port: args.port, devPlugins: args.devPlugins });
+start({ projectRoot: prjRoot, port: args.port, devPluginsDir: args.devPluginsDir, pluginsDir: args.pluginsDir });
