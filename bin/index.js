@@ -26,13 +26,13 @@ parser.addArgument(['--dir', '-d'], {
 parser.addArgument(['--dev-plugins-dir'], {
   dest: 'devPluginsDir',
   help: 'When starting a project, if load plugins in dev time from plugin projects.',
-  defaultValue: 'null',
+  defaultValue: null,
 });
 
 parser.addArgument(['--plugins-dir'], {
   dest: 'pluginsDir',
   help: 'When starting a project, load plugins from these dirs.',
-  defaultValue: 'null',
+  defaultValue: null,
 });
 
 const args = parser.parseArgs();
