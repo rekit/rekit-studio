@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import enUS from 'antd/lib/locale-provider/en_US';
-import { LocaleProvider, message, Modal, Spin } from 'antd';
+import { Alert, LocaleProvider, message, Modal, Spin } from 'antd';
 import SplitPane from 'react-split-pane/lib/SplitPane';
 import Pane from 'react-split-pane/lib/Pane';
 import { ErrorBoundary } from '../common';
@@ -103,8 +103,21 @@ export class App extends Component {
   }
 
   render() {
-    if (!this.props.elementById || !this.props.projectName) {
+    if (!this.props.projectName) {
       return this.renderLoading();
+    }
+
+    if (!this.props.elementById) {
+      return (
+        <div className="home-app-no-data">
+          <Alert
+            message="Project type not supported."
+            description="It seems not any Rekit plugin installed to support current app type, please check and retry."
+            type="error"
+            showIcon
+          />
+        </div>
+      );
     }
 
     const { bottomDrawerVisible } = this.props;

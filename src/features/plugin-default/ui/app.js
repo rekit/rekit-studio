@@ -1,5 +1,10 @@
 export default {
   processProjectData(prjData) {
+    if (!prjData.elementById || !prjData.elements || !prjData.elements.length) {
+      // no project data loaded
+      // indicates the project appType has no corresponding plugin
+      return;
+    }
     Object.values(prjData.elementById).forEach(ele => {
       if (ele.type === 'file') {
         switch (ele.ext) {
