@@ -7,6 +7,7 @@ import _ from 'lodash';
 import '../features/plugin-default/plugin';
 import '../features/plugin-terminal/plugin';
 import '../features/plugin-scripts/plugin';
+import '../features/test/entry';
 // import '../features/plugin-cra/plugin'; // dev time
 
 if (!_.find(window.__REKIT_PLUGINS, { name: 'default' })) {
@@ -24,9 +25,9 @@ export default {
     if (!prop) return _.compact(plugins);
     return plugins.filter(_.property(prop));
   },
-  // addPlugin(p) {
-  //   window.__REKIT_PLUGINS.push(p);
-  // }
+  addPlugin(p) {
+    window.__REKIT_PLUGINS.push(p);
+  }
   // getColor(type) {
   //   const colors = this.getPlugins('colors').reduce((prev, curr) => {
   //     Object.assign(prev, curr.colors);
