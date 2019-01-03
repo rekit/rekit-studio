@@ -5,7 +5,7 @@ import {
 } from './';
 
 export default {
-  path: 'test',
+  path: 'plugin-test',
   childRoutes: [
   ],
 };

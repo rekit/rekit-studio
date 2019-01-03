@@ -20,25 +20,16 @@ process.on('unhandledRejection', err => {
 // Ensure environment variables are read.
 require('../config/env');
 const fs = require('fs');
+const path = require('path');
 const chalk = require('chalk');
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
-const clearConsole = require('react-dev-utils/clearConsole');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
-const {
-  choosePort,
-  createCompiler,
-  prepareProxy,
-  prepareUrls,
-} = require('react-dev-utils/WebpackDevServerUtils');
-const openBrowser = require('react-dev-utils/openBrowser');
+const { choosePort } = require('react-dev-utils/WebpackDevServerUtils');
 const ArgumentParser = require('argparse').ArgumentParser;
 const paths = require('../config/paths');
-const config = require('../config/webpack.config.dev');
-const createDevServerConfig = require('../config/webpackDevServer.config');
+const initPlugins = require('../lib/initPlugins');
 
 const startDevServer = require('./startDevServer');
-// const startRekitStudio = require('./startRekitStudio');
+
 const parser = new ArgumentParser({
   addHelp: true,
   description: 'Start express server for dev or build result.',
@@ -57,23 +48,26 @@ parser.addArgument(['--dir', '-d'], {
   help: 'The project dir to be managed by Rekit Studio.',
 });
 
+parser.addArgument(['--dev-plugins-dir'], {
+  dest: 'devPluginsDir',
+  help: 'When starting a project, if load plugins in dev time from plugin projects.',
+  defaultValue: null,
+});
+
+parser.addArgument(['--plugins-dir'], {
+  dest: 'pluginsDir',
+  help: 'When starting a project, load plugins from these dirs.',
+  defaultValue: null,
+});
+
 const args = parser.parseArgs();
 const rekit = require('rekit-core');
-rekit.core.plugin.addPlugin(require('../src/features/plugin-default/core'));
-rekit.core.plugin.addPlugin(require('../src/features/plugin-terminal/core'));
-rekit.core.plugin.addPlugin(require('../src/features/plugin-scripts/core'));
-// rekit.core.plugin.addPlugin(require('../src/features/plugin-cra/core'));
-// rekit.core.plugin.addPlugin(require('../src/features/plugin-node/core'));
+
 if (args.dir) rekit.core.paths.setProjectRoot(args.dir);
 
-const useYarn = fs.existsSync(paths.yarnLockFile);
-process.stdout.isTTY = false;
-const isInteractive = process.stdout.isTTY;
+initPlugins(args);
 
-// Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs, paths.appIndexStyle])) {
-  process.exit(1);
-}
+process.stdout.isTTY = true;
 
 // Tools like Cloud9 rely on this.
 const DEFAULT_PORT =

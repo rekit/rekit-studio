@@ -6,8 +6,8 @@ export const bottomDrawer = {
   getPanes() {
     return [
       {
-        tab: 'Terminal',
-        key: 'terminal',
+        tab: 'Test',
+        key: 'test',
         order: 30,
         component: TestPanel,
       },

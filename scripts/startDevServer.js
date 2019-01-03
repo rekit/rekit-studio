@@ -3,11 +3,8 @@
 const fs = require('fs');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const clearConsole = require('react-dev-utils/clearConsole');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const chalk = require('chalk');
-const express = require('express');
-// const fallback = require('express-history-api-fallback');
 const {
   createCompiler,
   prepareProxy,
@@ -34,7 +31,11 @@ function _startDevServer(port) {
       context: paths.appSrc,
       manifest: require(dllManifestPath),
     }),
-    new AddAssetHtmlPlugin({ filepath: paths.resolveApp('.tmp/dev-dll.js') })
+    // new AddAssetHtmlPlugin({ filepath: paths.resolveApp('.tmp/dev-dll.js') })
+    new AddAssetHtmlPlugin([
+      { filepath: paths.resolveApp('.tmp/dev-dll.js') },
+      // { filepath: paths.resolveApp('public/rekit-plugins.js') },
+    ])
   );
   const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
   const appName = require(paths.appPackageJson).name;
@@ -52,8 +53,8 @@ function _startDevServer(port) {
   const serverConfig = createDevServerConfig(proxyConfig, urls.lanUrlForConfig);
   const devServer = new WebpackDevServer(compiler, serverConfig);
 
-  // devServer.use(rekitMiddleWare()(devServer.listeningApp, devServer.app));
   configStudio(devServer.listeningApp, devServer.app);
+
   // devServer.use(express.static(rekit.core.paths.getProjectRoot()));
   // Launch WebpackDevServer.
   devServer.listen(port, HOST, err => {

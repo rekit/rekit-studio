@@ -6,13 +6,13 @@ import * as actions from './redux/actions';
 
 export class TestPanel extends Component {
   static propTypes = {
-    test: PropTypes.object.isRequired,
+    pluginTest: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
   render() {
     return (
-      <div className="test-test-panel">
+      <div className="plugin-test-test-panel">
         Page Content: test/TestPanel
       </div>
     );
@@ -22,7 +22,7 @@ export class TestPanel extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    test: state.test,
+    pluginTest: state.pluginTest,
   };
 }
 

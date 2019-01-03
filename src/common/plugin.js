@@ -4,10 +4,10 @@ import _ from 'lodash';
 // In future plugins are dynamically loaded.
 
 // For built in plugins, defined here, internal plugins could depend others easily
-import '../features/plugin-default/plugin';
-import '../features/plugin-terminal/plugin';
-import '../features/plugin-scripts/plugin';
-import '../features/test/entry';
+import '../features/plugin-default/entry';
+import '../features/plugin-terminal/entry';
+import '../features/plugin-scripts/entry';
+import '../features/plugin-test/entry';
 // import '../features/plugin-cra/plugin'; // dev time
 
 if (!_.find(window.__REKIT_PLUGINS, { name: 'default' })) {

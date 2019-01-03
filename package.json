@@ -60,6 +60,7 @@
     "plugins": [],
     "folders": [
       "build",
+      "public",
       "bin",
       "scripts",
       "config",
