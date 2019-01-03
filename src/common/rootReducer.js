@@ -12,14 +12,8 @@ import rekitToolsReducer from '../features/rekit-tools/redux/reducer';
 import configReducer from '../features/config/redux/reducer';
 import layoutReducer from '../features/layout/redux/reducer';
 import editorReducer from '../features/editor/redux/reducer';
-// import pluginCraReducer from '../features/plugin-cra/redux/reducer';
 import coreReducer from '../features/core/redux/reducer';
 import tasksReducer from '../features/tasks/redux/reducer';
-import pluginTestReducer from '../features/plugin-test/redux/reducer';
-// import pluginScriptsReducer from '../features/plugin-scripts/redux/reducer';
-// import pluginDefaultReducer from '../features/plugin-default/redux/reducer';
-// import pluginTerminalReducer from '../features/plugin-terminal/redux/reducer';
-// import pluginNodeReducer from '../features/plugin-node/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
 // This is used for Rekit cmds to register new features, remove features, etc.
@@ -37,14 +31,8 @@ const reducerMap = {
   config: configReducer,
   layout: layoutReducer,
   editor: editorReducer,
-  // pluginCra: pluginCraReducer,
   core: coreReducer,
   tasks: tasksReducer,
-  pluginTest: pluginTestReducer,
-  // pluginScripts: pluginScriptsReducer,
-  // pluginDefault: pluginDefaultReducer,
-  // pluginTerminal: pluginTerminalReducer,
-  // pluginNode: pluginNodeReducer,
 };
 
 export default () => {
