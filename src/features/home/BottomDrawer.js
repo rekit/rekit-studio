@@ -76,7 +76,7 @@ export class BottomDrawer extends Component {
         </div>
         {bottomDrawerVisible && (
           <div className="content-container">
-            {(currentPane && <currentPane.component />) || 'No view for the tab.'}
+            {(currentPane && <currentPane.component />) || <div className="no-view">No view for the tab: {bottomDrawerTab}.</div>}
           </div>
         )}
       </div>
