@@ -31,7 +31,6 @@ export class ScriptsManager extends Component {
   };
 
   handleStart = name => {
-    console.log('start script', name);
     this.props.actions.runScript(name);
   };
   handleStop = name => {
