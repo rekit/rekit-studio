@@ -157,7 +157,7 @@ export default function reducer(state = initialState, action) {
           }))
         );
       }
-      if (output.length > 300) output = output.slice(-300);
+      if (output.length > 500) output = output.slice(-500);
       newState = {
         ...state,
         output,
