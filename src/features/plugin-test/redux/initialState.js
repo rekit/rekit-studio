@@ -8,6 +8,8 @@
 const initialState = {
   testList: [],
   testResult: {},
+  runTestPending: false,
+  runTestError: null,
 };
 
 export default initialState;

@@ -10,17 +10,38 @@ import initialState from './initialState';
 import { reducer as listAllTestReducer } from './listAllTest';
 import { reducer as clearTestListReducer } from './clearTestList';
 import { reducer as removeTestFromListReducer } from './removeTestFromList';
+import { reducer as runTestReducer } from './runTest';
 
 const reducers = [
   listAllTestReducer,
   clearTestListReducer,
   removeTestFromListReducer,
+  runTestReducer,
 ];
 
 export default function reducer(state = initialState, action) {
-  let newState;
+  let newState = state;
   switch (action.type) {
     // Handle cross-topic actions here
+    case 'ON_SOCKET_MESSAGE':
+      if (action.data.type === 'run-test-status') {
+        const payload = action.data.payload;
+        if (payload.type === 'exit') {
+          if (payload.data) {
+            const testResult = { ...state.testResult };
+            payload.data.testResults.forEach(res => {
+              const id = res.name.replace(payload.projectRoot, '').replace(/^\/+/, '');
+              testResult[id] = res;
+            });
+            newState = {
+              ...state,
+              testResult,
+            };
+          }
+        }
+      }
+
+      break;
     default:
       newState = state;
       break;

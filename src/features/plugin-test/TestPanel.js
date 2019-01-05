@@ -6,7 +6,7 @@ import SplitPane from 'react-split-pane/lib/SplitPane';
 import Pane from 'react-split-pane/lib/Pane';
 import { Button } from 'antd';
 import { storage } from '../common/utils';
-import { listAllTest, clearTestList, removeTestFromList } from './redux/actions';
+import { listAllTest, clearTestList, removeTestFromList, runTest } from './redux/actions';
 import { TestList } from './';
 import { TestResult } from './';
 
@@ -22,8 +22,8 @@ export class TestPanel extends Component {
   }
 
   getTests() {
-    const { testList } = this.props.pluginTest;
-    return testList.map(s => ({ name: s }));
+    const { testList, testResult } = this.props.pluginTest;
+    return testList.map(s => ({ name: s, result: testResult[s] }));
   }
 
   handleResizeEnd = (paneId, sizes) => {
@@ -35,7 +35,10 @@ export class TestPanel extends Component {
   handleRunAll = () => {
     const { elementById, actions } = this.props;
     actions.listAllTest(Object.values(elementById));
+    actions.runTest();
   };
+
+  handleSelect = () => {}
 
   renderToolbar() {
     const tests = this.getTests();
@@ -98,7 +101,7 @@ export class TestPanel extends Component {
           className="split-pane"
         >
           <Pane minSize="100px" maxSize="80%" size={sizes[0] || '300px'}>
-            <TestList tests={tests} status={{}} />
+            <TestList tests={tests} status={{}} onSelect={this.handleSelect} runTest={this.props.actions.runTest} />
           </Pane>
           <Pane className="output-container" size={sizes[1] || 1}>
             <TestResult />
@@ -120,7 +123,10 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ listAllTest, clearTestList, removeTestFromList }, dispatch),
+    actions: bindActionCreators(
+      { listAllTest, clearTestList, removeTestFromList, runTest },
+      dispatch
+    ),
   };
 }
 

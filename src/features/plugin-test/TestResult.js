@@ -12,7 +12,7 @@ export default class TestResult extends Component {
     return (
       <ul>
         {[1, 2, 3, 4, 5].map(i => (
-          <li className={i === 3 ? 'failed' : ''}>
+          <li key={i} className={i === 3 ? 'failed' : ''}>
             <Icon type={i === 3 ? 'close' : 'check'} />
             <label>handles action type correctly. <span className="time-spent"> (10ms)</span></label>
           </li>
