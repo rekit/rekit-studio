@@ -8,13 +8,14 @@ export default class TestList extends Component {
   static propTypes = {
     tests: PropTypes.array.isRequired,
     runTest: PropTypes.func.isRequired,
-    onSelect: PropTypes.func.isRequired,
+    selectTest: PropTypes.func.isRequired,
     status: PropTypes.object,
     current: PropTypes.string,
   };
 
   handleRunTest(name, evt) {
     evt.stopPropagation();
+    this.props.selectTest(name);
     this.props.runTest(name);
   }
   renderNoTest() {
@@ -27,7 +28,7 @@ export default class TestList extends Component {
     return (
       <li
         key={test.name}
-        onClick={() => this.props.onSelect(test.name)}
+        onClick={() => this.props.selectTest(test.name)}
         className={classnames(
           { selected: this.props.current === test.name, running },
           `test-${test.status}`

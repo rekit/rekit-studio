@@ -73,6 +73,7 @@ export function reducer(state, action) {
       return {
         ...state,
         testResult,
+        currentTest: state.currentTest || tests[0],
         runTestPending: true,
         runTestError: null,
       };

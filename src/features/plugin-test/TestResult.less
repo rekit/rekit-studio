@@ -2,6 +2,10 @@
 
 .plugin-test-test-result {
   font-size: 12px;
+  font-family: 'Andale Mono';
+  overflow: auto;
+  height: 100%;
+  .scroll-style();
   .no-result {
     margin: 10px;
     color: #aaa;
@@ -36,5 +40,19 @@
 
   li.failed {
     color: @red2;
+  }
+
+  ul.failed-list {
+    border-top: 2px solid #555;
+    li {
+      h3 {
+        font-size: 12px;
+        color: @red2;
+      }
+      p {
+        color: #bbb;
+        padding-left: 20px;
+      }
+    }
   }
 }

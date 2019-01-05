@@ -6,7 +6,7 @@ import SplitPane from 'react-split-pane/lib/SplitPane';
 import Pane from 'react-split-pane/lib/Pane';
 import { Button } from 'antd';
 import { storage } from '../common/utils';
-import { listAllTest, clearTestList, removeTestFromList, runTest } from './redux/actions';
+import { listAllTest, clearTestList, selectTest, removeTestFromList, runTest } from './redux/actions';
 import { TestList } from './';
 import { TestResult } from './';
 
@@ -37,8 +37,6 @@ export class TestPanel extends Component {
     actions.listAllTest(Object.values(elementById));
     actions.runTest();
   };
-
-  handleSelect = () => {}
 
   renderToolbar() {
     const tests = this.getTests();
@@ -93,6 +91,7 @@ export class TestPanel extends Component {
     const sizes = this.getSizesState()['plugin-test-panel'] || [];
 
     const tests = this.getTests();
+    const { currentTest, testResult } = this.props.pluginTest;
     return (
       <div className="plugin-test-test-panel">
         {this.renderToolbar()}
@@ -101,10 +100,10 @@ export class TestPanel extends Component {
           className="split-pane"
         >
           <Pane minSize="100px" maxSize="80%" size={sizes[0] || '300px'}>
-            <TestList tests={tests} status={{}} onSelect={this.handleSelect} runTest={this.props.actions.runTest} />
+            <TestList current={this.props.pluginTest.currentTest} tests={tests} status={{}} selectTest={this.props.actions.selectTest} runTest={this.props.actions.runTest} />
           </Pane>
           <Pane className="output-container" size={sizes[1] || 1}>
-            <TestResult />
+            <TestResult result={testResult[currentTest] || null}/>
           </Pane>
         </SplitPane>
       </div>
@@ -124,7 +123,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
-      { listAllTest, clearTestList, removeTestFromList, runTest },
+      { listAllTest, clearTestList, removeTestFromList, runTest, selectTest },
       dispatch
     ),
   };
