@@ -7,8 +7,14 @@
 // https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da.
 
 import initialState from './initialState';
+import { reducer as listAllTestReducer } from './listAllTest';
+import { reducer as clearTestListReducer } from './clearTestList';
+import { reducer as removeTestFromListReducer } from './removeTestFromList';
 
 const reducers = [
+  listAllTestReducer,
+  clearTestListReducer,
+  removeTestFromListReducer,
 ];
 
 export default function reducer(state = initialState, action) {

@@ -1,5 +1,56 @@
 @import '../../styles/mixins';
 
 .plugin-test-test-panel {
+  height: 100%;
+  .error-text {
+    color: @red2;
+  }
+  .success-text {
+    color: @green2;
+  }
+  .test-panel-toolbar {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 30px;
+    padding-left: 10px;
+    border-bottom: 1px solid #111;
+    background-color: #111;
+    color: #bbb;
+    font-size: 12px;
+    .ant-btn {
+      border: none;
+      color: #bbb;
+      font-size: 12px;
+      margin-top: 3px;
+      * {
+        animation-duration: 0s !important;
+      }
+      &:hover {
+        color: @primary-color;
+      }
+      &.btn-run-failed {
+        color: @red2;
+      }
+      >span {
+        margin-left: 3px;
+      }
+    }
+    .ant-btn.ant-btn-background-ghost::after {
+      border: none !important;
+    }
+    .result-summary {
+      float: right;
+      line-height: 30px;
+      padding-right: 10px;
+    }
+  }
 
+  .split-pane {
+    // position: absolute;
+    // top: 30px;
+    // bottom: 100px;
+    // left: 0;
+    // right: 0;
+  }
 }

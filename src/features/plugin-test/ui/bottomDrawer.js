@@ -2,7 +2,7 @@ import TestPanel from '../TestPanel';
 export { default as reducer } from '../redux/reducer';
 export const name = 'terminal';
 
-export const bottomDrawer = {
+export default {
   getPanes() {
     return [
       {

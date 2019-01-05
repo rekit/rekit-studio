@@ -20,10 +20,11 @@ export default {
   // setPluginNames(names) {
   //   window.__REKIT_pluginNames = names;
   // },
+  _plugins: null,
   getPlugins(prop) {
-    const plugins = window.__REKIT_PLUGINS;
-    if (!prop) return _.compact(plugins);
-    return plugins.filter(_.property(prop));
+    if (!this._plugins) this._plugins = window.__REKIT_PLUGINS;
+    if (!prop) return _.compact(this._plugins);
+    return this._plugins.filter(_.property(prop));
   },
   addPlugin(p) {
     window.__REKIT_PLUGINS.push(p);

@@ -1,0 +1,40 @@
+@import '../../styles/mixins';
+
+.plugin-test-test-result {
+  font-size: 12px;
+  .no-result {
+    margin: 10px;
+    color: #aaa;
+  }
+
+  ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: #bbb;
+  }
+
+  ul {
+    margin: 10px;
+  }
+
+  li {
+    padding: 5px;
+    .anticon-check {
+      color: @green2;
+    }
+    .anticon-close {
+      color: @red2;
+    }
+    label {
+      margin-left: 10px;
+    }
+    .time-spent {
+      color: #777;
+    }
+  }
+
+  li.failed {
+    color: @red2;
+  }
+}
