@@ -42,6 +42,10 @@ export default function reducer(state = initialState, action) {
               testResult,
             };
           }
+          newState = {
+            ...newState,
+            running: false,
+          };
         }
       }
 

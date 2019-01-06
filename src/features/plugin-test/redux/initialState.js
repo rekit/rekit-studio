@@ -10,6 +10,7 @@ const initialState = {
   testResult: {},
   runTestPending: false,
   runTestError: null,
+  running: false,
 };
 
 export default initialState;
