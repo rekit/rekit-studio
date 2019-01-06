@@ -11,6 +11,7 @@ const initialState = {
   runTestPending: false,
   runTestError: null,
   running: false,
+  currentTest: null,
 };
 
 export default initialState;

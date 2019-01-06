@@ -6,7 +6,13 @@ import SplitPane from 'react-split-pane/lib/SplitPane';
 import Pane from 'react-split-pane/lib/Pane';
 import { Button } from 'antd';
 import { storage } from '../common/utils';
-import { listAllTest, clearTestList, selectTest, removeTestFromList, runTest } from './redux/actions';
+import {
+  listAllTest,
+  clearTestList,
+  selectTest,
+  removeTestFromList,
+  runTest,
+} from './redux/actions';
 import { TestList } from './';
 import { TestResult } from './';
 
@@ -100,10 +106,17 @@ export class TestPanel extends Component {
           className="split-pane"
         >
           <Pane minSize="100px" maxSize="80%" size={sizes[0] || '300px'}>
-            <TestList current={this.props.pluginTest.currentTest} tests={tests} status={{}} selectTest={this.props.actions.selectTest} runTest={this.props.actions.runTest} />
+            <TestList
+              current={this.props.pluginTest.currentTest}
+              removeTestFromList={this.props.actions.removeTestFromList}
+              tests={tests}
+              status={{}}
+              selectTest={this.props.actions.selectTest}
+              runTest={this.props.actions.runTest}
+            />
           </Pane>
           <Pane className="output-container" size={sizes[1] || 1}>
-            <TestResult result={testResult[currentTest] || null}/>
+            <TestResult result={testResult[currentTest] || null} />
           </Pane>
         </SplitPane>
       </div>

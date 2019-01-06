@@ -9,6 +9,7 @@ export default class TestList extends Component {
     tests: PropTypes.array.isRequired,
     runTest: PropTypes.func.isRequired,
     selectTest: PropTypes.func.isRequired,
+    removeTestFromList: PropTypes.func.isRequired,
     status: PropTypes.object,
     current: PropTypes.string,
   };
@@ -17,6 +18,11 @@ export default class TestList extends Component {
     evt.stopPropagation();
     this.props.selectTest(name);
     this.props.runTest(name);
+  }
+
+  handleRemoveTest(name, evt) {
+    evt.stopPropagation();
+    this.props.removeTestFromList(name);
   }
   renderNoTest() {
     return <div className="no-tests">No tests choosed.</div>;
@@ -42,7 +48,14 @@ export default class TestList extends Component {
         <label title={test.name}>{test.name}</label>
         <span className="hover-buttons">
           <Button ghost icon="file" className="icon-btn" size="small" title="Open test file" />
-          <Button ghost icon="close" className="icon-btn" size="small" title="Remove from list" />
+          <Button
+            ghost
+            icon="close"
+            className="icon-btn"
+            size="small"
+            title="Remove from list"
+            onClick={evt => this.handleRemoveTest(test.name, evt)}
+          />
           <Button
             ghost
             icon="caret-right"

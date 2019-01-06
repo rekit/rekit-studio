@@ -9,18 +9,18 @@
 import initialState from './initialState';
 import { reducer as listAllTestReducer } from './listAllTest';
 import { reducer as clearTestListReducer } from './clearTestList';
-import { reducer as removeTestFromListReducer } from './removeTestFromList';
 import { reducer as runTestReducer } from './runTest';
 import { reducer as selectTestReducer } from './selectTest';
 import { reducer as addTestToListReducer } from './addTestToList';
+import { reducer as removeTestFromListReducer } from './removeTestFromList';
 
 const reducers = [
   listAllTestReducer,
   clearTestListReducer,
-  removeTestFromListReducer,
   runTestReducer,
   selectTestReducer,
   addTestToListReducer,
+  removeTestFromListReducer,
 ];
 
 export default function reducer(state = initialState, action) {
