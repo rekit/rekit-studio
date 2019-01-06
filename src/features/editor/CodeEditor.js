@@ -8,11 +8,18 @@ import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import SplitPane from 'react-split-pane/lib/SplitPane';
 import Pane from 'react-split-pane/lib/Pane';
-import { fetchFileContent, saveFile, showDemoAlert, stickTab, setViewChanged } from '../home/redux/actions';
+import {
+  fetchFileContent,
+  saveFile,
+  showDemoAlert,
+  stickTab,
+  setViewChanged,
+} from '../home/redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from './modelManager';
 import { storage } from '../common/utils';
 import { MonacoEditor, EditorSider } from './';
+import plugin from '../../common/plugin';
 
 export class CodeEditor extends Component {
   static propTypes = {
@@ -323,6 +330,98 @@ export class CodeEditor extends Component {
     storage.local.setItem('editorPaneSizes', sizes);
   };
 
+  renderToolbar() {
+    const hasChange = this.hasChange();
+    const { saveFilePending } = this.props;
+
+    return (
+      <div className="code-editor-toolbar">
+        <div className="file-path">{this.props.file}</div>
+        <div>
+          {this.state.cursorPos.column && (
+            <span className="cursor-pos">
+              Ln {this.state.cursorPos.lineNumber}, Col {this.state.cursorPos.column}
+            </span>
+          )}
+          <Tooltip
+            overlayClassName="tooltip-no-arrow"
+            title={
+              <label>
+                Beautify your code using prettier{' '}
+                <span style={{ color: '#888', fontSize: '12px' }}>
+                  ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}
+                  +B)
+                </span>
+              </label>
+            }
+          >
+            <Button onClick={this.formatCode} size="small">
+              <Icon type="menu-fold" />
+            </Button>
+          </Tooltip>
+          {this.props.onRunTest && (
+            <Button type="primary" onClick={this.handleRunTest} size="small">
+              <Icon type="play-circle-o" /> Run test
+            </Button>
+          )}
+          {hasChange &&
+            !this.state.loadingFile && (
+              <Tooltip
+                title={
+                  <label>
+                    Save{' '}
+                    <span style={{ color: '#888', fontSize: '12px' }}>
+                      ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}
+                      +S)
+                    </span>
+                  </label>
+                }
+              >
+                <Button
+                  type="primary"
+                  size="small"
+                  loading={saveFilePending}
+                  disabled={saveFilePending}
+                  onClick={this.handleSave}
+                >
+                  <Icon type="save" />
+                </Button>
+              </Tooltip>
+            )}
+          {hasChange &&
+            !this.state.loadingFile && (
+              <Tooltip title="Discard changes">
+                <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>
+                  <Icon type="close-circle" />
+                </Button>
+              </Tooltip>
+            )}
+          {this.hasOutline() && (
+            <Tooltip
+              title={
+                <label>
+                  Toggle Sider{' '}
+                  <span style={{ color: '#888', fontSize: '12px' }}>
+                    ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}
+                    +O)
+                  </span>
+                </label>
+              }
+            >
+              <Button size="small" onClick={this.handleToggleOutline}>
+                <Icon type="bars" />
+              </Button>
+            </Tooltip>
+          )}
+          {plugin.getPlugins('editor.toolbar.getButtons').reduce((p, c) => {
+            p.push.apply(p, c.editor.toolbar.getButtons(this.props.file));
+            return p;
+          }, [])}
+        </div>
+      </div>
+    );
+  }
+
   render() {
     if (this.state.notFound) {
       return (
@@ -340,96 +439,15 @@ export class CodeEditor extends Component {
       selectOnLineNumbers: true,
       wrappingIndent: 'same',
     };
-    const hasChange = this.hasChange();
-    const { saveFilePending } = this.props;
     const editorPaneSizes = storage.local.getItem('editorPaneSizes') || ['1', '200px'];
 
     return (
       <div className="editor-code-editor">
-        <div className="code-editor-toolbar">
-          <div className="file-path">{this.props.file}</div>
-          <div>
-            {this.state.cursorPos.column && (
-              <span className="cursor-pos">
-                Ln {this.state.cursorPos.lineNumber}, Col {this.state.cursorPos.column}
-              </span>
-            )}
-            <Tooltip
-              overlayClassName="tooltip-no-arrow"
-              title={
-                <label>
-                  Beautify your code using prettier{' '}
-                  <span style={{ color: '#888', fontSize: '12px' }}>
-                    ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}+B)
-                  </span>
-                </label>
-              }
-            >
-              <Button onClick={this.formatCode} size="small">
-                <Icon type="menu-fold" />
-              </Button>
-            </Tooltip>
-            {this.props.onRunTest && (
-              <Button type="primary" onClick={this.handleRunTest} size="small">
-                <Icon type="play-circle-o" /> Run test
-              </Button>
-            )}
-            {hasChange &&
-              !this.state.loadingFile && (
-                <Tooltip
-                  title={
-                    <label>
-                      Save{' '}
-                      <span style={{ color: '#888', fontSize: '12px' }}>
-                        ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}+S)
-                      </span>
-                    </label>
-                  }
-                >
-                  <Button
-                    type="primary"
-                    size="small"
-                    loading={saveFilePending}
-                    disabled={saveFilePending}
-                    onClick={this.handleSave}
-                  >
-                    <Icon type="save" />
-                  </Button>
-                </Tooltip>
-              )}
-            {hasChange &&
-              !this.state.loadingFile && (
-                <Tooltip title="Discard changes">
-                  <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>
-                    <Icon type="close-circle" />
-                  </Button>
-                </Tooltip>
-              )}
-            {this.hasOutline() && (
-              <Tooltip
-                title={
-                  <label>
-                    Toggle Sider{' '}
-                    <span style={{ color: '#888', fontSize: '12px' }}>
-                      ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}+O)
-                    </span>
-                  </label>
-                }
-              >
-                <Button size="small" onClick={this.handleToggleOutline}>
-                  <Icon type="bars" />
-                </Button>
-              </Tooltip>
-            )}
-          </div>
-        </div>
-
+        {this.renderToolbar()}
         <SplitPane split="vertical" onChange={this.handleResize} onResizeEnd={this.handleResizeEnd}>
           <Pane className="monaco-editor-container" size={editorPaneSizes[0]}>
             {(this.state.loadingFile || this.state.loadingEditor) && (
-              <div
-                className="loading-container"
-              >
+              <div className="loading-container">
                 <Spin size="large" />
               </div>
             )}

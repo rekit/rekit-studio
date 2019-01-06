@@ -12,6 +12,7 @@ import { reducer as clearTestListReducer } from './clearTestList';
 import { reducer as removeTestFromListReducer } from './removeTestFromList';
 import { reducer as runTestReducer } from './runTest';
 import { reducer as selectTestReducer } from './selectTest';
+import { reducer as addTestToListReducer } from './addTestToList';
 
 const reducers = [
   listAllTestReducer,
@@ -19,6 +20,7 @@ const reducers = [
   removeTestFromListReducer,
   runTestReducer,
   selectTestReducer,
+  addTestToListReducer,
 ];
 
 export default function reducer(state = initialState, action) {
