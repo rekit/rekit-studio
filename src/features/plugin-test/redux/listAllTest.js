@@ -4,20 +4,25 @@
 import _ from 'lodash';
 import { PLUGIN_TEST_LIST_ALL_TEST } from './constants';
 
-export function listAllTest(elements) {
+export function listAllTest(elementById) {
   return {
     type: PLUGIN_TEST_LIST_ALL_TEST,
-    payload: { elements },
+    payload: { elementById },
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
     case PLUGIN_TEST_LIST_ALL_TEST: {
+      const elementById = action.payload.elementById;
+
       return {
         ...state,
-        testList: action.payload.elements
-          .filter(ele => ele.parts && _.find(ele.views, { key: 'test' }))
+        testList: Object.values(elementById)
+          .filter(ele => {
+            const testView = ele.views && _.find(ele.views, { key: 'test' });
+            return testView && elementById[testView.target];
+          })
           .map(ele => _.find(ele.views, { key: 'test' }).target)
           .sort((a, b) => a.localeCompare(b)),
       };

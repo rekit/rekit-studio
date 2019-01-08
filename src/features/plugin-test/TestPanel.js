@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import SplitPane from 'react-split-pane/lib/SplitPane';
 import Pane from 'react-split-pane/lib/Pane';
-import { Button } from 'antd';
+import { Button, Icon } from 'antd';
 import { storage } from '../common/utils';
 import {
   listAllTest,
@@ -40,12 +40,40 @@ export class TestPanel extends Component {
 
   handleRunAll = () => {
     const { elementById, actions } = this.props;
-    actions.listAllTest(Object.values(elementById));
+    actions.listAllTest(elementById);
     actions.runTest();
   };
 
+  handleRunList = () => {
+    const { pluginTest, actions } = this.props;
+    actions.runTest(pluginTest.testList);
+  };
+  handleRunFailed = () => {
+    const { pluginTest, actions } = this.props;
+    const { testList, testResult } = pluginTest;
+    actions.runTest(testList.filter(t => testResult[t] && testResult[t].status === 'failed'));
+  };
+
   renderToolbar() {
+    const { running, testResult } = this.props.pluginTest;
     const tests = this.getTests();
+    if (running) {
+      const runningNumber = tests.filter(t => testResult[t.name] && testResult[t.name].running)
+        .length;
+      return (
+        <div className="test-panel-toolbar tests-running">
+          <Icon type="loading-3-quarters" spin /> Running {runningNumber} test{' '}
+          {runningNumber > 0 ? 'files' : 'file'}
+          ...
+        </div>
+      );
+    }
+    const failedNumber = tests.filter(
+      t => testResult[t.name] && testResult[t.name].status === 'failed'
+    ).length;
+    const passedNumber = tests.filter(
+      t => testResult[t.name] && testResult[t.name].status === 'passed'
+    ).length;
     return (
       <div className="test-panel-toolbar">
         <Button
@@ -64,18 +92,22 @@ export class TestPanel extends Component {
           size="small"
           className="btn-run-list"
           title="Run all tests in below list."
+          onClick={this.handleRunList}
         >
           Run list
         </Button>
-        <Button
-          icon="caret-right"
-          ghost
-          size="small"
-          className="btn-run-failed"
-          title="Run tests failed during last run."
-        >
-          Run failed (5)
-        </Button>
+        {failedNumber > 0 && (
+          <Button
+            icon="caret-right"
+            ghost
+            size="small"
+            className="btn-run-failed"
+            title="Run tests failed during last run."
+            onClick={this.handleRunFailed}
+          >
+            Run failed ({failedNumber})
+          </Button>
+        )}
         <Button
           icon="close"
           ghost
@@ -86,10 +118,12 @@ export class TestPanel extends Component {
         >
           Clear list
         </Button>
-        <span className="result-summary">
-          <span className="error-text">26 failed</span>{' '}
-          <span className="success-text">156 passed</span> {tests.length} total.
-        </span>
+        {tests.length > 0 && (
+          <span className="result-summary">
+            <span className="error-text">{failedNumber} failed</span>{' '}
+            <span className="success-text">{passedNumber} passed</span> {tests.length} total.
+          </span>
+        )}
       </div>
     );
   }

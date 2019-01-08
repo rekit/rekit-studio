@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
-import Convert from 'ansi-to-html';
-const convert = new Convert();
+import { AnsiViewer } from '../common';
 
 export default class TestResult extends Component {
   static propTypes = {
@@ -27,18 +26,45 @@ export default class TestResult extends Component {
 
   renderResult(result) {
     if (result.running) return this.renderRunning();
+    const assertionResults = result.assertionResults;
+
+    if (!assertionResults.length) {
+      return (
+        <div className="result-message">
+          <AnsiViewer text={result.message} />
+        </div>
+      );
+    }
+
+    const failedNumber = assertionResults.filter(t => t.status === 'failed').length;
+    const passedNumber = assertionResults.filter(t => t.status === 'passed').length;
+
     return (
-      <ul>
-        {result.assertionResults.map(res => {
-          const passed = res.status === 'passed';
-          return (
-            <li key={res.title} className={passed ? '' : 'failed'}>
-              <Icon type={passed ? 'check' : 'close'} />
-              <label>{res.title}</label>
-            </li>
-          );
-        })}
-      </ul>
+      <React.Fragment>
+        <h2>
+          Result:{' '}
+          <span className="result-summary">
+            {failedNumber > 0 && <span className="error-text">{failedNumber} failed </span>}
+            <span className="success-text">{passedNumber} passed</span> {assertionResults.length}{' '}
+            total.
+          </span>
+          <span className="time-spent">
+            ({result.endTime - result.startTime}
+            ms)
+          </span>
+        </h2>
+        <ul>
+          {result.assertionResults.map(res => {
+            const passed = res.status === 'passed';
+            return (
+              <li key={res.title} className={passed ? '' : 'failed'}>
+                <Icon type={passed ? 'check' : 'close'} />
+                <label>{res.title}</label>
+              </li>
+            );
+          })}
+        </ul>
+      </React.Fragment>
     );
   }
 
@@ -48,7 +74,6 @@ export default class TestResult extends Component {
     return (
       <ul className="failed-list">
         {failed.map(res => {
-          console.log(res);
           return (
             <li key={res.title} className="failed">
               <h3>
@@ -57,20 +82,7 @@ export default class TestResult extends Component {
               </h3>
               <p>
                 {res.failureMessages.map(msg => (
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: convert
-                        .toHtml(
-                          msg
-                            .replace(/</g, '&lt;')
-                            .replace(/>/g, '&gt;')
-                            .replace(/ /g, '&nbsp;')
-                            .replace(/\n/g, '<br />')
-                        )
-                        .replace('#00A', '#1565C0')
-                        .replace(/color:#555/g, 'color:#777'),
-                    }}
-                  />
+                  <AnsiViewer text={msg} />
                 ))}
               </p>
             </li>

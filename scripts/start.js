@@ -86,11 +86,9 @@ if (process.env.HOST) {
   console.log(`Learn more here: ${chalk.yellow('http://bit.ly/2mwWSwH')}`);
   console.log();
 }
-console.timeEnd('loading modules...');
 
 // We attempt to use the default port but if it is busy, we offer the user to
 // run on a different port. `choosePort()` Promise resolves to the next free port.
-console.log('port: ', args.port);
 if (args.port) startDevServer(args.port);
 else
   choosePort(HOST, DEFAULT_PORT)
