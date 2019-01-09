@@ -20,10 +20,9 @@ export function reducer(state, action) {
         ...state,
         testList: Object.values(elementById)
           .filter(ele => {
-            const testView = ele.views && _.find(ele.views, { key: 'test' });
-            return testView && elementById[testView.target];
+            return /\.(test|spec)\.(j|t)sx?/.test(ele.id) && ele.type === 'file';
           })
-          .map(ele => _.find(ele.views, { key: 'test' }).target)
+          .map(ele => ele.id)
           .sort((a, b) => a.localeCompare(b)),
       };
     }
