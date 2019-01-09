@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Button } from 'antd';
-import { SvgIcon } from '../common';
+import element from '../../common/element';
 import classnames from 'classnames';
 
 export default class TestList extends Component {
@@ -13,6 +13,11 @@ export default class TestList extends Component {
     status: PropTypes.object,
     current: PropTypes.string,
   };
+
+  handleOpenTest(name, evt) {
+    evt.stopPropagation();
+    element.show(name);
+  }
 
   handleRunTest(name, evt) {
     evt.stopPropagation();
@@ -47,7 +52,14 @@ export default class TestList extends Component {
         )}
         <label title={test.name}>{test.name}</label>
         <span className="hover-buttons">
-          <Button ghost icon="file" className="icon-btn" size="small" title="Open test file" />
+          <Button
+            ghost
+            icon="file"
+            className="icon-btn"
+            size="small"
+            title="Open test file"
+            onClick={evt => this.handleOpenTest(test.name, evt)}
+          />
           <Button
             ghost
             icon="close"
