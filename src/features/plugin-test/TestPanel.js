@@ -120,7 +120,7 @@ export class TestPanel extends Component {
         </Button>
         {tests.length > 0 && (
           <span className="result-summary">
-            <span className="error-text">{failedNumber} failed</span>{' '}
+            {failedNumber > 0 && <span className="error-text">{failedNumber} failed </span>}
             <span className="success-text">{passedNumber} passed</span> {tests.length} total.
           </span>
         )}

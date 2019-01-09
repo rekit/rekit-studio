@@ -414,7 +414,7 @@ export class CodeEditor extends Component {
             </Tooltip>
           )}
           {plugin.getPlugins('editor.toolbar.getButtons').reduce((p, c) => {
-            p.push.apply(p, c.editor.toolbar.getButtons(this.props.file));
+            p.push.apply(p, c.editor.toolbar.getButtons(this.props.file) || []);
             return p;
           }, [])}
         </div>
