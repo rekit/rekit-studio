@@ -34,7 +34,7 @@ function _startDevServer(port) {
     // new AddAssetHtmlPlugin({ filepath: paths.resolveApp('.tmp/dev-dll.js') })
     new AddAssetHtmlPlugin([
       { filepath: paths.resolveApp('.tmp/dev-dll.js') },
-      { filepath: paths.resolveApp('public/rekit-react.js'), includeRelatedFiles: false },
+      // { filepath: paths.resolveApp('public/rekit-react.js'), includeRelatedFiles: false },
     ])
   );
   const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';

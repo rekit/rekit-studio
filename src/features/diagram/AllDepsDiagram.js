@@ -223,7 +223,7 @@ export default class AllDepsDiagram extends Component {
     this.linksGroup.selectAll('path').style('stroke-dasharray', '');
   };
 
-  render() {console.log('deeps renderr');
+  render() {
     return (
       <div
         className="diagram-all-deps-diagram"

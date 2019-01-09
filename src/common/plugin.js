@@ -9,6 +9,9 @@ import '../features/plugin-terminal/entry';
 import '../features/plugin-scripts/entry';
 import '../features/plugin-test/entry';
 // import '../features/plugin-cra/plugin'; // dev time
+// if (process.env.NODE_ENV === 'development') {
+  import '../features/rekit-react/entry';
+// }
 
 if (!_.find(window.__REKIT_PLUGINS, { name: 'default' })) {
   // window.__REKIT_PLUGINS.push(defaultPlugin, terminal, scripts);
@@ -24,6 +27,7 @@ export default {
   getPlugins(prop) {
     if (!this._plugins) this._plugins = window.__REKIT_PLUGINS;
     if (!prop) return _.compact(this._plugins);
+    console.log('all plugins: ', this._plugins);
     return this._plugins.filter(_.property(prop));
   },
   addPlugin(p) {
