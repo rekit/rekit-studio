@@ -48,13 +48,11 @@ function createTerminal(node, id) {
     protocol + location.hostname + (location.port ? ':' + location.port : '') + '/terminals/';
 
   term.open(node);
-  // term.winptyCompatInit();
-  // term.webLinksInit();
   term.fit();
   term.focus();
 
   // fit is called within a setTimeout, cols and rows need this.
-  setTimeout(function() {
+  requestAnimationFrame(function() {
     fetch('/terminals?cols=' + term.cols + '&rows=' + term.rows, { method: 'POST' }).then(function(
       res
     ) {
@@ -66,18 +64,11 @@ function createTerminal(node, id) {
           term.attach(socket);
           term._initialized = true;
         };
-        // socket.onclose = runFakeTerminal;
-        // socket.onerror = runFakeTerminal;
       });
     });
-  }, 0);
+  });
   return term;
 }
-
-// function runRealTerminal() {
-//   term.attach(socket);
-//   term._initialized = true;
-// }
 
 export default class WebTerminal extends Component {
   static propTypes = {
@@ -99,17 +90,14 @@ export default class WebTerminal extends Component {
   }
   componentDidMount() {
     window.addEventListener('resize', this.handleWindowResize);
+
     const term = this.getTerm();
-    // if (!term) {
-    //   const div = document.createElement('div');
-    //   this.container.appendChild(div);
-    //   createTerminal(div);
-    // } else {
-    this.container.appendChild(term.element.parentNode);
-    // }
-    term.fit();
-    term.focus();
-    this.props.onload(term);
+    setTimeout(() => {
+      this.container.appendChild(term.element.parentNode);
+      term.fit();
+      term.focus();
+      this.props.onload(term);
+    }, 10);
   }
 
   componentWillUnmount() {
