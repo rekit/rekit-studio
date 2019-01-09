@@ -135,24 +135,26 @@ export class TestPanel extends Component {
     return (
       <div className="plugin-test-test-panel">
         {this.renderToolbar()}
-        <SplitPane
-          onResizeEnd={sizes => this.handleResizeEnd('plugin-test-panel', sizes)}
-          className="split-pane"
-        >
-          <Pane minSize="100px" maxSize="80%" size={sizes[0] || '300px'}>
-            <TestList
-              current={this.props.pluginTest.currentTest}
-              removeTestFromList={this.props.actions.removeTestFromList}
-              tests={tests}
-              status={{}}
-              selectTest={this.props.actions.selectTest}
-              runTest={this.props.actions.runTest}
-            />
-          </Pane>
-          <Pane className="output-container" size={sizes[1] || 1}>
-            <TestResult result={testResult[currentTest] || null} />
-          </Pane>
-        </SplitPane>
+        <div className="content-wrapper">
+          <SplitPane
+            onResizeEnd={sizes => this.handleResizeEnd('plugin-test-panel', sizes)}
+            className="split-pane"
+          >
+            <Pane minSize="100px" maxSize="80%" size={sizes[0] || '300px'}>
+              <TestList
+                current={this.props.pluginTest.currentTest}
+                removeTestFromList={this.props.actions.removeTestFromList}
+                tests={tests}
+                status={{}}
+                selectTest={this.props.actions.selectTest}
+                runTest={this.props.actions.runTest}
+              />
+            </Pane>
+            <Pane className="output-container" size={sizes[1] || 1}>
+              <TestResult result={testResult[currentTest] || null} />
+            </Pane>
+          </SplitPane>
+        </div>
       </div>
     );
   }
