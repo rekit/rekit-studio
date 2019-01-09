@@ -36,6 +36,10 @@ export default class TestList extends Component {
   renderTestItem = test => {
     const passed = test.result && test.result.status === 'passed';
     const running = test.result && test.result.running;
+    const noResult = !test.result;
+    let icon = passed ? 'check' : 'close';
+    if (noResult) icon = 'question';
+
     return (
       <li
         key={test.name}
@@ -48,7 +52,7 @@ export default class TestList extends Component {
         {running ? (
           <Icon type="loading-3-quarters" spin />
         ) : (
-          <Icon type={passed ? 'check' : 'close'} />
+          <Icon type={icon} />
         )}
         <label title={test.name}>{test.name}</label>
         <span className="hover-buttons">

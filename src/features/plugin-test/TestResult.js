@@ -21,7 +21,7 @@ export default class TestResult extends Component {
   }
 
   renderNoResult() {
-    return <div className="no-result">The test has not been run.</div>;
+    return <div className="no-result">No tests found in the file, or it has not been run.</div>;
   }
 
   renderResult(result) {

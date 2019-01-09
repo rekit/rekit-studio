@@ -37,6 +37,12 @@ export default function reducer(state = initialState, action) {
               const id = res.name.replace(payload.projectRoot, '').replace(/^\/+/, '');
               testResult[id] = res;
             });
+            Object.keys(testResult).forEach(k => {
+              if (testResult[k] && testResult[k].running) {
+                // If a test file has no run result, delete it
+                delete testResult[k];
+              }
+            });
             newState = {
               ...state,
               testResult,
