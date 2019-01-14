@@ -91,6 +91,8 @@ export function reducer(state, action) {
       // The request is failed
       return {
         ...state,
+        testResult: {},
+        running: false,
         runTestPending: false,
         runTestError: action.data.error,
       };

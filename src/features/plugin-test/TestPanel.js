@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import SplitPane from 'react-split-pane/lib/SplitPane';
 import Pane from 'react-split-pane/lib/Pane';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Modal } from 'antd';
 import { storage } from '../common/utils';
 import {
   listAllTest,
@@ -12,6 +12,7 @@ import {
   selectTest,
   removeTestFromList,
   runTest,
+  dismissRunTestError,
 } from './redux/actions';
 import { TestList } from './';
 import { TestResult } from './';
@@ -30,6 +31,16 @@ export class TestPanel extends Component {
   getTests() {
     const { testList, testResult } = this.props.pluginTest;
     return testList.map(s => ({ name: s, result: testResult[s] }));
+  }
+
+  componentDidUpdate() {
+    if (this.props.pluginTest.runTestError) {
+      Modal.error({
+        title: 'Failed to run tests',
+        content: 'Please retry or restart Rekit Studio.',
+      });
+      this.props.actions.dismissRunTestError();
+    }
   }
 
   handleResizeEnd = (paneId, sizes) => {
@@ -172,7 +183,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
-      { listAllTest, clearTestList, removeTestFromList, runTest, selectTest },
+      { listAllTest, clearTestList, removeTestFromList, runTest, selectTest, dismissRunTestError },
       dispatch
     ),
   };
