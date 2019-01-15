@@ -97,7 +97,7 @@ export class TestPanel extends Component {
         >
           Run all
         </Button>
-        <Button
+        {tests.length > 0 && <Button
           icon="caret-right"
           ghost
           size="small"
@@ -106,7 +106,7 @@ export class TestPanel extends Component {
           onClick={this.handleRunList}
         >
           Run list
-        </Button>
+        </Button>}
         {failedNumber > 0 && (
           <Button
             icon="caret-right"
@@ -119,7 +119,7 @@ export class TestPanel extends Component {
             Run failed ({failedNumber})
           </Button>
         )}
-        <Button
+        {tests.length > 0 && <Button
           icon="close"
           ghost
           size="small"
@@ -128,7 +128,7 @@ export class TestPanel extends Component {
           onClick={this.props.actions.clearTestList}
         >
           Clear list
-        </Button>
+        </Button>}
         {tests.length > 0 && (
           <span className="result-summary">
             {failedNumber > 0 && <span className="error-text">{failedNumber} failed </span>}
