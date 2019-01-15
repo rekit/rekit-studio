@@ -20,7 +20,7 @@ export function reducer(state, action) {
         ...state,
         testList: Object.values(elementById)
           .filter(ele => {
-            return /\.(test|spec)\.(j|t)sx?/.test(ele.id) && ele.type === 'file';
+            return /\.(test|spec)\.(j|t)sx?$/.test(ele.id) && ele.type === 'file';
           })
           .map(ele => ele.id)
           .sort((a, b) => a.localeCompare(b)),
