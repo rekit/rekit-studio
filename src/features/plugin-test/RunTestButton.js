@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { Tooltip, Button, Icon } from 'antd';
 import { connect } from 'react-redux';
-import { addTestToList, runTest } from './redux/actions';
+import { addTestToList, runTest, selectTest } from './redux/actions';
+import { setBottomDrawerVisible, setBottomDrawerTab } from './redux/actions';
 
 export class RunTestButton extends Component {
   static propTypes = {
@@ -15,6 +16,9 @@ export class RunTestButton extends Component {
     const { file, actions } = this.props;
     actions.addTestToList(file);
     actions.runTest(file);
+    actions.selectTest(file);
+    actions.setBottomDrawerVisible(true);
+    actions.setBottomDrawerTab('test');
   };
 
   render() {
@@ -43,7 +47,10 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ addTestToList, runTest }, dispatch),
+    actions: bindActionCreators(
+      { addTestToList, runTest, setBottomDrawerVisible, setBottomDrawerTab, selectTest },
+      dispatch
+    ),
   };
 }
 
