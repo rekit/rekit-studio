@@ -1,6 +1,7 @@
 // const pty = require('node-pty');
 const spawn = require('child_process').spawn;
 // const rekit = require('rekit-core');
+const terminate = require('terminate');
 
 const processes = {};
 function config(server, app, args) {
@@ -45,7 +46,7 @@ function config(server, app, args) {
     const name = req.body.name;
     const p = processes[name];
     if (p) {
-      p.kill();
+      terminate(p.pid);
       delete processes[name];
     }
     res.send(JSON.stringify({ name }));
