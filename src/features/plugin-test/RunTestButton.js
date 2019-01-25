@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Tooltip, Button, Icon } from 'antd';
 import { connect } from 'react-redux';
 import { addTestToList, runTest, selectTest } from './redux/actions';
-import { setBottomDrawerVisible, setBottomDrawerTab } from './redux/actions';
+import { setBottomDrawerVisible, setBottomDrawerTab } from '../home/redux/actions';
 
 export class RunTestButton extends Component {
   static propTypes = {

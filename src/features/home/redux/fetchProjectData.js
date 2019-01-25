@@ -8,14 +8,15 @@ import {
 } from './constants';
 import plugin from '../../../common/plugin';
 
-export function fetchProjectData() {
+export function fetchProjectData(args = {}) {
   return (dispatch) => {
     dispatch({
       type: HOME_FETCH_PROJECT_DATA_BEGIN,
+      force: args.force,
     });
 
     return new Promise((resolve, reject) => {
-      axios.get('/api/project-data').then(
+      axios.get(`/api/project-data${args.force ? '?force=true' : ''}`).then(
         (res) => {
           // if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
           const prjData = res.data;
@@ -27,6 +28,7 @@ export function fetchProjectData() {
           dispatch({
             type: HOME_FETCH_PROJECT_DATA_SUCCESS,
             data: prjData,
+            force: args.force,
           });
           resolve(prjData);
         },

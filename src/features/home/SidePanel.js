@@ -36,45 +36,49 @@ export class SidePanel extends Component {
 
   getMenuItems() {
     const menuItems = [
-      { icon: 'book', iconColor: '#29b6f6', text: 'Add Feature', key: 'add-feature' },
-      { icon: 'notification', iconColor: '#ec407a', text: 'Add Action', key: 'add-action' },
-      { icon: 'appstore-o', iconColor: '#F08036', text: 'Add Component', key: 'add-component' },
-      { icon: 'code-o', iconColor: '#555', text: 'Show Output', key: 'show-output' },
+      // { icon: 'book', iconColor: '#29b6f6', text: 'Add Feature', key: 'add-feature' },
+      // { icon: 'notification', iconColor: '#ec407a', text: 'Add Action', key: 'add-action' },
+      // { icon: 'appstore-o', iconColor: '#F08036', text: 'Add Component', key: 'add-component' },
+      // { icon: 'code-o', iconColor: '#555', text: 'Show Output', key: 'show-output' },
+      { icon: 'anticon-reload', iconColor: '#555', text: 'Force Reload', key: 'force-reload' },
     ];
     plugin.getPlugins('menu.mainMenu.fillMenuItems').forEach(p => {
       p.fillMenuItems(menuItems);
     });
     return menuItems;
   }
-  showOutput() {
-    this.props.actions.setBottomDrawerVisible(true);
-    requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
-  }
+  // showOutput() {
+  //   this.props.actions.setBottomDrawerVisible(true);
+  //   requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
+  // }
 
   handleMainMenuClick = evt => {
     switch (evt.key) {
-      case 'add-feature':
-      case 'add-component':
-      case 'add-action':
-        this.props.actions.showCmdDialog('cmd', {
-          type: evt.key,
-          ...this.cmdContext,
-        });
-        break;
-      case 'show-output':
-        this.showOutput();
-        break;
-      case 'deps':
-        history.push('/config/deps');
-        break;
-      case 'build':
-        history.push('/tools/build');
-        break;
-      case 'tests':
-        history.push('/tools/tests');
-        break;
-      case 'test-coverage':
-        history.push('/tools/coverage');
+      // case 'add-feature':
+      // case 'add-component':
+      // case 'add-action':
+      //   this.props.actions.showCmdDialog('cmd', {
+      //     type: evt.key,
+      //     ...this.cmdContext,
+      //   });
+      //   break;
+      // case 'show-output':
+      //   this.showOutput();
+      //   break;
+      // case 'deps':
+      //   history.push('/config/deps');
+      //   break;
+      // case 'build':
+      //   history.push('/tools/build');
+      //   break;
+      // case 'tests':
+      //   history.push('/tools/tests');
+      //   break;
+      // case 'test-coverage':
+      //   history.push('/tools/coverage');
+      //   break;
+      case 'force-reload':
+        this.props.actions.fetchProjectData({ force: true });
         break;
       case 'about':
         this.showAbout();
@@ -97,24 +101,6 @@ export class SidePanel extends Component {
             )}
           </Menu.Item>
         ))}
-        <Menu.Item key="add-action">
-          <Icon type="notification" style={{ color: '#ec407a' }} />Add Action
-        </Menu.Item>
-        <Menu.Item key="add-component">
-          <Icon type="appstore-o" style={{ color: '#F08036' }} />Add Component
-        </Menu.Item>
-        <Menu.Item key="deps">
-          <Icon type="appstore-o" style={{ color: 'transparent' }} />Dependencies
-        </Menu.Item>
-        <Menu.Item key="tests">
-          <Icon type="appstore-o" style={{ color: 'transparent' }} />Run Tests
-        </Menu.Item>
-        <Menu.Item key="test-coverage">
-          <Icon type="appstore-o" style={{ color: 'transparent' }} />Test Coverage
-        </Menu.Item>
-        <Menu.Item key="build">
-          <Icon type="appstore-o" style={{ color: 'transparent' }} />Build
-        </Menu.Item>
         <Menu.Item key="about">
           <Icon type="appstore-o" style={{ color: 'transparent' }} />About
         </Menu.Item>
