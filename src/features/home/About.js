@@ -19,9 +19,7 @@ export class About extends Component {
         </div>
 
         <p>
-          Rekit Studio is a web IDE for managing a Rekit project. It not only provides web UIs for
-          creating/renaming/moving/deleting elements of a Rekit app, but also provides tools for
-          analyzing/building/testing a Rekit application.
+          Rekit Studio is an IDE focus on visulizing frontend development.
         </p>
         <div className="versions">
           <p>

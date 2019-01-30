@@ -2,7 +2,7 @@ import { storage } from '../../common/utils';
 
 const initialState = {
   projectData: null,
-
+  rekit: {},
   elementById: null,
   fileContentById: {},
   oldFileContentById: {},
