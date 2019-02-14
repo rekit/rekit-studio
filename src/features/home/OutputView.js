@@ -17,20 +17,21 @@ export class OutputView extends Component {
   static defaultProps = {
     type: 'default',
   };
-  // getSnapshotBeforeUpdate() {
-  //   // why not called?
-  //   const n = this.scrollNode;
-  //   console.log('snapshot: ', n.scrollHeight, n.scrollTop, n.offsetHeight);
-  //   return n.scrollHeight - n.scrollTop < n.offsetHeight * 1.8;
-  // }
+  getSnapshotBeforeUpdate() {
+    // why not called?
+    const n = this.scrollNode;
+    return n.scrollHeight - n.scrollTop < n.offsetHeight * 1.8;
+  }
 
   componentDidMount() {
     if (scrollTop[this.props.type]) this.scrollNode.scrollTop = scrollTop[this.props.type];
   }
   componentDidUpdate(prevProps, prevState, needScrollBottom) {
-    const n = this.scrollNode;
-    n.scrollTop = n.scrollHeight - n.offsetHeight;
-    scrollTop[this.props.type] = this.scrollNode.scrollTop;
+    if (needScrollBottom) {
+      const n = this.scrollNode;
+      n.scrollTop = n.scrollHeight - n.offsetHeight;
+      scrollTop[this.props.type] = n.scrollTop;
+    }
   }
 
   componentWillUnmount() {
@@ -44,14 +45,18 @@ export class OutputView extends Component {
     return (
       <div className="home-output-view" ref={this.assignRef}>
         <Button
-              icon="close-circle"
-              size="small"
-              className="clear-btn"
-              shape="circle"
-              onClick={this.props.actions.clearOutput}
-            />
+          icon="close-circle"
+          size="small"
+          className="clear-btn"
+          shape="circle"
+          onClick={this.props.actions.clearOutput}
+        />
         <ul>
-          {output.length === 0 && <li key="empty" className="empty">No output.</li>}
+          {output.length === 0 && (
+            <li key="empty" className="empty">
+              No output.
+            </li>
+          )}
           {output.map(item => (
             <li key={item.key} dangerouslySetInnerHTML={{ __html: item.text }} />
           ))}
