@@ -68,7 +68,8 @@
       "lib"
     ],
     "files": [
-      "package.json"
+      "package.json",
+      ".rekit"
     ],
     "css": "less"
   },
