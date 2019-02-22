@@ -5,6 +5,7 @@ module.exports = {
       projectName: rekit.core.config.getPkgJson().name,
       projectRoot: rekit.core.paths.getProjectRoot(),
       appType: rekit.core.config.getRekitConfig().appType,
+      config: rekit.core.config.getRekitConfig(),
     };
   },
 };
