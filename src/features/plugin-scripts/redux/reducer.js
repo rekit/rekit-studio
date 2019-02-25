@@ -7,11 +7,14 @@
 // https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da.
 
 import initialState from './initialState';
+import Convert from 'ansi-to-html';
 import { reducer as runScriptReducer } from './runScript';
 import { reducer as stopScriptReducer } from './stopScript';
 import { reducer as clearOutputReducer } from './clearOutput';
 
 const reducers = [runScriptReducer, stopScriptReducer, clearOutputReducer];
+
+const convert = new Convert();
 
 export default function reducer(state = initialState, action) {
   let newState;
@@ -41,7 +44,20 @@ export default function reducer(state = initialState, action) {
         }
         if (payload.type === 'output') {
           let arr = (state.output[payload.name] || []).slice();
-          arr.push.apply(arr, payload.output.split(/[\r\n]+/));
+          arr.push.apply(
+            arr,
+            payload.output.split(/[\r\n]+/).map(text =>
+              convert
+                .toHtml(
+                  text
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/ /g, '&nbsp;')
+                )
+                .replace('#00A', '#1565C0')
+                .replace(/color:#555/g, 'color:#777')
+            )
+          );
           if (arr.length > 200) arr = arr.slice(-200);
           newState = {
             ...state,
