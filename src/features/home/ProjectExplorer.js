@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { Spin, Tree } from 'antd';
+import scrollIntoView from 'dom-scroll-into-view';
 import { SvgIcon } from '../common';
 import { storage } from '../common/utils';
 import { stickTab } from './redux/actions';
@@ -41,6 +42,51 @@ export class ProjectExplorer extends Component {
   };
 
   eleById = id => this.props.elementById[id];
+
+  getElementIdByUrl(pathname) {
+    // selected tree node always maps to an url path
+    const arr = pathname.split('/');
+    if (arr[1] === 'element') return decodeURIComponent(arr[2]);
+    return null;
+  }
+
+  getExpandedKeys() {
+    return this.state.expandedKeys;
+  }
+
+  componentDidUpdate(prevProps) {
+    const prevElementId = this.getElementIdByUrl(prevProps.router.location.pathname);
+    const currElementId = this.getElementIdByUrl(this.props.router.location.pathname);
+    if (prevElementId !== currElementId) {
+      // element changed by url
+      let ele = this.eleById(currElementId);
+      const expandedKeys = [...this.state.expandedKeys];
+      while (ele && ele.parent) {
+        if (!_.includes(expandedKeys, ele.parent)) {
+          expandedKeys.push(ele.parent);
+        }
+        ele = this.eleById(ele.parent);
+      }
+      this.setState(
+        {
+          selectedKey: currElementId,
+          expandedKeys,
+        },
+        () => {
+          setTimeout(() => {
+            const targetNode = this.rootNode.querySelector('.ant-tree-node-selected');
+            if (targetNode) {
+              scrollIntoView(targetNode, this.rootNode, {
+                onlyScrollIfNeeded: true,
+                offsetTop: 50,
+                offsetBottom: 50,
+              });
+            }
+          }, 100);
+        }
+      );
+    }
+  }
 
   handleRightClick = evt => {
     this.ctxMenu.handleRightClick(evt);
@@ -122,7 +168,7 @@ export class ProjectExplorer extends Component {
       </span>
     );
   }
-      // otherProps={{ onDoubleClick: () => console.log('tree node double click') }}
+  // otherProps={{ onDoubleClick: () => console.log('tree node double click') }}
 
   renderTreeNode = (nodeData, depth = 1) => (
     <TreeNode
@@ -130,7 +176,6 @@ export class ProjectExplorer extends Component {
       title={this.renderTreeNodeTitle(nodeData)}
       className={classnames(nodeData.className, `tree-node-depth-${depth}`)}
       isLeaf={!nodeData.children || !nodeData.children.length}
-      
     >
       {nodeData.children && nodeData.children.map(d => this.renderTreeNode(d, depth + 1))}
     </TreeNode>
@@ -186,6 +231,7 @@ function mapStateToProps(state) {
   const prjData = state.home.projectData;
   return {
     projectData: prjData,
+    router: state.router,
     elementById: prjData && prjData.elementById,
     treeData: prjData ? getTreeData(prjData) : null,
   };
