@@ -40,11 +40,12 @@ export class SidePanel extends Component {
       // { icon: 'notification', iconColor: '#ec407a', text: 'Add Action', key: 'add-action' },
       // { icon: 'appstore-o', iconColor: '#F08036', text: 'Add Component', key: 'add-component' },
       // { icon: 'code-o', iconColor: '#555', text: 'Show Output', key: 'show-output' },
-      { icon: 'anticon-reload', iconColor: '#555', text: 'Force Reload', key: 'force-reload' },
+      { icon: 'anticon-reload', iconColor: '#555', text: 'Force Reload', key: 'force-reload', order: 10 },
     ];
     plugin.getPlugins('menu.mainMenu.fillMenuItems').forEach(p => {
       p.fillMenuItems(menuItems);
     });
+    menuItems.sort((m1, m2) => m1.order || 1000 - m2.order || 1000);
     return menuItems;
   }
   // showOutput() {
