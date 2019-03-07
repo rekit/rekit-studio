@@ -39,6 +39,6 @@ const args = parser.parseArgs();
 
 const prjRoot = path.isAbsolute(args.dir) ? args.dir : path.join(process.cwd(), args.dir);
 
-rekit.core.paths.setProjectRoot(prjRoot);
+// rekit.core.paths.setProjectRoot(prjRoot);
 
 start({ projectRoot: prjRoot, port: args.port, devPluginsDir: args.devPluginsDir, pluginsDir: args.pluginsDir });

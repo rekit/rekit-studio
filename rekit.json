@@ -6,11 +6,12 @@
     "public",
     "scripts",
     "config",
+    "bin",
     "lib"
   ],
   "files": [
     "package.json",
-    ".rekit"
+    "rekit.json"
   ],
   "css": "less"
 }

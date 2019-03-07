@@ -56,8 +56,8 @@ function handleIndexRoute(route) {
 }
 
 export default () => {
-  plugin.getPlugins('routes').forEach(p => {
-    childRoutes.push(p.routes);
+  plugin.getPlugins('route').forEach(p => {
+    childRoutes.push(p.route);
   });
 
   const routes = [
