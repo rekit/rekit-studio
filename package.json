@@ -76,9 +76,10 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./scripts/start.js --plugins-dir=/Users/pwang7/rekit-org/plugins/src/features",
-    "serveBuild": "node ./bin/index.js",
-    "test2": "node -v",
     "build": "node ./scripts/build.js",
+    "serveBuild": "node ./bin/index.js",
+    "copyToRekit": "node ./scripts/copyToRekit.js",
+    "test2": "node -v",
     "npm:publish": "node ./tools/npm_publish.js",
     "test": "node ./tools/run_test.js",
     "build:test": "node ./tools/server.js -m build"
