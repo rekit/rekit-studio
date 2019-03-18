@@ -139,7 +139,9 @@ export class ProjectExplorer extends Component {
     setTimeout(this.props.actions.stickTab, 50);
   };
 
-  assignCtxMenu = ctxMenu => (this.ctxMenu = ctxMenu.getWrappedInstance());
+  assignCtxMenu = ctxMenu => {
+    this.ctxMenu = ctxMenu.getWrappedInstance();
+  };
 
   renderTreeNodeTitle(nodeData) {
     const iconStyle = {};

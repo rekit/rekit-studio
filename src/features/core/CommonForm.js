@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { Button, Form, Modal, message } from 'antd';
+import { Button, Form, Modal, message, Select } from 'antd';
 import { FormBuilder } from '../common';
 import { execCoreCommand } from './redux/actions';
 import plugin from '../../common/plugin';

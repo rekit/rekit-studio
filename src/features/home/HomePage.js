@@ -118,13 +118,13 @@ export class HomePage extends Component {
       <div className="home-home-page">
         {this.renderBadges()}
         <Row style={{ minWidth: 800 }} gutter={30}>
-          <Col span="16">
+          <Col span={16}>
             <h3>Overview Diagram</h3>
             <div className="diagram-container">
               <OverviewDiagram />
             </div>
           </Col>
-          <Col span="8" className="test-coverage-container">
+          <Col span={8} className="test-coverage-container">
             <h3>Test Coverage</h3>
             <div className="test-coverage">No data.</div>
           </Col>
