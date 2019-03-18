@@ -76,7 +76,14 @@ export class CommonForm extends Component {
       }
       console.log('Form submit: ', values);
 
-      let command = { commandName: context.action, type: context.elementType, ...values, context, formId, values };
+      let command = {
+        commandName: context.action,
+        type: context.elementType,
+        ...values,
+        context,
+        formId,
+        values,
+      };
       plugin.getPlugins('form.processValues').forEach(p => {
         command = p.form.processValues(command);
       });
@@ -89,11 +96,19 @@ export class CommonForm extends Component {
       // if (/^add|move|update$/.test(context.action)) {
       this.props.actions
         .execCoreCommand(command)
-        .then(() => {
+        .then(res => {
+          if (res.error) {
+            this.setState({ pending: false });
+            Modal.error({
+              title: 'Failed',
+              content: (
+                <span style={{ color: 'red' }}>{res.error}</span>
+              ),
+            });
+            return;
+          }
           this.props.onSubmit();
           this.setState({ pending: false });
-          // Show notification
-          console.log(context);
           message.success(`${_.capitalize(context.action)} ${context.elementType} success.`);
         })
         .catch(err => {
@@ -102,9 +117,7 @@ export class CommonForm extends Component {
           Modal.error({
             title: 'Failed',
             content: (
-              <span style={{ color: 'red' }}>
-                {err.message ? err.message : 'Unknown error.'}
-              </span>
+              <span style={{ color: 'red' }}>{err.message ? err.message : 'Unknown error.'}</span>
             ),
           });
         });

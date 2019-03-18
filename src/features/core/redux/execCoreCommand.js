@@ -30,7 +30,7 @@ export function execCoreCommand(args = {}) {
             type: CORE_EXEC_CORE_COMMAND_SUCCESS,
             data: res,
           });
-          resolve(res);
+          resolve(res.data);
         },
         // Use rejectHandler as the second argument so that render errors won't be caught.
         (err) => {
