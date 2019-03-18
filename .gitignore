@@ -44,4 +44,4 @@ dist
 dll
 
 #external plugins for rekit studio dev time
-src/features/rekit-react
+
