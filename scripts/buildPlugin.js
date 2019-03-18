@@ -1,65 +1,60 @@
 'use strict';
 
-// Do this as the first thing so that any code reading it knows the right env.
-process.env.BABEL_ENV = 'production';
-process.env.NODE_ENV = 'production';
-
-// Makes the script crash on unhandled rejections instead of silently
-// ignoring them. In the future, promise rejections that are not handled will
-// terminate the Node.js process with a non-zero exit code.
-process.on('unhandledRejection', err => {
-  throw err;
-});
-
-// Ensure environment variables are read.
-require('../config/env');
 const path = require('path');
 const fs = require('fs-extra');
 const webpack = require('webpack');
-let config = require('../config/webpack.config.prod');
-const printBuildError = require('react-dev-utils/printBuildError');
-const paths = require('../config/paths');
+const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
+const configFactory = require('../config/webpack.config');
 
-function buildPlugin(pluginDir) {
-  console.log('Creating an optimized production build...');
-
-  const indexJs = path.join(pluginDir, 'plugin.js');
+function buildPlugin(pluginName) {
+  console.log(`Building plugin: ${pluginName}`);
+  const pluginDir = path.join(__dirname, '../src/features', pluginName);
+  const buildDir = path.join(pluginDir, 'build');
+  const indexJs = path.join(pluginDir, 'entry.js');
   const indexStyle = path.join(pluginDir, 'style.less');
-  config = {
-    ...config,
+  const originalConfig = configFactory('production');
+  const config = {
+    ...originalConfig,
     entry: [indexJs, indexStyle],
     output: {
-      path: path.join(pluginDir, 'build'),
+      ...originalConfig.output,
+      filename: 'main.js',
+      path: buildDir,
     },
-    plugins: [
-      ...config.plugins,
-      new webpack.DllReferencePlugin({
-        context: paths.appSrc,
-        manifest: require('../build/dll-manifest.json'),
-      }),
-    ],
   };
-
-  fs.emptyDirSync(path.join(pluginDir, 'build'));
-  copyPublicFolder(pluginDir);
-
+  fs.emptyDirSync(buildDir);
   let compiler = webpack(config);
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
+      let messages;
       if (err) {
-        printBuildError(err);
-        return reject(err);
+        if (!err.message) {
+          return reject(err);
+        }
+        messages = formatWebpackMessages({
+          errors: [err.message],
+          warnings: [],
+        });
+      } else {
+        messages = formatWebpackMessages(
+          stats.toJson({ all: false, warnings: true, errors: true })
+        );
       }
-      console.log('Done.');
+      if (messages.errors.length) {
+        // Only keep the first error. Others are often indicative
+        // of the same problem, but confuse the reader with noise.
+        if (messages.errors.length > 1) {
+          messages.errors.length = 1;
+        }
+        return reject(new Error(messages.errors.join('\n\n')));
+      }
+      const publicDir = path.join(pluginDir, 'public');
+      if (fs.existsSync(publicDir)) fs.copySync(publicDir, buildDir);
+      console.log(`🎉${pluginName} done.`);
 
       return resolve();
     });
   });
 }
 
-function copyPublicFolder(prjDir) {
-  if (fs.existsSync(`${prjDir}/public`)) fs.copySync(`${prjDir}/public`, `${prjDir}/build`);
-}
-
-buildPlugin('/Users/pwang7/workspace/rekit-studio/src/features/plugin-node');
 module.exports = buildPlugin;
