@@ -6,8 +6,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
-import SplitPane from 'react-split-pane/lib/SplitPane';
-import Pane from 'react-split-pane/lib/Pane';
+import SplitPane from 'rspv2/lib/SplitPane';
+import Pane from 'rspv2/lib/Pane';
 import {
   fetchFileContent,
   saveFile,

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import SplitPane from 'react-split-pane/lib/SplitPane';
-import Pane from 'react-split-pane/lib/Pane';
+import SplitPane from 'rspv2/lib/SplitPane';
+import Pane from 'rspv2/lib/Pane';
 import { Button, Icon, Modal } from 'antd';
 import { storage } from '../common/utils';
 import {
