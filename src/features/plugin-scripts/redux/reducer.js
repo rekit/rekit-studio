@@ -11,8 +11,9 @@ import Convert from 'ansi-to-html';
 import { reducer as runScriptReducer } from './runScript';
 import { reducer as stopScriptReducer } from './stopScript';
 import { reducer as clearOutputReducer } from './clearOutput';
+import { reducer as setCurrentReducer } from './setCurrent';
 
-const reducers = [runScriptReducer, stopScriptReducer, clearOutputReducer];
+const reducers = [runScriptReducer, stopScriptReducer, clearOutputReducer, setCurrentReducer];
 
 const convert = new Convert();
 

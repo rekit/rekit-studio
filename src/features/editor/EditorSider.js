@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // import SplitPane from 'rspv2';
 import SplitPane from 'rspv2/lib/SplitPane';
 import Pane from 'rspv2/lib/Pane';
-import { Button, Icon } from 'antd';
+import { Button } from 'antd';
 import history from '../../common/history';
 import { storage } from '../common/utils';
 import { OutlineView, DepsView } from './';

@@ -10,7 +10,7 @@ const initialState = {
   runScriptError: null,
   stopScriptPending: false,
   stopScriptError: null,
-
+  current: undefined,
   output: {},
   running: {},
 };

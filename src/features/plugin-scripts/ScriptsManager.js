@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import SplitPane from 'rspv2/lib/SplitPane';
 import Pane from 'rspv2/lib/Pane';
-import { runScript, stopScript } from './redux/actions';
+import { runScript, stopScript, setCurrent } from './redux/actions';
 import { storage } from '../common/utils';
 import { ScriptList, OutputView } from './';
 
@@ -14,9 +14,10 @@ export class ScriptsManager extends Component {
     scripts: PropTypes.array.isRequired,
     running: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
+    current: PropTypes.string,
   };
 
-  state = {
+  static defaultProps = {
     current: 'start',
   };
 
@@ -37,7 +38,7 @@ export class ScriptsManager extends Component {
     this.props.actions.stopScript(name);
   };
   handleSelect = name => {
-    this.setState({ current: name });
+    this.props.actions.setCurrent(name);
   };
 
   handleOnload = term => {
@@ -57,11 +58,11 @@ export class ScriptsManager extends Component {
               onStop={this.handleStop}
               onSelect={this.handleSelect}
               running={this.props.running}
-              current={this.state.current}
+              current={this.props.current}
             />
           </Pane>
           <Pane className="output-container" size={sizes[1] || 1}>
-            <OutputView type="script" name={this.state.current} />
+            <OutputView type="script" name={this.props.current} />
           </Pane>
         </SplitPane>
       </div>
@@ -74,13 +75,14 @@ function mapStateToProps(state) {
   return {
     scripts: state.pluginScripts.scripts,
     running: state.pluginScripts.running,
+    current: state.pluginScripts.current,
   };
 }
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ runScript, stopScript }, dispatch),
+    actions: bindActionCreators({ runScript, stopScript, setCurrent }, dispatch),
   };
 }
 
