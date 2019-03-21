@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Table } from 'antd';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Table } from 'antd';
 
-export default class RoutesView extends Component {
+export class RoutesView extends Component {
   static propTypes = {
     element: PropTypes.object.isRequired,
+    devPort: PropTypes.number.isRequired,
   };
 
   getColumns() {
@@ -14,7 +15,7 @@ export default class RoutesView extends Component {
         dataIndex: 'path',
         title: 'Path',
         render: path => (
-          <a href={`http://localhost:8080${path}`} target="_blank">
+          <a href={`http://localhost:${this.props.devPort}${path}`} target="_blank">
             {path}
           </a>
         ),
@@ -56,3 +57,15 @@ export default class RoutesView extends Component {
     );
   }
 }
+
+
+/* istanbul ignore next */
+function mapStateToProps(state) {
+  return {
+    devPort: state.home.config.devPort || 3000,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+)(RoutesView);
