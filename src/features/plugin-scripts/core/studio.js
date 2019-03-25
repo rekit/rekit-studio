@@ -22,7 +22,8 @@ function config(server, app, args) {
       res.end();
       return;
     }
-    const child = spawn('npm', ['run', name], {
+    const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+    const child = spawn(npmCmd, ['run', name], {
       cwd: rekit.core.paths.getProjectRoot(),
       stdio: 'pipe',
     });
