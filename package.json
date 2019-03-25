@@ -75,7 +75,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node ./scripts/start.js -d /Users/pwang7/workspace4/dd1",
+    "start": "node ./scripts/start.js",
     "build": "node ./scripts/build.js",
     "build:plugins": "node ./scripts/buildPlugins.js",
     "serveBuild": "node ./bin/index.js",
