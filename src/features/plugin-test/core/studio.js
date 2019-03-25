@@ -29,8 +29,9 @@ function config(server, app, args) {
     }
     const tmpDir = rekit.core.paths.map('tmp');
     if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
+    const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
     const child = spawn(
-      'npm',
+      npmCmd,
       ['run', 'test', '--', '--colors', '--json', '--outputFile=tmp/testOutput.json'].concat(args),
       {
         cwd: rekit.core.paths.getProjectRoot(),
