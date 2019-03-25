@@ -15,6 +15,7 @@ function lint(req, res) {
     const messages = cli.executeOnText(code, file).results[0].messages;
     res.write(JSON.stringify(messages));
   } catch (err) {
+    console.log('lint failed: ', err);
     // Do nothing if lint error
     res.write(JSON.stringify({ error: err }));
   }

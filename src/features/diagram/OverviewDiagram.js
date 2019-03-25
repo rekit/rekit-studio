@@ -18,7 +18,7 @@ export default class OverviewDiagram extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.updateDiagram);
-    requestAnimationFrame(this.initDiagram);
+    this.initDiagram();
   }
 
   componentWillUnmount() {

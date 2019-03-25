@@ -8,10 +8,11 @@ import '../features/plugin-default/entry';
 import '../features/plugin-terminal/entry';
 import '../features/plugin-scripts/entry';
 import '../features/plugin-test/entry';
+import '../features/plugin-rekit-react/entry';
 
-if (process.env.NODE_ENV === 'development') {
-  require('../features/rekit-react/entry');
-}
+// if (process.env.NODE_ENV === 'development') {
+//   require('../features/plugin-rekit-react/entry');
+// }
 
 // Use global variable to store module state for workaround of HMR.
 // if (!window.__REKIT_pluginNames) window.__REKIT_pluginNames = [];
@@ -27,19 +28,8 @@ export default {
   },
   addPlugin(p) {
     window.__REKIT_PLUGINS.push(p);
-  }
-  // getColor(type) {
-  //   const colors = this.getPlugins('colors').reduce((prev, curr) => {
-  //     Object.assign(prev, curr.colors);
-  //     return prev;
-  //   }, {});
-  //   return colors[type] || '#78909C';
-  // },
-  // getIcon(type) {
-  //   const icons = this.getPlugins('icons').reduce((prev, curr) => {
-  //     Object.assign(prev, curr.icons);
-  //     return prev;
-  //   }, {});
-  //   return icons[type] || 'file';
-  // },
+  },
+  removePlugin(name) {
+    _.remove(window.__REKIT_PLUGINS, { name });
+  },
 };

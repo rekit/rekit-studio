@@ -4,18 +4,18 @@ const path = require('path');
 const fs = require('fs-extra');
 const webpack = require('webpack');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
-const configFactory = require('../config/webpack.config');
+// const configFactory = require('../config/webpack.config.dev');
 
 function buildPlugin(pluginName) {
   console.log(`Building plugin: ${pluginName}`);
   const pluginDir = path.join(__dirname, '../src/features', pluginName);
   const buildDir = path.join(pluginDir, 'build');
   const indexJs = path.join(pluginDir, 'entry.js');
-  const indexStyle = path.join(pluginDir, 'style.less');
-  const originalConfig = configFactory('production');
+  // const indexStyle = path.join(pluginDir, 'style.less');
+  const originalConfig = require('../config/webpack.config.prod');
   const config = {
     ...originalConfig,
-    entry: [indexJs, indexStyle],
+    entry: [indexJs],
     output: {
       ...originalConfig.output,
       filename: 'main.js',

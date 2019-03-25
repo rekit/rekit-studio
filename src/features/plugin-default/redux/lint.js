@@ -29,14 +29,22 @@ export function lint(file, code) {
       });
       doRequest.then(
         res => {
-          dispatch({
-            type: PLUGIN_DEFAULT_LINT_SUCCESS,
-            payload: {
-              file,
-              messages: res.data,
-            }
-          });
-          resolve(res.data);
+          if (res.data.error) {
+            dispatch({
+              type: PLUGIN_DEFAULT_LINT_FAILURE,
+              data: { error: res.data.error },
+            });
+            reject(res.data.error);
+          } else {
+            dispatch({
+              type: PLUGIN_DEFAULT_LINT_SUCCESS,
+              payload: {
+                file,
+                messages: res.data,
+              },
+            });
+            resolve(res.data);
+          }
         },
         // Use rejectHandler as the second argument so that render errors won't be caught.
         err => {

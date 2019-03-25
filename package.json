@@ -75,7 +75,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node ./scripts/start.js --plugins-dir=/Users/pwang7/rekit-org/plugins/src/features",
+    "start": "node ./scripts/start.js -d /Users/pwang7/workspace4/dd1",
     "build": "node ./scripts/build.js",
     "build:plugins": "node ./scripts/buildPlugins.js",
     "serveBuild": "node ./bin/index.js",
@@ -172,7 +172,7 @@
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.1",
     "redux-thunk": "^2.2.0",
-    "rspv2": "^2.0.3",
+    "rspv2": "^2.0.4",
     "style-loader": "0.19.0",
     "svg-sprite-loader": "^3.9.2",
     "sw-precache-webpack-plugin": "0.11.4",

@@ -12,6 +12,7 @@ import { storage } from '../common/utils';
 import { BottomDrawer, TabsBar, SidePanel, QuickOpen } from './';
 import { DialogContainer } from '../core';
 import { fetchProjectData } from './redux/actions';
+import plugin from '../../common/plugin';
 
 /*
   This is the root component of your app. Here you define the overall layout
@@ -41,8 +42,13 @@ export class App extends Component {
   componentDidMount() {
     this.props.actions
       .fetchProjectData()
-      .then(() => {
+      .then(data => {
         document.title = this.props.projectName;
+        if (_.get(data, 'config.appType') !== 'rekit-react') {
+          // This is a very special check because rekit-react is a built-in plugin
+          // It should be removed from UI side when app type is not rekit-react.
+          plugin.removePlugin('rekit-react');
+        }
         // For rendering tabs bar
         this.props.dispatch({
           type: '@@router/LOCATION_CHANGE',
@@ -70,14 +76,6 @@ export class App extends Component {
       });
     }
   }
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.projectDataNeedReload && !nextProps.fetchProjectDataError && !nextProps.fetchProjectDataPending) {
-  //     this.props.actions.fetchProjectData().catch(e => {
-  //       console.log('failed to fetch project data: ', e);
-  //       message.error('Failed to refresh project data');
-  //     });
-  //   }
-  // }
 
   getSizesState() {
     return storage.local.getItem('layoutSizes') || {};
@@ -125,7 +123,6 @@ export class App extends Component {
     const sizes = this.getSizesState();
     const mainVerticalSizes = sizes['main-vertical'] || [];
     const rightHorizontalSizes = sizes['right-horizontal'] || [];
-
     return (
       <LocaleProvider locale={enUS}>
         <div className="home-app">

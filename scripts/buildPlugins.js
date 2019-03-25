@@ -20,15 +20,16 @@ const buildPlugin = require('./buildPlugin');
 
 if (process.argv[2]) buildPlugin(process.argv[2]);
 else {
-  const featuresDir = path.join(__dirname, '../src/features');
-  fs.readdirSync(featuresDir)
-    .filter(f => {
-      const absPath = path.join(featuresDir, f);
-      return (
-        fs.statSync(absPath).isDirectory() &&
-        fs.existsSync(path.join(absPath, 'entry.js')) &&
-        fs.existsSync(path.join(absPath, 'package.json'))
-      );
-    })
-    .forEach(buildPlugin);
+  // const featuresDir = path.join(__dirname, '../src/features');
+  // fs.readdirSync(featuresDir)
+  //   .filter(f => {
+  //     const absPath = path.join(featuresDir, f);
+  //     return (
+  //       fs.statSync(absPath).isDirectory() &&
+  //       fs.existsSync(path.join(absPath, 'entry.js')) &&
+  //       fs.existsSync(path.join(absPath, 'package.json'))
+  //     );
+  //   })
+  //   .forEach(buildPlugin);
+  ['rekit-react'].forEach(buildPlugin);
 }
