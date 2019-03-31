@@ -2,6 +2,7 @@
   "devPort": 6078,
   "appType": "rekit-react",
   "plugins": [],
+  "excludeAstFolders": ["src/libs", "build"],
   "folders": [
     "public",
     "scripts",
