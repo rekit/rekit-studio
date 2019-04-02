@@ -32,7 +32,11 @@ const wp = new Watchpack({
 });
 // Watchpack.prototype.watch(string[] files, string[] directories, [number startTime])
 // Watch src files change only
-wp.watch(PRETTIER_CONFIG_FILES.map(f => path.join(rekit.core.paths.getProjectRoot(), f)), [], Date.now() - 10);
+wp.watch(
+  PRETTIER_CONFIG_FILES.map(f => path.join(rekit.core.paths.getProjectRoot(), f)),
+  [],
+  Date.now() - 10
+);
 
 wp.on('aggregated', () => {
   prettier.clearConfigCache();
@@ -48,7 +52,10 @@ module.exports = (req, res) => {
       try {
         const formatted = prettier.formatWithCursor(
           content,
-          Object.assign({ filepath: file, cursorOffset: req.body.cursorOffset }, options || DEFAULT_PRETTIER_OPTIONS)
+          Object.assign(
+            { filepath: file, cursorOffset: req.body.cursorOffset },
+            options || DEFAULT_PRETTIER_OPTIONS
+          )
         );
         res.write(JSON.stringify({ content: formatted }));
       } catch (err) {
@@ -67,4 +74,4 @@ module.exports = (req, res) => {
       );
       res.end();
     });
-}
+};
