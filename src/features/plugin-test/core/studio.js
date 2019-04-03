@@ -1,6 +1,7 @@
 const spawn = require('child_process').spawn;
 const fs = require('fs-extra');
 const path = require('path');
+// TODO: remove this hard dependencey
 const debouncedOutput = require('../../../../lib/helpers').debouncedOutput;
 
 let running = null;

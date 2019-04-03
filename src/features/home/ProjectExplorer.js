@@ -12,7 +12,6 @@ import { stickTab } from './redux/actions';
 import { getTreeData } from './selectors/projectData';
 import { ProjectExplorerContextMenu } from './';
 import plugin from '../../common/plugin';
-import history from '../../common/history';
 import element from '../../common/element';
 
 const TreeNode = Tree.TreeNode;
@@ -140,7 +139,7 @@ export class ProjectExplorer extends Component {
   };
 
   assignCtxMenu = ctxMenu => {
-    this.ctxMenu = ctxMenu.getWrappedInstance();
+    this.ctxMenu = ctxMenu;
   };
 
   renderTreeNodeTitle(nodeData) {

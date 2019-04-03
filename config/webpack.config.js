@@ -6,6 +6,7 @@ const webpack = require('webpack');
 const resolve = require('resolve');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -479,6 +480,12 @@ module.exports = function(webpackEnv) {
             : undefined,
         ),
       ),
+      new CopyWebpackPlugin([
+        {
+          from: path.join(path.dirname(require.resolve('monaco-editor/package.json')), 'min/vs'),
+          to: 'static/vs',
+        },
+      ]),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       isEnvProduction &&

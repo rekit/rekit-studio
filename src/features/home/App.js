@@ -50,12 +50,13 @@ export class App extends Component {
           plugin.removePlugin('rekit-react');
         }
         // For rendering tabs bar
-        this.props.dispatch({
-          type: '@@router/LOCATION_CHANGE',
-          payload: this.props.location,
-        });
+        // setTimeout(() =>this.props.dispatch({
+        //   type: '@@router/LOCATION_CHANGE',
+        //   payload: this.props.location,
+        // }), 100);
       })
       .catch(err => {
+        console.error(err);
         Modal.error({
           title: 'Failed to load project data',
           content: err && (err.message || err.toString()),

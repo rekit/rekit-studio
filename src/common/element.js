@@ -12,6 +12,7 @@ export default {
       console.error('Element does not exist: ', arguments[0]);
       return;
     }
+
     const pathname = store.getState().router.location.pathname;
 
     let url;

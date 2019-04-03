@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import { matchPath } from 'react-router-dom';
-import store from 'rs/common/store';
 
 export default {
-  getTab(urlPath) {
-    const { elementById } = store.getState().home;
+  getTab(urlPath, homeState = {}) {
+    const { elementById } = homeState;
 
     if (!elementById) return null;
 

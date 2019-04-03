@@ -73,9 +73,9 @@ export default function reducer(state = initialState, action) {
         .getPlugins('tab.getTab')
         .reverse()
         .some(p => {
-          const t = p.tab.getTab(pathname);
+          const t = p.tab.getTab(pathname, state);
           if (!t) return false;
-          tab = { ...p.tab.getTab(pathname) };
+          tab = { ...p.tab.getTab(pathname, state) };
           return true;
         });
       let { openTabs, historyTabs } = state;

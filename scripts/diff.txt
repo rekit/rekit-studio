@@ -1,0 +1,6 @@
+Diffs from original cra scripts folder:
+
+1. Copy start.js content to ../lib/startDevServer.js
+2. Copy build.js content to ../lib/build.js
+3. Add configStudio() call in startevServer.js
+4. Allow args in startDevServer()

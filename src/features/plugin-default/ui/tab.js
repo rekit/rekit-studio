@@ -1,9 +1,8 @@
 import { matchPath } from 'react-router-dom';
-import store from '../../../common/store';
 
 export default {
-  getTab(urlPath) {
-    const { elementById } = store.getState().home;
+  getTab(urlPath, stateHome = {}) {
+    const { elementById } = stateHome
 
     if (!elementById) return null;
 
