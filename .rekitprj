@@ -1,5 +1,0 @@
-{
-  "virtualGroup": {
-    "home/Component": ["home/C1", "home/C2"],
-  },
-}
