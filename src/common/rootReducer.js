@@ -1,9 +1,10 @@
 // This file is auto maintained by Rekit, you usually don't need to edit it manually.
 
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
+import { connectRouter } from 'connected-react-router';
 import _ from 'lodash';
 import plugin from './plugin';
+import history from './history';
 import homeReducer from '../features/home/redux/reducer';
 import commonReducer from '../features/common/redux/reducer';
 import rekitCmdsReducer from '../features/rekit-cmds/redux/reducer';
@@ -23,7 +24,7 @@ import tasksReducer from '../features/tasks/redux/reducer';
 // So that it's easy for others to understand it and Rekit could manage theme.
 
 const reducerMap = {
-  router: routerReducer,
+  router: connectRouter(history),
   home: homeReducer,
   common: commonReducer,
   rekitCmds: rekitCmdsReducer,

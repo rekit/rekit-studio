@@ -1,7 +1,7 @@
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 
 // a singleton history object
-const history = createHistory();
+const history = createBrowserHistory();
 // const push = history.push;
 // history.push = function() {
 //   console.log('pushpush');

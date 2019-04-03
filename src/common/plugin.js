@@ -10,16 +10,8 @@ import '../features/plugin-scripts/entry';
 import '../features/plugin-test/entry';
 import '../features/plugin-rekit-react/entry';
 
-// if (process.env.NODE_ENV === 'development') {
-//   require('../features/plugin-rekit-react/entry');
-// }
-
 // Use global variable to store module state for workaround of HMR.
-// if (!window.__REKIT_pluginNames) window.__REKIT_pluginNames = [];
 export default {
-  // setPluginNames(names) {
-  //   window.__REKIT_pluginNames = names;
-  // },
   _plugins: null,
   getPlugins(prop) {
     if (!this._plugins) this._plugins = window.__REKIT_PLUGINS;

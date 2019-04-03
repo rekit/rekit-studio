@@ -3,6 +3,9 @@
   "appType": "rekit-react",
   "plugins": [],
   "excludeAstFolders": ["src/libs", "build"],
+  "moduleAlias": {
+    "rs": "./src"
+  },
   "folders": [
     "public",
     "scripts",
