@@ -209,15 +209,16 @@ export class TabsBar extends Component {
   };
 
   handleMenuClick = (tab, menuKey) => {
-    const { openTabs } = this.props;
+    const tabs = this.getTabs();
     switch (menuKey) {
       case 'close-others':
-        openTabs.filter(t => t.key !== tab.key).forEach(t => this.handleClose({}, t));
+        tabs.filter(t => t.key !== tab.key).forEach(t => this.handleClose({}, t));
         break;
       case 'close-right':
-        openTabs
-          .slice(_.findIndex(openTabs, { key: tab.key }) + 1)
+        tabs
+          .slice(_.findIndex(tabs, { key: tab.key }) + 1)
           .forEach(t => this.handleClose({}, t));
+        this.handleSelectTab(tab);
         break;
       case 'close-self':
         this.handleClose({}, tab);
