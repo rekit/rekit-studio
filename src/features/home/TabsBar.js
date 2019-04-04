@@ -21,6 +21,7 @@ const getListStyle = () => ({
   overflow: 'auto',
 });
 
+// TabsBar is just UI reflection of URL history of Rekit Studio.
 export class TabsBar extends Component {
   static propTypes = {
     openTabs: PropTypes.array.isRequired,

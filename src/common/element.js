@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import history from './history';
 import store from './store';
+import plugin from './plugin';
 
 const byId = id => store.getState().home.elementById[id];
 export default {
@@ -18,20 +19,30 @@ export default {
     let url;
     if (view) {
       // caller is repsonsible to ensure ele has view
-      // if (!this.hasViews(ele)) throw new Error(`Element "${ele.id}" does not has view "${view}".`);
       url = `/element/${encodeURIComponent(ele.id)}/${view}`;
     } else if (ele.owner || !ele.views) {
       // show a concrete file
       url = this.getUrl(ele);
     } else {
       // It's an virtual element, like component/action/page etc.
-      const openTabs = store.getState().home.openTabs;
-      const foundTab = _.find(openTabs, { key: ele.id });
-
-      if (foundTab) {
-        url = foundTab.urlPath;
-      } else {
-        url = this.getUrl(ele);
+      url = this.getUrl(ele);
+      let tab;
+      plugin.getPlugins('tab.getTab').reverse().some(p => {
+        tab = p.tab.getTab(url);
+        if (!tab) return false;
+        return true;
+      });
+      if (tab) {
+        // Find the selected sub taab
+        const historyPaths = store.getState().home.historyPaths;
+        const subPaths = tab.subTabs.map(t => t.urlPath);
+        historyPaths.some(p => {
+          if (subPaths.indexOf(p) >= 0) {
+            url = p;
+            return true;
+          }
+          return false;
+        });
       }
     }
     if (url === pathname) return 0;
