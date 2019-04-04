@@ -88,7 +88,7 @@ export class TabsBar extends Component {
       });
     });
 
-    // Re-org tabs
+    // Re-org tabs:
     // If some paths belong to one tab, corretly show them:
     // For example:
     // Open paths: [a1, b3, a2, a3, b1, b2]

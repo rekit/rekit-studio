@@ -159,6 +159,9 @@ module.exports = function(webpackEnv) {
       devtoolModuleFilenameTemplate: isEnvProduction
         ? info => path.relative(paths.appSrc, info.absoluteResourcePath).replace(/\\/g, '/')
         : isEnvDevelopment && (info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
+      // Set this so that worker-loader doens't say window is undefined
+      // See: https://github.com/webpack/webpack/issues/6642#issuecomment-371087342
+      globalObject: 'this',
     },
     optimization: {
       minimize: isEnvProduction,
