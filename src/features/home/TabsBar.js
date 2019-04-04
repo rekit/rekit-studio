@@ -32,10 +32,6 @@ export class TabsBar extends Component {
     elementById: PropTypes.object.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidUpdate(prevProps) {
     if (prevProps.location.pathname !== this.props.location.pathname) {
       if (this.delayScroll) clearTimeout(this.delayScroll);
@@ -198,7 +194,17 @@ export class TabsBar extends Component {
   };
 
   handleDragEnd = result => {
-    this.props.actions.moveTab(result);
+    console.log('result: ', result);
+
+    if (!result.source || !result.destination || result.source.index === result.destination.index) {
+      return;
+    }
+    const tabs = this.getTabs();
+    this.props.actions.moveTab(
+      tabs[result.source.index],
+      tabs[result.destination.index],
+      result.source.index < result.destination.index,
+    );
   };
 
   handleMenuClick = (tab, menuKey) => {

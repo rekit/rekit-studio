@@ -1,25 +1,36 @@
+import _ from 'lodash';
 import { storage } from '../../common/utils';
 import { HOME_MOVE_TAB } from './constants';
 
-export function moveTab(args) {
+const getPaths = tab => _.uniq([tab.urlPath, ...(tab.subTabs || []).map(t => t.urlPath)]);
+
+export function moveTab(sourceTab, destTab, leftToRight) {
+  // When move a tab, it means move all paths belong to the tab
+  // to the destination tab's first sub path.
   return {
     type: HOME_MOVE_TAB,
-    data: args,
+    data: {
+      sourcePaths: getPaths(sourceTab),
+      destPaths: getPaths(destTab),
+      leftToRight,
+    },
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
     case HOME_MOVE_TAB: {
-      // const index1 = _.findIndex(state.openTabs, toClose);
-      const newOpenTabs = [...state.openTabs];
-      const item = newOpenTabs[action.data.source.index];
-      newOpenTabs.splice(action.data.source.index, 1);
-      newOpenTabs.splice(action.data.destination.index, 0, item);
-      storage.session.setItem('openTabs', newOpenTabs);
+      let { sourcePaths, destPaths, leftToRight } = action.data;
+      sourcePaths = _.intersection(sourcePaths, state.openPaths);
+      destPaths = _.intersection(destPaths, state.openPaths);
+      const newOpenPaths = state.openPaths.slice();
+      _.pullAll(newOpenPaths, sourcePaths);
+      let insertTo = _.findIndex(newOpenPaths, p => destPaths.indexOf(p) >= 0);
+      if (leftToRight) insertTo += 1;
+      newOpenPaths.splice(insertTo, 0, ...sourcePaths);
       return {
         ...state,
-        openTabs: newOpenTabs,
+        openPaths: newOpenPaths,
       };
     }
 

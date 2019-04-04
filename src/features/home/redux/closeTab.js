@@ -2,6 +2,7 @@ import _ from 'lodash';
 import update from 'immutability-helper';
 import { storage } from '../../common/utils';
 import { HOME_CLOSE_TAB } from './constants';
+const getPaths = tab => _.uniq([tab.urlPath, ...(tab.subTabs || []).map(t => t.urlPath)]);
 
 export function closeTab(tab) {
   return {
