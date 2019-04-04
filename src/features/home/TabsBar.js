@@ -9,6 +9,7 @@ import scrollIntoView from 'dom-scroll-into-view';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
 import { SvgIcon } from '../common';
+import plugin from '../../common/plugin';
 import { closeTab, stickTab, moveTab } from './redux/actions';
 import { tabsSelector } from './selectors/tabs';
 import editorStateMap from '../editor/editorStateMap';
@@ -69,8 +70,50 @@ export class TabsBar extends Component {
     }
   }
 
+  getTabByPathname(pathname) {
+    return {};
+  }
+
+  getTabs() {
+    const { openPaths, historyPaths } = this.props;
+    const currentPathname = this.props.location.pathname;
+    const tabPlugins = plugin.getPlugins('tab.getTab').reverse();
+    const openTabs = [];
+    openPaths.forEach(pathname => {
+      tabPlugins.some(p => {
+        const tab = p.tab.getTab(pathname);
+        if (!tab) return false;
+        openTabs.push({ ...tab, isActive: currentPathname === pathname });
+        return true;
+      });
+    });
+
+    // Re-org tabs
+    // If some paths belong to one tab, corretly show them:
+    // For example:
+    // Open paths: [a1, b3, a2, a3, b1, b2]
+    // History paths: [b2, b1, a2, a1, a3, b3]
+    // Then [a1, b3, a2, a3, b1, b2] => [keyA, keyB] => [{a1, A2, a3}, {b3, b1, B2}] => [a2, b2]
+    // Node: according to history paths, choose the recent one as the current tab
+    const tabsByKey = {};
+    openTabs.forEach(tab => {
+      if (!tabsByKey[tab.key]) tabsByKey[tab.key] = {};
+      tabsByKey[tab.key][tab.urlPath] = tab;
+    });
+    const newOpenTabs = _.uniq(openTabs.map(t => t.key)).map(tabKey => {
+      const tabByPath = tabsByKey[tabKey];
+      if(!tabByPath) return null;
+      for (let i = 0; i< historyPaths.length; i++) {
+        const p = historyPaths[i];
+        if (tabByPath[p]) return tabByPath[p];
+      }
+      return null;
+    });
+    return _.compact(newOpenTabs);
+  }
+
   getCurrentTab() {
-    return _.find(this.props.openTabs, t => t.isActive);
+    return _.find(this.getTabs(), t => t.isActive);
   }
 
   isChanged(tab) {
@@ -244,14 +287,14 @@ export class TabsBar extends Component {
     );
   };
 
-  renderNoThing() {
+  renderNothing() {
     return null;
   }
 
-  render() {
+  render2() {
     const { openTabs } = this.props;
     if (!openTabs.length) {
-      return this.renderNoThing();
+      return this.renderNothing();
     }
     const currentTab = this.getCurrentTab();
     const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
@@ -277,12 +320,50 @@ export class TabsBar extends Component {
       </div>
     );
   }
+
+  render() {
+    const tabs = this.getTabs();
+    if (!tabs.length) {
+      return this.renderNothing();
+    }
+    const currentTab = this.getCurrentTab();
+    const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
+    return (
+      <div className={classnames('home-tabs-bar', { 'has-sub-tabs': hasSubTabs })}>
+        <DragDropContext onDragEnd={this.handleDragEnd}>
+          <Droppable droppableId="droppable" direction="horizontal">
+            {provided => (
+              <div
+                className="main-tabs"
+                ref={node => {
+                  this.assignRef(node);
+                  provided.innerRef(node);
+                }}
+                style={{ ...getListStyle() }}
+              >
+                {tabs.map(this.renderTab)}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        {this.renderSubTabs()}
+      </div>
+    );
+  }
 }
 
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    ..._.pick(state.home, ['openTabs', 'projectRoot', 'historyTabs', 'viewChanged', 'elementById']),
+    ..._.pick(state.home, [
+      'openTabs',
+      'openPaths',
+      'historyPaths',
+      'projectRoot',
+      'historyTabs',
+      'viewChanged',
+      'elementById',
+    ]),
     tabs: tabsSelector(state),
     location: state.router.location,
   };
@@ -298,5 +379,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(TabsBar);

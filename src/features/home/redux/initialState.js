@@ -1,5 +1,14 @@
 import { storage } from '../../common/utils';
 
+const getOpenPaths = () => {
+  const arr = [document.location.pathname || '/'];
+  return arr;
+};
+const getHistoryPaths = () => {
+  const arr = [document.location.pathname || '/'];
+  return arr;
+};
+
 const initialState = {
   projectData: null,
   rekit: {},
@@ -19,6 +28,10 @@ const initialState = {
   // Restore open tabs and history tabs from local storage
   openTabs: storage.session.getItem('openTabs', []),
   historyTabs: storage.session.getItem('historyTabs', []),
+
+  openPaths: getOpenPaths(),
+  historyPaths: getHistoryPaths(),
+  tempPath: null,
 
   demoAlertVisible: false,
   saveFilePending: false,

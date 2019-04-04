@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 const initialContent = {};
 
-const getUri = _.memoize(file => new monaco.Uri().with({ path: file, scheme: 'file' }));
+const getUri = _.memoize(file => monaco.Uri.file(file));
 const modelManager = {
   getModel(filePath, content, noCreate) {
     if (!window.monaco) return null;
