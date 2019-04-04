@@ -63,17 +63,20 @@ export default function reducer(state = initialState, action) {
 
     case '@@router/LOCATION_CHANGE': {
       const pathname = action.payload.location.pathname || '/';
+      // const { tempPath } = state;
+      // let newTempPath = tempPath;
       const openPaths = state.openPaths.slice(0);
       const historyPaths = state.historyPaths.slice(0);
       if (!_.includes(openPaths, pathname)) {
+        // if (tempPath) {
+        //   _.pull(openPaths, tempPath);
+        // }
         openPaths.push(pathname);
+        // newTempPath = pathname;
       }
-      const foundIndex = historyPaths.indexOf(pathname);
-      if (foundIndex >= 0) {
-        historyPaths.splice(foundIndex, 1);
-      }
+      _.pull(historyPaths, pathname);
       historyPaths.unshift(pathname);
-      newState = { ...state, openPaths, historyPaths };
+      newState = { ...state, openPaths, historyPaths /*tempPath: newTempPath*/ };
       break;
       // Open tab or switch tab type while url changes.
       // if (!state.elementById) {

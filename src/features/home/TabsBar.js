@@ -75,7 +75,7 @@ export class TabsBar extends Component {
   }
 
   getTabs() {
-    const { openPaths, historyPaths } = this.props;
+    const { openPaths, historyPaths, tempPath } = this.props;
     const currentPathname = this.props.location.pathname;
     const tabPlugins = plugin.getPlugins('tab.getTab').reverse();
     const openTabs = [];
@@ -102,10 +102,14 @@ export class TabsBar extends Component {
     });
     const newOpenTabs = _.uniq(openTabs.map(t => t.key)).map(tabKey => {
       const tabByPath = tabsByKey[tabKey];
-      if(!tabByPath) return null;
-      for (let i = 0; i< historyPaths.length; i++) {
+      if (!tabByPath) return null;
+      for (let i = 0; i < historyPaths.length; i++) {
         const p = historyPaths[i];
-        if (tabByPath[p]) return tabByPath[p];
+        if (tabByPath[p])
+          return {
+            ...tabByPath[p],
+            // isTemp: Object.values(tabByPath).length === 1 && p === tempPath, // if only one tab was show and it's tempPath then isTemp=true
+          };
       }
       return null;
     });
@@ -149,11 +153,11 @@ export class TabsBar extends Component {
   handleClose = (evt, tab, force) => {
     if (evt && evt.stopPropagation) evt.stopPropagation();
 
-    const { openTabs, historyTabs } = this.props;
-
+    const { historyPaths, elementById, actions } = this.props;
     const doClose = () => {
-      const ele = this.props.elementById[tab.key];
+      const ele = elementById[tab.key];
       if (ele) {
+        // If it's an element, delete all editor cache
         const files = [];
         if (ele.type === 'file') files.push(ele.id);
         else if (ele.target) files.push(ele.target);
@@ -168,14 +172,13 @@ export class TabsBar extends Component {
         });
       }
 
-      this.props.actions.closeTab(tab.key);
-      if (historyTabs.length === 1) {
+      actions.closeTab(tab);
+      const newHistoryPaths = [...historyPaths];
+      _.pullAll(newHistoryPaths, [tab.urlPath, ...(tab.subTabs || []).map(t => t.urlPath)]);
+      if (newHistoryPaths.length === 0) {
         history.push('/welcome');
       } else if (tab.isActive) {
-        // Close the current one
-        const nextKey = historyTabs[1]; // at this point the props has not been updated.
-        const tab = _.find(openTabs, { key: nextKey });
-        history.push(tab.urlPath);
+        history.push(newHistoryPaths[0]);
       }
     };
 
@@ -359,6 +362,7 @@ function mapStateToProps(state) {
       'openTabs',
       'openPaths',
       'historyPaths',
+      'tempPath',
       'projectRoot',
       'historyTabs',
       'viewChanged',
