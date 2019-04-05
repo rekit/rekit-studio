@@ -6,8 +6,12 @@
 import { HOME_STICK_TAB } from './constants';
 // import { getTabKey } from '../helpers';
 // import { storage } from '../../common/utils';
+import { tabByPathname } from '../utils';
 
 export function stickTab(key) {
+  if (!key) {
+    key = tabByPathname().key;
+  }
   return {
     type: HOME_STICK_TAB,
     data: { key },
@@ -17,25 +21,12 @@ export function stickTab(key) {
 export function reducer(state, action) {
   switch (action.type) {
     case HOME_STICK_TAB: {
-      if (state.tempPath === action.data.pathname || document.location.pathname) {
+      if (state.tempTabKey === action.data.key) {
         return {
           ...state,
-          tempPath: null,
+          tempTabKey: null,
         };
       }
-      // let openTabs = state.openTabs;
-      // const key = action.data.key || getTabKey();
-      // const tempTab = _.find(openTabs, { key, isTemp: true });
-      // if (tempTab) {
-      //   const sticked = update(tempTab, { $unset: ['isTemp'] });
-      //   const index = openTabs.indexOf(tempTab);
-      //   openTabs = update(openTabs, { [index]: { $set: sticked } });
-      //   storage.session.setItem('openTabs', openTabs);
-      //   return {
-      //     ...state,
-      //     openTabs,
-      //   };
-      // }
       return state;
     }
 

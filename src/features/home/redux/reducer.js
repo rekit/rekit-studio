@@ -21,6 +21,7 @@ import { reducer as setViewChangedReducer } from './setViewChanged';
 import { reducer as setBottomDrawerVisibleReducer } from './setBottomDrawerVisible';
 import { reducer as clearOutputReducer } from './clearOutput';
 import { reducer as setBottomDrawerTabReducer } from './setBottomDrawerTab';
+import { reducer as setTempTabReducer } from './setTempTab';
 
 const convert = new Convert();
 
@@ -42,6 +43,7 @@ const reducers = [
   clearOutputReducer,
   setBottomDrawerTabReducer,
   clearOutputReducer,
+  setTempTabReducer,
 ];
 
 // const pascalCase = _.flow(

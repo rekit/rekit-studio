@@ -16,3 +16,4 @@ export { setViewChanged } from './setViewChanged';
 export { setBottomDrawerVisible } from './setBottomDrawerVisible';
 export { clearOutput } from './clearOutput';
 export { setBottomDrawerTab } from './setBottomDrawerTab';
+export { setTempTab } from './setTempTab';

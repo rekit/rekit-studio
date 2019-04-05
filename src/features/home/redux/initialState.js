@@ -31,7 +31,7 @@ const initialState = {
 
   openPaths: getOpenPaths(),
   historyPaths: getHistoryPaths(),
-  tempPath: null,
+  tempTabKey: null,
 
   demoAlertVisible: false,
   saveFilePending: false,

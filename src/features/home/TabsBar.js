@@ -10,10 +10,11 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
 import { SvgIcon } from '../common';
 import plugin from '../../common/plugin';
-import { closeTab, stickTab, moveTab } from './redux/actions';
+import { closeTab, stickTab, moveTab, setTempTab } from './redux/actions';
 import { tabsSelector } from './selectors/tabs';
 import editorStateMap from '../editor/editorStateMap';
 import modelManager from '../editor/modelManager';
+import { tabByPathname } from './utils';
 
 const getListStyle = () => ({
   display: 'flex',
@@ -24,8 +25,9 @@ const getListStyle = () => ({
 // TabsBar is just UI reflection of URL history of Rekit Studio.
 export class TabsBar extends Component {
   static propTypes = {
-    openTabs: PropTypes.array.isRequired,
-    historyTabs: PropTypes.array.isRequired,
+    openPaths: PropTypes.array.isRequired,
+    historyPaths: PropTypes.array.isRequired,
+    tempTabKey: PropTypes.string,
     actions: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
@@ -33,10 +35,15 @@ export class TabsBar extends Component {
     elementById: PropTypes.object.isRequired,
   };
 
+  static defaultProps = {
+    tempTabKey: null,
+  };
+
   componentDidUpdate(prevProps) {
     if (prevProps.location.pathname !== this.props.location.pathname) {
       if (this.delayScroll) clearTimeout(this.delayScroll);
       this.delayScroll = setTimeout(this.scrollActiveTabIntoView, 100);
+      this.updateTempKey(prevProps);
     }
 
     if (prevProps.elementById !== this.props.elementById) {
@@ -44,27 +51,54 @@ export class TabsBar extends Component {
     }
   }
 
-  closeNotExistingTabs() {
-    const { openTabs, historyTabs, elementById } = this.props;
-    const newOpenTabs = [...openTabs];
-    const newHistoryTabs = [...historyTabs];
-    let needRedirect = false;
-    newOpenTabs.forEach(tab => {
-      if (!elementById[tab.key] && /^\/element\//.test(tab.urlPath)) {
-        if (tab.isActive) needRedirect = true;
-        this.props.actions.closeTab(tab.key);
-        _.pull(newHistoryTabs, tab.key);
-      }
-    });
-    if (needRedirect) {
-      if (newHistoryTabs.length === 0) {
-        history.push('/welcome');
-      } else {
-        const nextKey = newHistoryTabs[0];
-        const tab = _.find(newOpenTabs, { key: nextKey });
-        if (tab) history.push(tab.urlPath);
+  updateTempKey(prevProps) {
+    // If pathname opens a new tab, then it's a temp tab
+    const prevOpenPaths = prevProps.openPaths;
+    const { openPaths, location, actions, tempTabKey } = this.props;
+    const { pathname } = location;
+    const tabs = this.getTabs();
+    const diff = _.difference(openPaths, prevOpenPaths);
+    const getPaths = tab => _.uniq([tab.urlPath, ...(tab.subTabs || []).map(t => t.urlPath)]);
+
+    if (diff.length === 1 && diff[0] === pathname) {
+      // Opened a new pathname
+      const lastTab = _.last(tabs);
+      if (
+        lastTab.urlPath === pathname && // The last tab is a new one
+        _.intersection(getPaths(lastTab), openPaths).length === 1 // The tab only have one child
+      ) {
+        //This is a new tab, then it's temp
+        if (tempTabKey && tempTabKey !== lastTab.key) {
+          // Close the last temp tab
+          const tempTab = _.find(tabs, { key: tempTabKey });
+          actions.closeTab(tempTab);
+        }
+        actions.setTempTab(lastTab.key);
       }
     }
+  }
+
+  closeNotExistingTabs() {
+    // const { openTabs, historyTabs, elementById } = this.props;
+    // const newOpenTabs = [...openTabs];
+    // const newHistoryTabs = [...historyTabs];
+    // let needRedirect = false;
+    // newOpenTabs.forEach(tab => {
+    //   if (!elementById[tab.key] && /^\/element\//.test(tab.urlPath)) {
+    //     if (tab.isActive) needRedirect = true;
+    //     this.props.actions.closeTab(tab.key);
+    //     _.pull(newHistoryTabs, tab.key);
+    //   }
+    // });
+    // if (needRedirect) {
+    //   if (newHistoryTabs.length === 0) {
+    //     history.push('/welcome');
+    //   } else {
+    //     const nextKey = newHistoryTabs[0];
+    //     const tab = _.find(newOpenTabs, { key: nextKey });
+    //     if (tab) history.push(tab.urlPath);
+    //   }
+    // }
   }
 
   getTabByPathname(pathname) {
@@ -72,17 +106,11 @@ export class TabsBar extends Component {
   }
 
   getTabs() {
-    const { openPaths, historyPaths, tempPath } = this.props;
+    const { openPaths, historyPaths, tempTabKey } = this.props;
     const currentPathname = this.props.location.pathname;
-    const tabPlugins = plugin.getPlugins('tab.getTab').reverse();
-    const openTabs = [];
-    openPaths.forEach(pathname => {
-      tabPlugins.some(p => {
-        const tab = p.tab.getTab(pathname);
-        if (!tab) return false;
-        openTabs.push({ ...tab, isActive: currentPathname === pathname });
-        return true;
-      });
+    const openTabs = _.compact(openPaths.map(tabByPathname));
+    openTabs.forEach(t => {
+      if (t.urlPath === currentPathname) t.isActive = true;
     });
 
     // Re-org tabs:
@@ -105,6 +133,7 @@ export class TabsBar extends Component {
         if (tabByPath[p])
           return {
             ...tabByPath[p],
+            isTemp: tabKey === tempTabKey,
             // isTemp: Object.values(tabByPath).length === 1 && p === tempPath, // if only one tab was show and it's tempPath then isTemp=true
           };
       }
@@ -215,9 +244,7 @@ export class TabsBar extends Component {
         tabs.filter(t => t.key !== tab.key).forEach(t => this.handleClose({}, t));
         break;
       case 'close-right':
-        tabs
-          .slice(_.findIndex(tabs, { key: tab.key }) + 1)
-          .forEach(t => this.handleClose({}, t));
+        tabs.slice(_.findIndex(tabs, { key: tab.key }) + 1).forEach(t => this.handleClose({}, t));
         this.handleSelectTab(tab);
         break;
       case 'close-self':
@@ -370,7 +397,7 @@ function mapStateToProps(state) {
       'openTabs',
       'openPaths',
       'historyPaths',
-      'tempPath',
+      'tempTabKey',
       'projectRoot',
       'historyTabs',
       'viewChanged',
@@ -384,7 +411,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ closeTab, stickTab, moveTab }, dispatch),
+    actions: bindActionCreators({ closeTab, stickTab, moveTab, setTempTab }, dispatch),
     dispatch,
   };
 }
