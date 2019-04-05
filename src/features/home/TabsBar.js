@@ -9,8 +9,7 @@ import scrollIntoView from 'dom-scroll-into-view';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
 import { SvgIcon } from '../common';
-import plugin from '../../common/plugin';
-import { closeTab, stickTab, moveTab, setTempTab } from './redux/actions';
+import { closeTab, stickTab, moveTab, setTempTab, removePaths } from './redux/actions';
 import { tabsSelector } from './selectors/tabs';
 import editorStateMap from '../editor/editorStateMap';
 import modelManager from '../editor/modelManager';
@@ -21,6 +20,8 @@ const getListStyle = () => ({
   padding: 0,
   overflow: 'auto',
 });
+
+const getTabPaths = tab => _.uniq([tab.urlPath, ...(tab.subTabs || []).map(t => t.urlPath)]);
 
 // TabsBar is just UI reflection of URL history of Rekit Studio.
 export class TabsBar extends Component {
@@ -47,7 +48,7 @@ export class TabsBar extends Component {
     }
 
     if (prevProps.elementById !== this.props.elementById) {
-      this.closeNotExistingTabs();
+      this.closeNotExistingTabs(prevProps);
     }
   }
 
@@ -58,14 +59,13 @@ export class TabsBar extends Component {
     const { pathname } = location;
     const tabs = this.getTabs();
     const diff = _.difference(openPaths, prevOpenPaths);
-    const getPaths = tab => _.uniq([tab.urlPath, ...(tab.subTabs || []).map(t => t.urlPath)]);
 
     if (diff.length === 1 && diff[0] === pathname) {
       // Opened a new pathname
       const lastTab = _.last(tabs);
       if (
         lastTab.urlPath === pathname && // The last tab is a new one
-        _.intersection(getPaths(lastTab), openPaths).length === 1 // The tab only have one child
+        _.intersection(getTabPaths(lastTab), openPaths).length === 1 // The tab only have one child
       ) {
         //This is a new tab, then it's temp
         if (tempTabKey && tempTabKey !== lastTab.key) {
@@ -78,27 +78,25 @@ export class TabsBar extends Component {
     }
   }
 
-  closeNotExistingTabs() {
-    // const { openTabs, historyTabs, elementById } = this.props;
-    // const newOpenTabs = [...openTabs];
-    // const newHistoryTabs = [...historyTabs];
-    // let needRedirect = false;
-    // newOpenTabs.forEach(tab => {
-    //   if (!elementById[tab.key] && /^\/element\//.test(tab.urlPath)) {
-    //     if (tab.isActive) needRedirect = true;
-    //     this.props.actions.closeTab(tab.key);
-    //     _.pull(newHistoryTabs, tab.key);
-    //   }
-    // });
-    // if (needRedirect) {
-    //   if (newHistoryTabs.length === 0) {
-    //     history.push('/welcome');
-    //   } else {
-    //     const nextKey = newHistoryTabs[0];
-    //     const tab = _.find(newOpenTabs, { key: nextKey });
-    //     if (tab) history.push(tab.urlPath);
-    //   }
-    // }
+  closeNotExistingTabs(prevProps) {
+    // If openPaths has some paths not map to a tab, remove them
+    const { openPaths, actions, historyPaths } = this.props;
+    const tabs = this.getTabs();
+    const allPaths = tabs.reduce((p, c) => p.push(...getTabPaths(c)) && p, []);
+    const diff = _.difference(openPaths, allPaths);
+    if (diff.length) actions.removePaths(diff);
+
+    // Redirect if current pathname has no tab and the current tab element is just deleted (simple compare elementById)
+    if (!tabByPathname()) {
+      // It  means the current tab element was deleted
+      historyPaths.some(p => {
+        if (tabs.some(t => _.includes(getTabPaths(t), p))) {
+          history.push(p);
+          return true;
+        }
+        return false;
+      });
+    }
   }
 
   getTabByPathname(pathname) {
@@ -411,7 +409,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ closeTab, stickTab, moveTab, setTempTab }, dispatch),
+    actions: bindActionCreators({ closeTab, stickTab, moveTab, setTempTab, removePaths }, dispatch),
     dispatch,
   };
 }

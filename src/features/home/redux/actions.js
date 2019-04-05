@@ -17,3 +17,4 @@ export { setBottomDrawerVisible } from './setBottomDrawerVisible';
 export { clearOutput } from './clearOutput';
 export { setBottomDrawerTab } from './setBottomDrawerTab';
 export { setTempTab } from './setTempTab';
+export { removePaths } from './removePaths';
