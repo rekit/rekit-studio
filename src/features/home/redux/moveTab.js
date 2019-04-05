@@ -28,6 +28,7 @@ export function reducer(state, action) {
       let insertTo = _.findIndex(newOpenPaths, p => destPaths.indexOf(p) >= 0);
       if (leftToRight) insertTo += 1;
       newOpenPaths.splice(insertTo, 0, ...sourcePaths);
+      storage.session.setItem('openPaths', newOpenPaths);
       return {
         ...state,
         openPaths: newOpenPaths,

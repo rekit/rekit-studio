@@ -78,6 +78,9 @@ export default function reducer(state = initialState, action) {
       }
       _.pull(historyPaths, pathname);
       historyPaths.unshift(pathname);
+      storage.session.setItem('openPaths', openPaths);
+      storage.session.setItem('historyPaths', historyPaths);
+      
       newState = { ...state, openPaths, historyPaths /*tempPath: newTempPath*/ };
       break;
       // Open tab or switch tab type while url changes.

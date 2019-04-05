@@ -29,6 +29,8 @@ export function reducer(state, action) {
       // });
       // storage.session.setItem('openTabs', newState.openTabs);
       // storage.session.setItem('historyTabs', newState.historyTabs);
+      storage.session.setItem('openPaths', openPaths);
+      storage.session.setItem('historyPaths', historyPaths);
       return { ...state, openPaths, historyPaths };
     }
 

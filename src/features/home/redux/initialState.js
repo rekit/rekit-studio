@@ -1,12 +1,26 @@
+import _ from 'lodash';
 import { storage } from '../../common/utils';
 
 const getOpenPaths = () => {
-  const arr = [document.location.pathname || '/'];
-  return arr;
+  const arr = [];
+  try {
+    const openPaths = storage.session.getItem('openPaths', []);
+    arr.push(...openPaths);
+  } catch (err) {
+    storage.session.removeItem('openPaths');
+  }
+  arr.push(document.location.pathname || '/')
+  return _.compact(_.uniq(arr));
 };
 const getHistoryPaths = () => {
   const arr = [document.location.pathname || '/'];
-  return arr;
+  try {
+    const historyPaths = storage.session.getItem('historyPaths', []);
+    arr.push(...historyPaths);
+  } catch (err) {
+    storage.session.removeItem('historyPaths');
+  }
+  return _.compact(_.uniq(arr));
 };
 
 const initialState = {
@@ -26,8 +40,8 @@ const initialState = {
   filesHasSyntaxError: {},
 
   // Restore open tabs and history tabs from local storage
-  openTabs: storage.session.getItem('openTabs', []),
-  historyTabs: storage.session.getItem('historyTabs', []),
+  // openTabs: storage.session.getItem('openTabs', []),
+  // historyTabs: storage.session.getItem('historyTabs', []),
 
   openPaths: getOpenPaths(),
   historyPaths: getHistoryPaths(),
