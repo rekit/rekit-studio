@@ -327,36 +327,6 @@ export class TabsBar extends Component {
     return null;
   }
 
-  render2() {
-    const { openTabs } = this.props;
-    if (!openTabs.length) {
-      return this.renderNothing();
-    }
-    const currentTab = this.getCurrentTab();
-    const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
-    return (
-      <div className={classnames('home-tabs-bar', { 'has-sub-tabs': hasSubTabs })}>
-        <DragDropContext onDragEnd={this.handleDragEnd}>
-          <Droppable droppableId="droppable" direction="horizontal">
-            {provided => (
-              <div
-                className="main-tabs"
-                ref={node => {
-                  this.assignRef(node);
-                  provided.innerRef(node);
-                }}
-                style={{ ...getListStyle() }}
-              >
-                {openTabs.map(this.renderTab)}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        {this.renderSubTabs()}
-      </div>
-    );
-  }
-
   render() {
     const tabs = this.getTabs();
     if (!tabs.length) {
