@@ -11,3 +11,6 @@ Diff from original cra config folder:
     },
   ])
 5. Set output.globalObject = 'this' to fix worker-laoder. https://github.com/webpack/webpack/issues/6642#issuecomment-371087342
+6. Remove chunkFilename,splitChunks, runtimeChunk definition from webpack.config.js because Rekit Studio doesn't use code split.
+7. Remove WorkboxWebpackPlugin
+8. Remove typescript plugin

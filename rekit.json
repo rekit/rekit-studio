@@ -11,6 +11,7 @@
     "scripts",
     "config",
     "bin",
+    "build",
     "lib"
   ],
   "files": [

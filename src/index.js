@@ -1,17 +1,3 @@
-// import React from 'react';
-// import { render } from 'react-dom';
-
-// let root = document.getElementById('react-root');
-// if (!root) {
-//   root = document.createElement('div');
-//   root.id = 'react-root';
-//   document.body.appendChild(root);
-// }
-
-// function renderApp() {
-//   render(<div>hello</div>, root);
-// }
-// renderApp();
 import React from 'react';
 import { AppContainer } from 'react-hot-loader';
 import { render } from 'react-dom';
