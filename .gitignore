@@ -42,6 +42,7 @@ jspm_packages
 build
 dist
 dll
+dev-dll
 
 #external plugins for rekit studio dev time
 

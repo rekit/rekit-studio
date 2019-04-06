@@ -80,6 +80,8 @@ module.exports = {
   appNodeModules: resolveApp('node_modules'),
   publicUrl: getPublicUrl(resolveApp('package.json')),
   servedPath: getServedPath(resolveApp('package.json')),
+  dllManifest: resolveApp('dll/manifest.json'),
+  devDllManifest: resolveApp('dev-dll/manifest.json'),
   resolveApp,
 };
 

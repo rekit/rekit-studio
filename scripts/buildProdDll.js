@@ -6,21 +6,15 @@ const paths = require('../config/paths');
 
 function buildProdDll() {
   const dllName = 'rsdll';
-  // const dllManifestPath = paths.resolveApp('build/static/rsdll-manifest.json');
 
-  console.log('Building Altus dll...');
+  console.log('Building Rekit Studio dll...');
   fs.emptyDirSync(paths.resolveApp('dll'));
 
-  let wpConfig = require('../config/webpack.config')('production');
-  wpConfig = {
-    ...wpConfig,
-    output: { ...wpConfig.output },
-    plugins: [...wpConfig.plugins],
-  };
-  wpConfig.output.filename = `${dllName}.js`;
-  wpConfig.output.library = dllName;
-  wpConfig.output.path = paths.resolveApp('dll');
-  wpConfig.plugins.push(
+  const config = require('../config/webpack.config')('production');
+  config.output.filename = `${dllName}.js`;
+  config.output.library = dllName;
+  config.output.path = paths.resolveApp('dll');
+  config.plugins.push(
     new webpack.DllPlugin({
       path: paths.dllManifest,
       name: dllName,
@@ -28,17 +22,17 @@ function buildProdDll() {
     }),
   );
 
-  console.time('Altus dll build success');
+  console.time('Rekit Studio dll build success');
 
   return new Promise((resolve, reject) => {
-    webpack(wpConfig, err => {
+    webpack(config, err => {
       if (err) {
-        console.log('Altus dll build failed:');
+        console.log('Rekit Studio dll build failed:');
         console.log(err.stack || err);
         reject();
         return;
       }
-      console.timeEnd('Altus dll build success');
+      console.timeEnd('Rekit Studio dll build success');
       resolve();
     });
   });
