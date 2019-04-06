@@ -15,3 +15,5 @@ Diff from original cra config folder:
 7. Remove WorkboxWebpackPlugin
 8. Remove typescript plugin
 9. Added dllManifest and devDllManifest to paths
+10. Change appDirectory to alwasy rekit-studio in paths.js
+11. Add webpack.HashedModuleIdsPlugin(),
