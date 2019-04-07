@@ -4,12 +4,13 @@ const path = require('path');
 const { spawn } = require('child_process');
 
 const prjRoot = path.join(__dirname, '..');
-const tmpDir = path.join(prjRoot, '.tmp/prod-pkg');
+const tmpDir = path.join(prjRoot, '.tmp/dev-pkg');
 const pkgJson = require(path.join(prjRoot, 'package.json'));
 
 fs.emptyDirSync(tmpDir);
 fs.ensureDirSync(tmpDir);
 
+pkgJson.name = 'rekit-studio-sdk';
 Object.assign(pkgJson.dependencies, pkgJson.devDependencies);
 delete pkgJson.devDependencies;
 delete pkgJson.files;
@@ -18,7 +19,20 @@ delete pkgJson.nyc;
 
 fs.writeFileSync(path.join(tmpDir, 'package.json'), JSON.stringify(pkgJson, null, '  '));
 
-['src', 'build', 'lib', 'bin', 'LICENSE'].forEach(file => {
+[
+  'src',
+  'build',
+  'dev-dll',
+  'lib',
+  'public',
+  'config',
+  'bin',
+  '.eslintrc',
+  '.prettierrc',
+  'babel.config.js',
+  'rekit.json',
+  'LICENSE',
+].forEach(file => {
   fs.copySync(path.join(prjRoot, file), path.join(tmpDir, file));
 });
 
