@@ -450,7 +450,7 @@ module.exports = function(webpackEnv, args = {}) {
     plugins: [
       new webpack.HashedModuleIdsPlugin(),
       // Generates an `index.html` file with the <script> injected.
-      !isPlugin &&
+      (!isPlugin || isEnvDevelopment) &&
         new HtmlWebpackPlugin(
           Object.assign(
             {},
@@ -525,7 +525,7 @@ module.exports = function(webpackEnv, args = {}) {
       // Generate a manifest file which contains a mapping of all asset filenames
       // to their corresponding output file so that tools can pick it up without
       // having to parse `index.html`.
-      !isPlugin &&
+      (!isPlugin || isEnvDevelopment) &&
         new ManifestPlugin({
           fileName: 'asset-manifest.json',
           publicPath: publicPath,

@@ -37,5 +37,4 @@ process.stdout.isTTY = true;
 // Tools like Cloud9 rely on this.
 if (!args.port) args.port = rekit.core.config.getRekitConfig().devPort || 3000;
 
-initPlugins(args);
 startDevServer(args);
