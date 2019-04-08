@@ -9,7 +9,7 @@ import {
 import plugin from '../../../common/plugin';
 
 export function fetchProjectData(args = {}) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({
       type: HOME_FETCH_PROJECT_DATA_BEGIN,
       force: args.force,
@@ -17,9 +17,14 @@ export function fetchProjectData(args = {}) {
 
     return new Promise((resolve, reject) => {
       axios.get(`/api/project-data${args.force ? '?force=true' : ''}`).then(
-        (res) => {
+        res => {
           // if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
           const prjData = res.data;
+          if (_.get(res.data, 'config.appType') !== 'rekit-react') {
+            // This is a very special check because rekit-react is a built-in plugin
+            // It should be removed from UI side when app type is not rekit-react.
+            plugin.removePlugin('rekit-react');
+          }
           // plugin.setPluginNames(prjData.plugins); // development time to load plugins
           plugin.getPlugins('app.processProjectData').forEach(p => {
             p.app.processProjectData(prjData);
@@ -32,7 +37,7 @@ export function fetchProjectData(args = {}) {
           });
           resolve(prjData);
         },
-        (err) => {
+        err => {
           if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
           dispatch({
             type: HOME_FETCH_PROJECT_DATA_FAILURE,

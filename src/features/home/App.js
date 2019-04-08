@@ -44,11 +44,7 @@ export class App extends Component {
       .fetchProjectData()
       .then(data => {
         document.title = this.props.projectName;
-        if (_.get(data, 'config.appType') !== 'rekit-react') {
-          // This is a very special check because rekit-react is a built-in plugin
-          // It should be removed from UI side when app type is not rekit-react.
-          plugin.removePlugin('rekit-react');
-        }
+        
         // For rendering tabs bar
         // setTimeout(() =>this.props.dispatch({
         //   type: '@@router/LOCATION_CHANGE',
