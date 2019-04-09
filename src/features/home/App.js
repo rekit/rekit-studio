@@ -25,6 +25,7 @@ export class App extends Component {
     actions: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
     elementById: PropTypes.object,
+    config: PropTypes.object,
     openTabs: PropTypes.array,
     projectDataNeedReload: PropTypes.bool.isRequired,
     fetchProjectDataError: PropTypes.any,
@@ -44,12 +45,6 @@ export class App extends Component {
       .fetchProjectData()
       .then(data => {
         document.title = this.props.projectName;
-        
-        // For rendering tabs bar
-        // setTimeout(() =>this.props.dispatch({
-        //   type: '@@router/LOCATION_CHANGE',
-        //   payload: this.props.location,
-        // }), 100);
       })
       .catch(err => {
         console.error(err);
@@ -104,10 +99,16 @@ export class App extends Component {
 
     if (!this.props.elementById) {
       return (
-        <div className="home-app-no-data">
+        <div className="home-app not-supported">
           <Alert
-            message="Project type not supported."
-            description="It seems not any Rekit plugin installed to support current app type, please check and retry."
+            message="Error: Application Type Not Supported"
+            description={
+              <span>
+                It seems there's not any Rekit plugin installed to support the current application type:{' '}
+                <span style={{ color: '#fff' }}>{this.props.config.appType}</span>. Please check and
+                retry.
+              </span>
+            }
             type="error"
             showIcon
           />
@@ -174,6 +175,7 @@ function mapStateToProps(state) {
       'fetchProjectDataError',
       'fetchProjectDataPending',
       'bottomDrawerVisible',
+      'config',
     ]),
     // router: state.router,
     // location: state.router.location,
@@ -189,5 +191,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(App);
