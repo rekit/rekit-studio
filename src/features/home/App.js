@@ -105,7 +105,7 @@ export class App extends Component {
             description={
               <span>
                 It seems there's not any Rekit plugin installed to support the current application type:{' '}
-                <span style={{ color: '#fff' }}>{this.props.config.appType}</span>. Please check and
+                <span style={{ textDecoration: 'underline' }}>{this.props.config.appType}</span>. Please check and
                 retry.
               </span>
             }

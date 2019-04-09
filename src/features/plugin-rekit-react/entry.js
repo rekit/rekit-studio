@@ -8,7 +8,7 @@ const toExport = {
   ...ui,
   route,
   reducer,
-  name: 'rekit-react',
+  name: 'rekit-react-ui',
 };
 
 window.__REKIT_PLUGINS.push(toExport);
