@@ -20,10 +20,16 @@ export function fetchProjectData(args = {}) {
         res => {
           // if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
           const prjData = res.data;
-          if (_.get(res.data, 'config.appType') !== 'rekit-react') {
-            // This is a very special check because rekit-react is a built-in plugin
+          const appType = _.get(res.data, 'config.appType');
+          if (appType !== 'rekit-react') {
+            // This is a very special check because rekit-react-ui is a built-in plugin
             // It should be removed from UI side when app type is not rekit-react.
-            plugin.removePlugin('rekit-react');
+            plugin.removePlugin('rekit-react-ui');
+          }
+          if (appType !== 'rekit-plugin') {
+            // This is a very special check because rekit-plugin-ui is a built-in plugin
+            // It should be removed from UI side when app type is not rekit-plugin.
+            plugin.removePlugin('rekit-plugin-ui');
           }
           // plugin.setPluginNames(prjData.plugins); // development time to load plugins
           plugin.getPlugins('app.processProjectData').forEach(p => {

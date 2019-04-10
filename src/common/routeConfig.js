@@ -10,14 +10,7 @@ import configRoute from '../features/config/route';
 import layoutRoute from '../features/layout/route';
 import editorRoute from '../features/editor/route';
 import coreRoute from '../features/core/route';
-// import pluginScriptsRoute from '../features/plugin-scripts/route';
 import tasksRoute from '../features/tasks/route';
-// import pluginTestRoute from '../features/plugin-test/route';
-// import pluginDepsManagerRoute from '../features/plugin-deps-manager/route';
-// import pluginCraRoute from '../features/plugin-cra/route';
-// import pluginDefaultRoute from '../features/plugin-default/route';
-// import pluginTerminalRoute from '../features/plugin-terminal/route';
-// import pluginNodeRoute from '../features/plugin-node/route';
 
 // NOTE: DO NOT CHANGE the 'childRoutes' name and the declaration pattern.
 // This is used for Rekit cmds to register routes for new features, remove features, etc.
@@ -31,14 +24,7 @@ const childRoutes = [
   layoutRoute,
   editorRoute,
   coreRoute,
-  // pluginScriptsRoute,
   tasksRoute,
-  // pluginTestRoute,
-  // pluginDepsManagerRoute,
-  // pluginCraRoute,
-  // pluginDefaultRoute,
-  // pluginTerminalRoute,
-  // pluginNodeRoute,
 ];
 
 function handleIndexRoute(route) {
