@@ -42,7 +42,6 @@ parser.addArgument(['--plugin-dir'], {
 });
 
 const args = parser.parseArgs();
-
 const prjRoot = path.isAbsolute(args.dir) ? args.dir : path.join(process.cwd(), args.dir);
 
 // rekit.core.paths.setProjectRoot(prjRoot);

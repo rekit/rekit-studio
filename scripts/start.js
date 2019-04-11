@@ -34,7 +34,6 @@ if (args.dir) rekit.core.paths.setProjectRoot(args.dir);
 
 process.stdout.isTTY = true;
 
-// Tools like Cloud9 rely on this.
-if (!args.port) args.port = rekit.core.config.getRekitConfig().devPort || 3000;
+if (!args.port) args.port = require('../rekit.json').devPort || 3000;
 
 startDevServer(args);
