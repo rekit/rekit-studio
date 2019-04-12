@@ -33,9 +33,9 @@ module.exports = function(webpackEnv, args = {}) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production';
 
-  const isPlugin = !!args.pluginPrj;
+  const isPlugin = !!args.pluginDir;
   const babelInclude = [paths.appSrc];
-  if (args.pluginPrj) babelInclude.push(path.join(args.pluginPrj, 'src'));
+  if (args.pluginDir) babelInclude.push(path.join(args.pluginDir, 'src'));
 
   // Webpack uses `publicPath` to determine where the app is being served from.
   // It requires a trailing slash, or the file assets will get an incorrect path.
