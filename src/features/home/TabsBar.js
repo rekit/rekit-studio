@@ -63,6 +63,7 @@ export class TabsBar extends Component {
     if (diff.length === 1 && diff[0] === pathname) {
       // Opened a new pathname
       const lastTab = _.last(tabs);
+      if (!lastTab) return;
       if (
         lastTab.urlPath === pathname && // The last tab is a new one
         _.intersection(getTabPaths(lastTab), openPaths).length === 1 // The tab only have one child

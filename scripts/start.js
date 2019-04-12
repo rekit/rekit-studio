@@ -1,6 +1,4 @@
 const ArgumentParser = require('argparse').ArgumentParser;
-const rekit = require('rekit-core');
-const initPlugins = require('../lib/initPlugins');
 const startDevServer = require('../lib/startDevServer');
 
 const parser = new ArgumentParser({
@@ -13,6 +11,7 @@ parser.addArgument(['--port', '-p'], {
 });
 
 parser.addArgument(['--dir', '-d'], {
+  dest: 'projectRoot',
   help: 'The project dir to be managed by Rekit Studio.',
 });
 
@@ -29,9 +28,6 @@ parser.addArgument(['--plugins-dir'], {
 });
 
 const args = parser.parseArgs();
-
-if (args.dir) rekit.core.paths.setProjectRoot(args.dir);
-
 process.stdout.isTTY = true;
 
 if (!args.port) args.port = require('../rekit.json').devPort || 3000;

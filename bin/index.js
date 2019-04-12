@@ -18,6 +18,7 @@ parser.addArgument(['--port', '-p'], {
 });
 
 parser.addArgument(['--dir', '-d'], {
+  dest: 'projectRoot',
   help: 'The project dir loaded by Rekit Studio.',
   defaultValue: '.',
 });
@@ -35,7 +36,7 @@ parser.addArgument(['--plugin-dir'], {
 });
 
 const args = parser.parseArgs();
-const prjRoot = path.isAbsolute(args.dir) ? args.dir : path.join(process.cwd(), args.dir);
+const prjRoot = path.isAbsolute(args.projectRoot) ? args.projectRoot : path.join(process.cwd(), args.projectRoot);
 
 start({
   projectRoot: prjRoot,
