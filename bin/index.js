@@ -15,7 +15,7 @@ const parser = new ArgumentParser({
 
 parser.addArgument(['--port', '-p'], {
   help: 'The port to run Rekit Studio.',
-  defaultValue: rekit.core.config.getRekitConfig().devPort || 6076,
+  defaultValue: rekit.core.config.getRekitConfig().studioPort || 3001,
 });
 
 parser.addArgument(['--dir', '-d'], {
