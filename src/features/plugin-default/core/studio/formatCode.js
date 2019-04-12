@@ -1,6 +1,6 @@
 const path = require('path');
 const prettier = require('prettier');
-const Watchpack = require('watchpack');
+const chokidar = require('chokidar');
 
 const PRETTIER_CONFIG_FILES = [
   '.prettierrc',
@@ -18,27 +18,11 @@ const DEFAULT_PRETTIER_OPTIONS = {
   printWidth: 120,
 };
 
-const wp = new Watchpack({
-  // options:
-  aggregateTimeout: 10,
-  // fire "aggregated" event when after a change for 1000ms no additonal change occured
-  // aggregated defaults to undefined, which doesn't fire an "aggregated" event
-
-  poll: false,
-  // poll: true - use polling with the default interval
-  // poll: 10000 - use polling with an interval of 10s
-  // poll defaults to undefined, which prefer native watching methods
-  // Note: enable polling when watching on a network path
+const { paths } = rekit.core;
+const rekitConfigWatcher = chokidar.watch(PRETTIER_CONFIG_FILES.map(f => paths.map(f)), {
+  persistent: true,
 });
-// Watchpack.prototype.watch(string[] files, string[] directories, [number startTime])
-// Watch src files change only
-wp.watch(
-  PRETTIER_CONFIG_FILES.map(f => path.join(rekit.core.paths.getProjectRoot(), f)),
-  [],
-  Date.now() - 10
-);
-
-wp.on('aggregated', () => {
+rekitConfigWatcher.on('all', () => {
   prettier.clearConfigCache();
 });
 
@@ -54,8 +38,8 @@ module.exports = (req, res) => {
           content,
           Object.assign(
             { filepath: file, cursorOffset: req.body.cursorOffset },
-            options || DEFAULT_PRETTIER_OPTIONS
-          )
+            options || DEFAULT_PRETTIER_OPTIONS,
+          ),
         );
         res.write(JSON.stringify({ content: formatted }));
       } catch (err) {
@@ -70,7 +54,7 @@ module.exports = (req, res) => {
           content,
           error: 'Failed to resolve prettier config.',
           err,
-        })
+        }),
       );
       res.end();
     });

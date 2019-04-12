@@ -15,6 +15,7 @@
     "lib"
   ],
   "files": [
+    ".prettierrc",
     ".gitignore",
     "package.json",
     "rekit.json"
