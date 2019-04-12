@@ -41,7 +41,7 @@
     "build:dll": "node ./scripts/buildProdDll.js",
     "build:dev-dll": "node ./scripts/buildDevDll.js",
     "build:plugins": "node ./scripts/buildPlugins.js",
-    "serveBuild": "node ./bin/index.js -d /Users/pwang7/rekit-org/rekit-plugin-rekit-plugin -p 6079",
+    "serveBuild": "node ./bin/index.js -d /Users/pwang7/rekit-org/rekit-plugin-rekit-plugin",
     "copyToRekit": "node ./scripts/copyToRekit.js",
     "test2": "node -v",
     "npm:publish": "node ./tools/npm_publish.js",

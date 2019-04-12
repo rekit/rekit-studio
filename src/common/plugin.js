@@ -33,7 +33,6 @@ export default {
         }
         return p;
       });
-      console.log(window.__REKIT_PLUGINS);
       this._handledInherit = true;
     }
     if (!this._plugins) this._plugins = window.__REKIT_PLUGINS;
