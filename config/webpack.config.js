@@ -233,7 +233,7 @@ module.exports = function(webpackEnv, args = {}) {
       // We placed these paths second because we want `node_modules` to "win"
       // if there are any conflicts. This matches Node resolution mechanism.
       // https://github.com/facebook/create-react-app/issues/253
-      modules: ['node_modules', paths.resolveApp('node_modules')].concat(
+      modules: [paths.resolveApp('node_modules'), 'node_modules'].concat(
         // It is guaranteed to exist because we tweak it in `env.js`
         process.env.NODE_PATH.split(path.delimiter).filter(Boolean),
       ),
@@ -476,7 +476,7 @@ module.exports = function(webpackEnv, args = {}) {
               : undefined,
           ),
         ),
-      !isPlugin &&
+      (!isPlugin || isEnvDevelopment) &&
         new CopyWebpackPlugin([
           {
             from: path.join(path.dirname(require.resolve('monaco-editor/package.json')), 'min/vs'),

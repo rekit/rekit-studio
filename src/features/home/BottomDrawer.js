@@ -17,9 +17,10 @@ export class BottomDrawer extends Component {
 
   getPanes = _.memoize(() => {
     const panes = plugin.getPlugins('bottomDrawer.getPanes').reduce((arr, p) => {
-      let ps = p.bottomDrawer.getPanes();
-      if (!Array.isArray(ps)) ps = [ps];
-      arr.push.apply(arr, ps);
+      // let ps = p.bottomDrawer.getPanes();
+      // if (!Array.isArray(ps)) ps = [ps];
+      // arr.push.apply(arr, ps);
+      arr.push(..._.castArray(p.bottomDrawer.getPanes()));
       return arr;
     }, []);
     panes.sort((p1, p2) => p1.order - p2.order);

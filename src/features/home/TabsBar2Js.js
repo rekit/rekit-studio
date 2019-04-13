@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Icon, Dropdown, Menu, Modal } from 'antd';
 import scrollIntoView from 'dom-scroll-into-view';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
 import { SvgIcon } from '../common';
 import { closeTab, stickTab, moveTab, setTempTab, removePaths } from './redux/actions';
@@ -297,22 +298,29 @@ export class TabsBar extends Component {
     );
     const iconStyle = tab.iconColor ? { fill: tab.iconColor } : null;
     return (
-      <Dropdown overlay={getMenu(tab)} trigger={['contextMenu']} key={tab.key}>
-        <span
-          key={tab.key}
-          onClick={() => this.handleSelectTab(tab)}
-          onDoubleClick={() => this.props.actions.stickTab(tab.key)}
-          className={classnames('tab', {
-            'is-active': tab.isActive,
-            'is-changed': this.isChanged(tab),
-            'is-temp': tab.isTemp,
-          })}
-        >
-          {tab.icon && <SvgIcon type={tab.icon} style={iconStyle} />}
-          <label>{tab.name}</label>
-          <Icon type="close" onClick={evt => this.handleClose(evt, tab)} />
-        </span>
-      </Dropdown>
+      <Draggable key={tab.key} draggableId={tab.key} index={index}>
+        {provided => (
+          <Dropdown overlay={getMenu(tab)} trigger={['contextMenu']} key={tab.key}>
+            <span
+              key={tab.key}
+              onClick={() => this.handleSelectTab(tab)}
+              onDoubleClick={() => this.props.actions.stickTab(tab.key)}
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              className={classnames('tab', {
+                'is-active': tab.isActive,
+                'is-changed': this.isChanged(tab),
+                'is-temp': tab.isTemp,
+              })}
+            >
+              {tab.icon && <SvgIcon type={tab.icon} style={iconStyle} />}
+              <label>{tab.name}</label>
+              <Icon type="close" onClick={evt => this.handleClose(evt, tab)} />
+            </span>
+          </Dropdown>
+        )}
+      </Draggable>
     );
   };
 
@@ -329,7 +337,22 @@ export class TabsBar extends Component {
     const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
     return (
       <div className={classnames('home-tabs-bar', { 'has-sub-tabs': hasSubTabs })}>
-        <div className="main-tabs">{tabs.map(this.renderTab)}</div>
+        <DragDropContext onDragEnd={this.handleDragEnd}>
+          <Droppable droppableId="droppable" direction="horizontal">
+            {provided => (
+              <div
+                className="main-tabs"
+                ref={node => {
+                  this.assignRef(node);
+                  provided.innerRef(node);
+                }}
+                style={{ ...getListStyle() }}
+              >
+                {tabs.map(this.renderTab)}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
         {this.renderSubTabs()}
       </div>
     );
