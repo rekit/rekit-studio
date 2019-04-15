@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { Button } from 'antd';
 import classnames from 'classnames';
 import plugin from '../../common/plugin';
+import { ErrorBoundary } from '../common';
 import { setBottomDrawerVisible, setBottomDrawerTab } from './redux/actions';
 
 export class BottomDrawer extends Component {
@@ -16,6 +17,7 @@ export class BottomDrawer extends Component {
   };
 
   getPanes = _.memoize(() => {
+    // Compute once
     const panes = plugin.getPlugins('bottomDrawer.getPanes').reduce((arr, p) => {
       // let ps = p.bottomDrawer.getPanes();
       // if (!Array.isArray(ps)) ps = [ps];
@@ -77,7 +79,7 @@ export class BottomDrawer extends Component {
         </div>
         {bottomDrawerVisible && (
           <div className="content-container">
-            {(currentPane && <currentPane.component />) || <div className="no-view">No view for the tab: {bottomDrawerTab}.</div>}
+            {(currentPane && <ErrorBoundary><currentPane.component /></ErrorBoundary>) || <div className="no-view">No view for the tab: {bottomDrawerTab}.</div>}
           </div>
         )}
       </div>
