@@ -1,0 +1,34 @@
+@import '../../styles/mixins';
+
+.git-manager-overview-widget {
+  height: 100%;
+  .widget-container {
+    flex: 1 1 0;
+    overflow: auto;
+    .scroll-style();
+    padding: 15px;
+    > div {
+      color: #999;
+    }
+    p {
+      color: green;
+    }
+
+    h6 {
+      margin-top: 10px;
+      color: #999;
+      font-weight: normal;
+      padding-top: 8px;
+      border-top: 1px solid #666;
+    }
+
+    ul,li{
+      padding: 0;
+      margin: 0;
+
+    }
+    li {
+      color: @red2;
+    }
+  }
+}

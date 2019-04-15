@@ -15,6 +15,7 @@ import layoutReducer from '../features/layout/redux/reducer';
 import editorReducer from '../features/editor/redux/reducer';
 import coreReducer from '../features/core/redux/reducer';
 import tasksReducer from '../features/tasks/redux/reducer';
+import gitManagerReducer from '../features/git-manager/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
 // This is used for Rekit cmds to register new features, remove features, etc.
@@ -34,6 +35,7 @@ const reducerMap = {
   editor: editorReducer,
   core: coreReducer,
   tasks: tasksReducer,
+  gitManager: gitManagerReducer,
 };
 
 export default () => {

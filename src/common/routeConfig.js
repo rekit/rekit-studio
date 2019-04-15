@@ -12,6 +12,7 @@ import layoutRoute from '../features/layout/route';
 import editorRoute from '../features/editor/route';
 import coreRoute from '../features/core/route';
 import tasksRoute from '../features/tasks/route';
+import gitManagerRoute from '../features/git-manager/route';
 
 // NOTE: DO NOT CHANGE the 'childRoutes' name and the declaration pattern.
 // This is used for Rekit cmds to register routes for new features, remove features, etc.
@@ -26,6 +27,7 @@ const childRoutes = [
   editorRoute,
   coreRoute,
   tasksRoute,
+  gitManagerRoute,
 ];
 
 function handleIndexRoute(route) {

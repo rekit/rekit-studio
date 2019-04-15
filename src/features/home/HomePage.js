@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Col, Row } from 'antd';
 import plugin from '../../common/plugin';
 import { AllDepsDiagramView, OverviewDiagramView } from '../diagram';
+import { OverviewWidget } from '../git-manager';
 import { getTypesCount } from './selectors/projectData';
 import { SvgIcon } from '../common';
 import colors from '../../common/colors';
@@ -125,8 +126,7 @@ export class HomePage extends Component {
             </div>
           </Col>
           <Col span={8} className="test-coverage-container">
-            <h3>Test Coverage</h3>
-            <div className="test-coverage">No data.</div>
+            <OverviewWidget />
           </Col>
         </Row>
       </div>
