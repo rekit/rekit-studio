@@ -29,7 +29,7 @@ export class FormDialog extends Component {
         <CommonForm
           formId={this.props.dialog.formId}
           onSubmit={hideDialog}
-          context={this.props.dialog.context}
+          actionContext={this.props.dialog.context}
           onCancel={this.props.actions.hideDialog}
         />
       </Modal>

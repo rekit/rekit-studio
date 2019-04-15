@@ -1,3 +1,4 @@
+const path = require('path');
 const ArgumentParser = require('argparse').ArgumentParser;
 const startDevServer = require('../lib/startDevServer');
 
@@ -30,6 +31,8 @@ parser.addArgument(['--plugins-dir'], {
 const args = parser.parseArgs();
 process.stdout.isTTY = true;
 
+if (args.projectRoot && !path.isAbsolute(args.projectRoot))
+  args.projectRoot = path.join(process.cwd(), args.projectRoot);
 if (!args.port) args.port = require('../rekit.json').devPort || 3000;
 
 startDevServer(args);

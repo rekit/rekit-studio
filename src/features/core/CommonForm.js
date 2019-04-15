@@ -16,7 +16,7 @@ export class CommonForm extends Component {
     disabled: PropTypes.bool,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
-    context: PropTypes.object.isRequired,
+    actionContext: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -31,6 +31,7 @@ export class CommonForm extends Component {
   };
 
   componentDidMount() {
+    console.log('contexxxt:',this.props.actionContext);
     this.getMeta().elements.forEach(ele => {
       if (ele.autoFocus) {
         requestAnimationFrame(() => {
@@ -57,7 +58,7 @@ export class CommonForm extends Component {
     };
     plugin.getPlugins('form.fillMeta').forEach(p =>
       p.form.fillMeta({
-        context: this.props.context,
+        context: this.props.actionContext,
         formId: this.props.formId,
         meta,
         values: this.props.form.getFieldsValue(),
@@ -69,7 +70,7 @@ export class CommonForm extends Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
-    const { context, formId } = this.props;
+    const { actionContext, formId } = this.props;
     this.props.form.validateFieldsAndScroll((errors, values) => {
       if (errors) {
         return;
@@ -77,10 +78,10 @@ export class CommonForm extends Component {
       console.log('Form submit: ', values);
 
       let command = {
-        commandName: context.action,
-        type: context.elementType,
+        commandName: actionContext.action,
+        type: actionContext.elementType,
         ...values,
-        context,
+        context: actionContext,
         formId,
         values,
       };
@@ -90,7 +91,7 @@ export class CommonForm extends Component {
 
       delete command.formId;
       if (command.values === values) delete command.values;
-      if (command.context === context) delete command.context;
+      if (command.context === actionContext) delete command.context;
 
       this.setState({ pending: true });
       // if (/^add|move|update$/.test(context.action)) {
@@ -109,7 +110,7 @@ export class CommonForm extends Component {
           }
           this.props.onSubmit();
           this.setState({ pending: false });
-          message.success(`${_.capitalize(context.action)} ${context.elementType} success.`);
+          message.success(`${_.capitalize(actionContext.action)} ${actionContext.elementType} success.`);
         })
         .catch(err => {
           // Show error

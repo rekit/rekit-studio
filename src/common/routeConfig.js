@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import plugin from './plugin';
 import App from '../features/home/App';
 import { PageNotFound } from '../features/common';
@@ -45,7 +46,7 @@ function handleIndexRoute(route) {
 
 export default () => {
   plugin.getPlugins('route').forEach(p => {
-    childRoutes.push(p.route);
+    childRoutes.push(..._.castArray(p.route));
   });
 
   const routes = [
@@ -60,6 +61,5 @@ export default () => {
   ];
 
   routes.forEach(handleIndexRoute);
-
   return routes;
 };
