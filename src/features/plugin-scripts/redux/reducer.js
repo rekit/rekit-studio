@@ -18,17 +18,19 @@ const reducers = [runScriptReducer, stopScriptReducer, clearOutputReducer, setCu
 const convert = new Convert();
 
 export default function reducer(state = initialState, action) {
-  let newState;
+  let newState = state;
   switch (action.type) {
     // Handle cross-topic actions here
     case 'HOME_FETCH_PROJECT_DATA_SUCCESS':
-      let scripts = action.data.pluginScripts.scripts;
-      scripts = Object.keys(scripts).map(k => ({ name: k, script: scripts[k] }));
-      newState = {
-        ...state,
-        running: action.data.pluginScripts.running,
-        scripts,
-      };
+      if (action.data.pluginScripts) {
+        let scripts = action.data.pluginScripts.scripts || {};
+        scripts = Object.keys(scripts).map(k => ({ name: k, script: scripts[k] }));
+        newState = {
+          ...state,
+          running: action.data.pluginScripts.running,
+          scripts,
+        };
+      }
       break;
 
     case 'ON_SOCKET_MESSAGE':
@@ -53,11 +55,11 @@ export default function reducer(state = initialState, action) {
                   text
                     .replace(/</g, '&lt;')
                     .replace(/>/g, '&gt;')
-                    .replace(/ /g, '&nbsp;')
+                    .replace(/ /g, '&nbsp;'),
                 )
                 .replace('#00A', '#1565C0')
-                .replace(/color:#555/g, 'color:#777')
-            )
+                .replace(/color:#555/g, 'color:#777'),
+            ),
           );
           if (arr.length > 200) arr = arr.slice(-200);
           newState = {
