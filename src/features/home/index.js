@@ -2,7 +2,7 @@ export { default as ProjectExplorerOld } from './ProjectExplorerOld';
 export { default as SidePanel } from './SidePanel';
 export { default as App } from './App';
 export { default as RoutesPage } from './RoutesPage';
-export { default as HomePage } from './HomePage';
+export { default as Dashboard } from './Dashboard';
 export { default as About } from './About';
 export { default as DemoAlert } from './DemoAlert';
 export { default as RekitSteps } from './RekitSteps';

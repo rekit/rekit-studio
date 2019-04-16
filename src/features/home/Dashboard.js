@@ -12,7 +12,7 @@ import { SvgIcon } from '../common';
 import colors from '../../common/colors';
 import icons from '../../common/icons';
 
-export class HomePage extends Component {
+export class Dashboard extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
   };
@@ -100,7 +100,9 @@ export class HomePage extends Component {
         {badges.map(b => (
           <div className="top-badge" key={b.type}>
             <SvgIcon size={28} type={icons(b.type)} fill={colors(b.type)} />
-            <label className="count">{_.isFunction(b.count) ? b.count() : typesCount[b.type]}</label>
+            <label className="count">
+              {_.isFunction(b.count) ? b.count() : typesCount[b.type]}
+            </label>
             <label className="type">{b.name}</label>
           </div>
         ))}
@@ -116,16 +118,18 @@ export class HomePage extends Component {
     if (p && p.dashboard.OverviewDiagram === 'feature') OverviewDiagram = OverviewDiagramView;
     else if (p) OverviewDiagram = p.dashboard.OverviewDiagram;
     return (
-      <div className="home-home-page">
+      <div className="home-dashboard">
         {this.renderBadges()}
-        <Row style={{ minWidth: 800 }} gutter={30}>
+        <Row gutter={10} className="dashboard-row">
           <Col span={16}>
-            <h3>Overview Diagram</h3>
-            <div className="diagram-container">
-              <OverviewDiagram />
+            <div className="dashboard-widget">
+              <h3>Overview Diagram</h3>
+              <div className="widget-container" style={{ overflow: 'hidden' }}>
+                <OverviewDiagram />
+              </div>
             </div>
           </Col>
-          <Col span={8} className="test-coverage-container">
+          <Col span={8}>
             <OverviewWidget />
           </Col>
         </Row>
@@ -150,5 +154,5 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(HomePage);
+  mapDispatchToProps,
+)(Dashboard);

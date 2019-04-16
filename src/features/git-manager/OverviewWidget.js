@@ -12,7 +12,7 @@ export class OverviewWidget extends Component {
 
   render() {
     return (
-      <div className="git-manager-overview-widget">
+      <div className="git-manager-overview-widget dashboard-widget">
         <h3>Git Status</h3>
         <div className="widget-container">
           <div>Last commit: Nate Wang (6 April, 2019)</div>
@@ -23,6 +23,12 @@ export class OverviewWidget extends Component {
             <li>src/features/home/HomePage.js</li>
             <li>src/features/home/HomePage.less</li>
             <li>src/common/rootReducer.js</li>
+            <li>src/common/routeConfig.js</li>
+            <li>src/common/routeConfig.js</li>
+            <li>src/common/routeConfig.js</li>
+            <li>src/common/routeConfig.js</li>
+            <li>src/common/routeConfig.js</li>
+            <li>src/common/routeConfig.js</li>
             <li>src/common/routeConfig.js</li>
           </ul>
         </div>
