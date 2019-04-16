@@ -33,7 +33,9 @@ export class OverviewWidget extends Component {
       if (status[key].length > 0) {
         return (
           <section key={key}>
-            <h6>{labelMap[key]} ({status[key].length}):</h6>
+            <h6>
+              {labelMap[key]} ({status[key].length}):
+            </h6>
             <ul>
               {status[key].map(file => (
                 <li key={file} onClick={() => element.show(file)}>
@@ -59,10 +61,16 @@ export class OverviewWidget extends Component {
           <div className="widget-container">
             <section>
               <p>On branch {status.current}.</p>
-              <p>
-                Ahead of '{status.tracking}' by <span className="blue2">{status.ahead}</span>{' '}
-                commits.
-              </p>
+              {status.ahead > 0 ? (
+                <p>
+                  Ahead of '{status.tracking}' by <span className="blue2">{status.ahead}</span>{' '}
+                  commits.
+                </p>
+              ) : (
+                <p>
+                  Up to date with '{status.tracking}'.
+                </p>
+              )}
             </section>
             {status.files.length > 0 ? (
               this.renderFiles(status)
