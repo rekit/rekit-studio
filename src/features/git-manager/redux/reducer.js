@@ -7,14 +7,25 @@
 // https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da.
 
 import initialState from './initialState';
+import { reducer as fetchGitStatusReducer } from './fetchGitStatus';
 
 const reducers = [
+  fetchGitStatusReducer,
 ];
 
 export default function reducer(state = initialState, action) {
-  let newState;
+  let newState = state;
   switch (action.type) {
     // Handle cross-topic actions here
+    case 'ON_SOCKET_MESSAGE': {
+      if (action.data.type === 'GIT_MANAGER_GIT_STATUS') {
+        newState = {
+          ...state,
+          status: action.data.payload.status,
+        };
+      }
+      break;
+    }
     default:
       newState = state;
       break;

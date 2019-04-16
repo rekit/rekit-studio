@@ -71,7 +71,7 @@ export class TabsBar extends Component {
         if (tempTabKey && tempTabKey !== lastTab.key) {
           // Close the last temp tab
           const tempTab = _.find(tabs, { key: tempTabKey });
-          actions.closeTab(tempTab);
+          if (tempTab) actions.closeTab(tempTab);
         }
         actions.setTempTab(lastTab.key);
       }

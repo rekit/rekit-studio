@@ -1,33 +1,51 @@
 @import '../../styles/mixins';
 
 .git-manager-overview-widget {
+  color: #999;
+  font-size: 14px;
   .widget-container {
-    overflow: auto;
-    .scroll-style();
     padding: 15px;
-    min-height: 0;
-    > div {
-      color: #999;
+    section {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .green2 {
+        color: @green2;
+      }
+      .red2 {
+        color: @red2;
+      }
+      .blue2 {
+        color: @primary-color;
+      }
     }
     p {
-      color: green;
+      margin: 0;
+    }
+    > div {
+      color: #999;
     }
 
     h6 {
       margin-top: 10px;
-      color: #999;
-      font-weight: normal;
+      color: #bbb;
+      font-weight: bold;
       padding-top: 8px;
       border-top: 1px solid #666;
     }
 
-    ul,li{
+    ul,
+    li {
       padding: 0;
       margin: 0;
-
     }
     li {
+      display: block;
       color: @red2;
+      cursor: pointer;
+      &:hover {
+        background-color: #333;
+      }
     }
   }
 }

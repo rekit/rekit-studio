@@ -6,6 +6,10 @@
 
 // NOTE: initialState constant is necessary so that Rekit could auto add initial state when creating async actions.
 const initialState = {
+  isGitRepo: true, // By default suppose it's git repo. The first api call will set it with actual value.
+  status: null,
+  fetchGitStatusPending: false,
+  fetchGitStatusError: null,
 };
 
 export default initialState;
