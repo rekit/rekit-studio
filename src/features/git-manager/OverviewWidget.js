@@ -67,16 +67,14 @@ export class OverviewWidget extends Component {
                   commits.
                 </p>
               ) : (
-                <p>
-                  Up to date with '{status.tracking}'.
-                </p>
+                status.tracking && <p>Up to date with '{status.tracking}'.</p>
               )}
             </section>
             {status.files.length > 0 ? (
               this.renderFiles(status)
             ) : (
               <section>
-                <h6 className="green2">nothing to commit, working tree clean</h6>
+                <h6 className="green2">Nothing to commit, working tree clean</h6>
               </section>
             )}
           </div>
