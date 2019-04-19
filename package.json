@@ -69,7 +69,6 @@
     "import-from": "^2.1.0",
     "lodash": "^4.17.10",
     "node-pty": "^0.8.1",
-    "package-json": "^6.3.0",
     "prettier": "^1.16.4",
     "rekit-core": "next",
     "reselect": "^4.0.0",
