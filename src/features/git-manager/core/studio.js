@@ -5,12 +5,23 @@ const git = require('simple-git')();
 
 let watcher;
 const track = _.debounce(io => {
-  git.status((err, status) => {
-    if (!err) {
-      io.emit('GIT_MANAGER_GIT_STATUS', {
-        status,
+  git.checkIsRepo((err1, isRepo) => {
+    if (err1) return;
+    if (!isRepo) {
+      io.emit({
+        type: 'GIT_MANAGER_GIT_STATUS',
+        data: null,
       });
+      return;
     }
+    git.status((err, status) => {
+      if (!err) {
+        io.emit({
+          type: 'GIT_MANAGER_GIT_STATUS',
+          data: status,
+        });
+      }
+    });
   });
 }, 1000);
 function startTrack(io) {
@@ -24,14 +35,8 @@ function startTrack(io) {
 function config(server, app, args) {
   git.cwd(paths.getProjectRoot());
   app.get('/api/git-manager/status', function(req, res) {
-    git.checkIsRepo((err, isRepo) => {
-      if (isRepo) {
-        startTrack(args.io);
-        res.send(JSON.stringify({ success: true }));
-      } else {
-        res.send(JSON.stringify({ success: false }));
-      }
-    });
+    startTrack(args.io);
+    res.send(JSON.stringify({ success: true }));
   });
 }
 module.exports = { config };

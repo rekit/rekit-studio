@@ -25,11 +25,12 @@ export class OverviewWidget extends Component {
 
   renderFiles(status) {
     const labelMap = {
+      created: 'Created',
       modified: 'Modified',
       not_added: 'Untracked',
       deleted: 'Deleted',
     };
-    return ['modified', 'not_added', 'deleted'].map(key => {
+    return ['created', 'modified', 'not_added', 'deleted'].map(key => {
       if (status[key].length > 0) {
         return (
           <section key={key}>
@@ -60,7 +61,7 @@ export class OverviewWidget extends Component {
         {isGitRepo && status && (
           <div className="widget-container">
             <section>
-              <p>On branch {status.current}.</p>
+              <p>On branch {status.current === 'No' ? 'master' : status.current}.</p>
               {status.ahead > 0 ? (
                 <p>
                   Ahead of '{status.tracking}' by <span className="blue2">{status.ahead}</span>{' '}

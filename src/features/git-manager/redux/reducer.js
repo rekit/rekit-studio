@@ -9,21 +9,18 @@
 import initialState from './initialState';
 import { reducer as fetchGitStatusReducer } from './fetchGitStatus';
 
-const reducers = [
-  fetchGitStatusReducer,
-];
+const reducers = [fetchGitStatusReducer];
 
 export default function reducer(state = initialState, action) {
   let newState = state;
   switch (action.type) {
     // Handle cross-topic actions here
-    case 'ON_SOCKET_MESSAGE': {
-      if (action.data.type === 'GIT_MANAGER_GIT_STATUS') {
-        newState = {
-          ...state,
-          status: action.data.payload.status,
-        };
-      }
+    case 'GIT_MANAGER_GIT_STATUS': {
+      newState = {
+        ...state,
+        status: action.data,
+        isGitRepo: !!action.data,
+      };
       break;
     }
     default:

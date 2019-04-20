@@ -27,11 +27,13 @@ if (process.env.NODE_ENV !== 'test') {
         break;
       case 'fileChanged':
       case 'configChanged':
-        console.log('file or config changed');
         store.dispatch({
           type: 'PROJECT_DATA_CHANGED',
           data: data.payload,
         });
+        break;
+      case 'reduxAction':
+        store.dispatch(data.payload);
         break;
       default:
         store.dispatch({
