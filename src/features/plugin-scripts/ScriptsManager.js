@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import SplitPane from 'rspv2/lib/SplitPane';
 import Pane from 'rspv2/lib/Pane';
 import { runScript, stopScript, setCurrent } from './redux/actions';
@@ -63,7 +64,12 @@ export class ScriptsManager extends Component {
               current={this.props.current}
             />
           </Pane>
-          <Pane className="output-container" size={sizes[1] || 1}>
+          <Pane
+            className={classnames('output-container', {
+              'not-running': !this.props.running[this.props.current],
+            })}
+            size={sizes[1] || 1}
+          >
             <PtyOutput id={`run_script_${this.props.current}`} />
           </Pane>
         </SplitPane>
@@ -71,7 +77,7 @@ export class ScriptsManager extends Component {
     );
   }
 }
-            // <OutputView type="script" name={this.props.current} />
+// <OutputView type="script" name={this.props.current} />
 
 /* istanbul ignore next */
 function mapStateToProps(state) {
@@ -91,5 +97,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ScriptsManager);
