@@ -1,0 +1,18 @@
+@import '../../styles/mixins';
+
+.pty-output {
+  .abs-full();
+  > div {
+    height: 100%;
+  }
+  .terminal {
+    height: 100%;
+  }
+  .xterm-viewport {
+    padding: 6px;
+    .scroll-style();
+  }
+  .xterm-screen {
+    padding: 6px;
+  }
+}

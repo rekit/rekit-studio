@@ -59,6 +59,10 @@ const initialState = {
   bottomDrawerTab: storage.local.getItem('bottomDrawerTab', 'output'),
 
   output: [],
+  npmListPending: false,
+  npmListError: null,
+
+  termViewOutput: [],
 };
 
 export default initialState;

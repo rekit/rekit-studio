@@ -32,49 +32,59 @@ export default function reducer(state = initialState, action) {
         };
       }
       break;
-
-    case 'ON_SOCKET_MESSAGE':
-      if (action.data.type === 'script-status') {
-        const payload = action.data.payload;
-        if (payload.type === 'exit') {
-          newState = {
-            ...state,
-            running: {
-              ...state.running,
-              [payload.name]: false,
-            },
-          };
-        }
-        if (payload.type === 'output') {
-          let arr = (state.output[payload.name] || []).slice();
-          arr.push.apply(
-            arr,
-            payload.output.split(/[\r\n]+/).map(text =>
-              convert
-                .toHtml(
-                  text
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/ /g, '&nbsp;'),
-                )
-                .replace('#00A', '#1565C0')
-                .replace(/color:#555/g, 'color:#777'),
-            ),
-          );
-          if (arr.length > 200) arr = arr.slice(-200);
-          newState = {
-            ...state,
-            output: {
-              ...state.output,
-              [payload.name]: arr,
-            },
-          };
-        }
-      } else {
-        newState = state;
-      }
-
+    case 'PLUGIN_SCRIPTS_EXIT': {
+      newState = {
+        ...state,
+        running: {
+          ...state.running,
+          [action.data.name]: false,
+        },
+      };
       break;
+    }
+
+    // case 'ON_SOCKET_MESSAGE':
+    //   if (action.data.type === 'script-status') {
+    //     const payload = action.data.payload;
+    //     if (payload.type === 'exit') {
+    //       newState = {
+    //         ...state,
+    //         running: {
+    //           ...state.running,
+    //           [payload.name]: false,
+    //         },
+    //       };
+    //     }
+    //     if (payload.type === 'output') {
+    //       let arr = (state.output[payload.name] || []).slice();
+    //       arr.push.apply(
+    //         arr,
+    //         payload.output.split(/[\r\n]+/).map(text =>
+    //           convert
+    //             .toHtml(
+    //               text
+    //                 .replace(/</g, '&lt;')
+    //                 .replace(/>/g, '&gt;')
+    //                 .replace(/ /g, '&nbsp;'),
+    //             )
+    //             .replace('#00A', '#1565C0')
+    //             .replace(/color:#555/g, 'color:#777'),
+    //         ),
+    //       );
+    //       if (arr.length > 200) arr = arr.slice(-200);
+    //       newState = {
+    //         ...state,
+    //         output: {
+    //           ...state.output,
+    //           [payload.name]: arr,
+    //         },
+    //       };
+    //     }
+    //   } else {
+    //     newState = state;
+    //   }
+
+    //   break;
 
     default:
       newState = state;

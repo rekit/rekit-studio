@@ -8,6 +8,7 @@ import Pane from 'rspv2/lib/Pane';
 import { runScript, stopScript, setCurrent } from './redux/actions';
 import { storage } from '../common/utils';
 import { ScriptList, OutputView } from './';
+import { PtyOutput } from '../pty';
 
 export class ScriptsManager extends Component {
   static propTypes = {
@@ -29,6 +30,7 @@ export class ScriptsManager extends Component {
     const sizesState = this.getSizesState();
     sizesState[paneId] = sizes;
     storage.local.setItem('layoutSizes', sizesState);
+    window.dispatchEvent(new window.Event('resize'));
   };
 
   handleStart = name => {
@@ -62,13 +64,14 @@ export class ScriptsManager extends Component {
             />
           </Pane>
           <Pane className="output-container" size={sizes[1] || 1}>
-            <OutputView type="script" name={this.props.current} />
+            <PtyOutput id={`run_script_${this.props.current}`} />
           </Pane>
         </SplitPane>
       </div>
     );
   }
 }
+            // <OutputView type="script" name={this.props.current} />
 
 /* istanbul ignore next */
 function mapStateToProps(state) {

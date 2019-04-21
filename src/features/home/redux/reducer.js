@@ -23,6 +23,7 @@ import { reducer as clearOutputReducer } from './clearOutput';
 import { reducer as setBottomDrawerTabReducer } from './setBottomDrawerTab';
 import { reducer as setTempTabReducer } from './setTempTab';
 import { reducer as removePathsReducer } from './removePaths';
+import { reducer as npmListReducer } from './npmList';
 
 const convert = new Convert();
 
@@ -46,6 +47,7 @@ const reducers = [
   clearOutputReducer,
   setTempTabReducer,
   removePathsReducer,
+  npmListReducer,
 ];
 
 // const pascalCase = _.flow(
@@ -191,6 +193,13 @@ export default function reducer(state = initialState, action) {
       };
       break;
     }
+
+    case 'TERM_VIEW_OUTPUT':
+      newState = {
+        ...state,
+        termViewOutput: [...state.termViewOutput, ...action.data],
+      };
+      break;
 
     default:
       newState = state;

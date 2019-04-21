@@ -4,6 +4,7 @@ import {
   Dashboard,
   WelcomePage,
   AllRoutesPage,
+  TermView,
 } from './';
 
 export default {
@@ -11,6 +12,7 @@ export default {
   name: 'Home',
   childRoutes: [
     { name: 'Dashboard', component: Dashboard, isIndex: true },
+    { path: '/termview', component: TermView },
     { path: '/welcome', name: 'Welcome page', component: WelcomePage },
     { path: '/all-routes', name: 'All Routes', component: AllRoutesPage },
     { path: '/element/:elementId/:view?', name: 'Element page', component: ElementPage },

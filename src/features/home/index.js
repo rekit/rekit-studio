@@ -16,3 +16,4 @@ export { default as ElementPage } from './ElementPage';
 export { default as ImageView } from './ImageView';
 export { default as BottomDrawer } from './BottomDrawer';
 export { default as OutputView } from './OutputView';
+export { default as TermView } from './TermView';
