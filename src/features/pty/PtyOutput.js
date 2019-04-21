@@ -58,6 +58,7 @@ export class PtyOutput extends Component {
   componentDidMount() {
     window.addEventListener('resize', this.handleWindowResize);
     this.updateTerm();
+    this.checkClear();
   }
 
   componentDidUpdate(prevProps) {

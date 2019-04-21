@@ -8,7 +8,7 @@ import SplitPane from 'rspv2/lib/SplitPane';
 import Pane from 'rspv2/lib/Pane';
 import { runScript, stopScript, setCurrent } from './redux/actions';
 import { storage } from '../common/utils';
-import { ScriptList, OutputView } from './';
+import { ScriptList } from './';
 import { PtyOutput } from '../pty';
 import { clearOutput } from '../pty/redux/actions';
 
@@ -79,7 +79,6 @@ export class ScriptsManager extends Component {
     );
   }
 }
-// <OutputView type="script" name={this.props.current} />
 
 /* istanbul ignore next */
 function mapStateToProps(state) {
