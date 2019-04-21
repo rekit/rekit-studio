@@ -10,6 +10,7 @@ import { runScript, stopScript, setCurrent } from './redux/actions';
 import { storage } from '../common/utils';
 import { ScriptList, OutputView } from './';
 import { PtyOutput } from '../pty';
+import { clearOutput } from '../pty/redux/actions';
 
 export class ScriptsManager extends Component {
   static propTypes = {
@@ -35,6 +36,7 @@ export class ScriptsManager extends Component {
   };
 
   handleStart = name => {
+    this.props.actions.clearOutput(`run_script_${name}`);
     this.props.actions.runScript(name);
   };
   handleStop = name => {
@@ -91,7 +93,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ runScript, stopScript, setCurrent }, dispatch),
+    actions: bindActionCreators({ runScript, stopScript, setCurrent, clearOutput }, dispatch),
   };
 }
 

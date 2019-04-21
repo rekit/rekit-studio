@@ -7,7 +7,7 @@ import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
 import { Terminal } from 'xterm';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { clearOutput, npmList } from './redux/actions';
+import { removeOutputFromStore, npmList } from './redux/actions';
 
 const terms = {};
 const terminalOptions = {
@@ -42,11 +42,9 @@ export class PtyOutput extends Component {
   static propTypes = {
     id: PropTypes.string,
     output: PropTypes.object.isRequired,
-    // clear: PropTypes.bool,
   };
   static defaultProps = {
     id: '_pty_default_output_terminal',
-    // clear: false,
   };
   getTerm() {
     const { id } = this.props;
@@ -59,7 +57,6 @@ export class PtyOutput extends Component {
   }
   componentDidMount() {
     window.addEventListener('resize', this.handleWindowResize);
-
     this.updateTerm();
   }
 
@@ -67,12 +64,12 @@ export class PtyOutput extends Component {
     const output = this.props.output[this.props.id];
     if (output && output.length) {
       output.forEach(text => this.term.write(text));
-      this.props.actions.clearOutput(this.props.id);
+      this.props.actions.removeOutputFromStore(this.props.id);
     }
     if (prevProps.id !== this.props.id) {
       this.updateTerm();
     }
-    // this.checkClear();
+    this.checkClear();
   }
 
   componentWillUnmount() {
@@ -81,11 +78,11 @@ export class PtyOutput extends Component {
     window.removeEventListener('resize', this.handleWindowResize);
   }
 
-  // checkClear() {
-  //   if (this.props.clear) {
-
-  //   }
-  // }
+  checkClear() {
+    if (!this.props.output[this.props.id] && this.term) {
+      this.term.clear();
+    }
+  }
 
   updateTerm() {
     if (this.term) this.container.removeChild(this.term.element.parentNode);
@@ -115,7 +112,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ clearOutput, npmList }, dispatch),
+    actions: bindActionCreators({ removeOutputFromStore, npmList }, dispatch),
     dispatch,
   };
 }

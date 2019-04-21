@@ -9,8 +9,9 @@
 import initialState from './initialState';
 import { reducer as clearOutputReducer } from './clearOutput';
 import { reducer as npmListReducer } from './npmList';
+import { reducer as removeOutputFromStoreReducer } from './removeOutputFromStore';
 
-const reducers = [clearOutputReducer, npmListReducer];
+const reducers = [clearOutputReducer, npmListReducer, removeOutputFromStoreReducer];
 const MAX_OUTPUT_LINES = 1000;
 export default function reducer(state = initialState, action) {
   let newState;

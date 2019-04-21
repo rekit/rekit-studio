@@ -2,27 +2,25 @@
 // putting related actions and reducers in one file. See more at:
 // https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da
 
-import { PTY_CLEAR_OUTPUT } from './constants';
+import { PTY_REMOVE_OUTPUT_FROM_STORE } from './constants';
 
-export function clearOutput(id) {
+export function removeOutputFromStore(id) {
   return {
-    type: PTY_CLEAR_OUTPUT,
+    type: PTY_REMOVE_OUTPUT_FROM_STORE,
     data: { id },
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
-    case PTY_CLEAR_OUTPUT: {
+    case PTY_REMOVE_OUTPUT_FROM_STORE:
       return {
         ...state,
         output: {
           ...state.output,
-          // when output is null, terminal will clear its content too, this is different from removeOutputFromStore
-          [action.data.id]: null,
+          [action.data.id]: [],
         },
       };
-    }
 
     default:
       return state;
