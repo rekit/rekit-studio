@@ -1,7 +1,6 @@
 /* global rekit */
 const pty = require('node-pty');
 const _ = require('lodash');
-const terminate = require('terminate');
 
 const terms = {};
 function config(server, app, args) {
@@ -52,7 +51,7 @@ function config(server, app, args) {
     const name = req.body.name;
     const term = terms[name];
     if (term) {
-      terminate(term.pid);
+      term.kill();
       delete terms[name];
     }
     res.send(JSON.stringify({ name }));
