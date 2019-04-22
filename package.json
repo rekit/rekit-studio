@@ -36,7 +36,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node ./scripts/start.js -d ../app1",
+    "start": "node ./scripts/start.js",
     "build": "node ./scripts/build.js",
     "build:dll": "node ./scripts/buildProdDll.js",
     "build:dev-dll": "node ./scripts/buildDevDll.js",
@@ -57,7 +57,7 @@
     "src"
   ],
   "dependencies": {
-    "@babel/traverse": "^7.4.0",
+    "@babel/traverse": "^7.4.3",
     "argparse": "^1.0.10",
     "body-parser": "^1.18.2",
     "chalk": "2.4.2",

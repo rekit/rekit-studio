@@ -63,12 +63,12 @@ export class PtyOutput extends Component {
 
   componentDidUpdate(prevProps) {
     const output = this.props.output[this.props.id];
+    if (prevProps.id !== this.props.id) {
+      this.updateTerm();
+    }
     if (output && output.length) {
       output.forEach(text => this.term.write(text));
       this.props.actions.removeOutputFromStore(this.props.id);
-    }
-    if (prevProps.id !== this.props.id) {
-      this.updateTerm();
     }
     this.checkClear();
   }
