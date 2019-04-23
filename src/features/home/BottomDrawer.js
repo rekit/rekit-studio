@@ -34,7 +34,7 @@ export class BottomDrawer extends Component {
   };
 
   hideDrawer = () => {
-    this.props.actions.setBottomDrawerVisible(false);    
+    this.props.actions.setBottomDrawerVisible(false);
   };
 
   handleTabClick = (evt, key) => {
@@ -45,12 +45,12 @@ export class BottomDrawer extends Component {
 
   handleToolbarClick = () => {
     this.props.actions.setBottomDrawerVisible(!this.props.bottomDrawerVisible);
-  }
+  };
 
   render() {
     const panes = this.getPanes();
     const { bottomDrawerVisible, bottomDrawerTab } = this.props;
-    const currentPane = _.find(panes, { key: bottomDrawerTab });
+    const currentPane = _.find(panes, { key: bottomDrawerTab }) || _.find(panes, { key: 'output' });
     return (
       <div className="home-bottom-drawer">
         <div className="toolbar" onClick={this.handleToolbarClick}>
@@ -61,7 +61,7 @@ export class BottomDrawer extends Component {
                 className={classnames('toolbar-tab', {
                   'is-active': bottomDrawerVisible && pane.key === bottomDrawerTab,
                 })}
-                onClick={(evt) => this.handleTabClick(evt, pane.key)}
+                onClick={evt => this.handleTabClick(evt, pane.key)}
               >
                 {pane.tab}
               </span>
@@ -79,7 +79,11 @@ export class BottomDrawer extends Component {
         </div>
         {bottomDrawerVisible && (
           <div className="content-container">
-            {(currentPane && <ErrorBoundary><currentPane.component /></ErrorBoundary>) || <div className="no-view">No view for the tab: {bottomDrawerTab}.</div>}
+            {(currentPane && (
+              <ErrorBoundary>
+                <currentPane.component />
+              </ErrorBoundary>
+            )) || <div className="no-view">No view for the tab: {bottomDrawerTab}.</div>}
           </div>
         )}
       </div>
@@ -102,5 +106,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(BottomDrawer);
