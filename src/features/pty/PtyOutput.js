@@ -58,18 +58,15 @@ export class PtyOutput extends Component {
   componentDidMount() {
     window.addEventListener('resize', this.handleWindowResize);
     this.updateTerm();
+    this.writeOutput();
     this.checkClear();
   }
 
   componentDidUpdate(prevProps) {
-    const output = this.props.output[this.props.id];
     if (prevProps.id !== this.props.id) {
       this.updateTerm();
     }
-    if (output && output.length) {
-      output.forEach(text => this.term.write(text));
-      this.props.actions.removeOutputFromStore(this.props.id);
-    }
+    this.writeOutput();
     this.checkClear();
   }
 
@@ -77,6 +74,14 @@ export class PtyOutput extends Component {
     const term = this.getTerm();
     if (term) this.container.removeChild(term.element.parentNode);
     window.removeEventListener('resize', this.handleWindowResize);
+  }
+
+  writeOutput() {
+    const output = this.props.output[this.props.id];
+    if (output && output.length) {
+      output.forEach(text => this.term.write(text));
+      this.props.actions.removeOutputFromStore(this.props.id);
+    }
   }
 
   checkClear() {
