@@ -100,8 +100,6 @@ export class PtyOutput extends Component {
   }
 
   handleWindowResize = _.debounce(() => {
-    console.log('window resize');
-    // const term = this.getTerm();
     if (this.term) this.term.fit();
   }, 300);
 
