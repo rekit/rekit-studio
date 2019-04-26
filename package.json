@@ -45,7 +45,7 @@
     "copyToRekit": "node ./scripts/copyToRekit.js",
     "test2": "node -v",
     "npm:publish": "node ./tools/npm_publish.js",
-    "publish:sdk": "node ./scripts/publishSdk.js",
+    "publish:sdk": "node ./scripts/publishSdk.js --npm-publish",
     "test": "node ./tools/run_test.js",
     "build:test": "node ./tools/server.js -m build"
   },
