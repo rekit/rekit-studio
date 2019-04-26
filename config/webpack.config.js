@@ -17,6 +17,7 @@ const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
+const ResolveDllModulePlugin = require('./ResolveDllModulePlugin');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
@@ -43,7 +44,6 @@ module.exports = function(webpackEnv, args = {}) {
   const publicPath = isEnvProduction ? paths.servedPath : isEnvDevelopment && '/';
   // Some apps do not use client-side routing with pushState.
   // For these, "homepage" can be set to "." to enable relative asset paths.
-  const shouldUseRelativeAssetPaths = publicPath === './';
 
   // `publicUrl` is just like `publicPath`, but we will provide it to our app
   // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
@@ -53,16 +53,14 @@ module.exports = function(webpackEnv, args = {}) {
   const env = getClientEnvironment(publicUrl);
 
   // common function to get style loaders
-  const getStyleLoaders = (cssOptions, preProcessor) => {
+  const getStyleLoaders = (cssOptions, preProcessor, args) => {
     const loaders = [
-      require.resolve('style-loader'),
-      // isEnvProduction && {
-      //   loader: MiniCssExtractPlugin.loader,
-      //   options: Object.assign(
-      //     {},
-      //     shouldUseRelativeAssetPaths ? { publicPath: '../../' } : undefined,
-      //   ),
-      // },
+      {
+        loader: require.resolve('style-loader'),
+        options: {
+          base: args.pluginDir ? 1000 : 0,
+        },
+      },
       {
         loader: require.resolve('css-loader'),
         options: cssOptions,
@@ -233,14 +231,14 @@ module.exports = function(webpackEnv, args = {}) {
       // We placed these paths second because we want `node_modules` to "win"
       // if there are any conflicts. This matches Node resolution mechanism.
       // https://github.com/facebook/create-react-app/issues/253
-      modules: [
-        args.pluginDir
-          ? path.join(args.pluginDir, 'node_modules')
-          : paths.resolveApp('node_modules'),
-      ].concat(
+      modules: ['node_modules'].concat(
         // It is guaranteed to exist because we tweak it in `env.js`
         process.env.NODE_PATH.split(path.delimiter).filter(Boolean),
       ),
+      // args.pluginDir
+      //   ? path.join(args.pluginDir, 'node_modules')
+      //   : paths.resolveApp('node_modules'),
+
       // These are the reasonable defaults supported by the Node ecosystem.
       // We also include JSX as a common component filename extension to support
       // some tools, although we do not recommend using it, see:
@@ -257,6 +255,8 @@ module.exports = function(webpackEnv, args = {}) {
         rs: paths.resolveApp('src'),
       },
       plugins: [
+        // If it's plugin, use dll for npm modules
+        isPlugin ? new ResolveDllModulePlugin(args.pluginDir, isEnvDevelopment) : null,
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
         // guards against forgotten dependencies and such.
         PnpWebpackPlugin,
@@ -266,7 +266,7 @@ module.exports = function(webpackEnv, args = {}) {
         // please link the files into your node_modules/ and let module-resolution kick in.
         // Make sure your source files are compiled, as they will not be processed in any way.
         new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
-      ],
+      ].filter(Boolean),
     },
     resolveLoader: {
       plugins: [
@@ -375,10 +375,14 @@ module.exports = function(webpackEnv, args = {}) {
             {
               test: cssRegex,
               exclude: cssModuleRegex,
-              use: getStyleLoaders({
-                importLoaders: 1,
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-              }),
+              use: getStyleLoaders(
+                {
+                  importLoaders: 1,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                },
+                null,
+                args,
+              ),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
               // Remove this when webpack adds a warning or an error for this.
@@ -389,12 +393,16 @@ module.exports = function(webpackEnv, args = {}) {
             // using the extension .module.css
             {
               test: cssModuleRegex,
-              use: getStyleLoaders({
-                importLoaders: 1,
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-                modules: true,
-                getLocalIdent: getCSSModuleLocalIdent,
-              }),
+              use: getStyleLoaders(
+                {
+                  importLoaders: 1,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                  modules: true,
+                  getLocalIdent: getCSSModuleLocalIdent,
+                },
+                null,
+                args,
+              ),
             },
             // Opt-in support for SASS (using .scss or .sass extensions).
             // By default we support SASS Modules with the
@@ -408,6 +416,7 @@ module.exports = function(webpackEnv, args = {}) {
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                 },
                 'less-loader',
+                args,
               ),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
@@ -427,6 +436,7 @@ module.exports = function(webpackEnv, args = {}) {
                   getLocalIdent: getCSSModuleLocalIdent,
                 },
                 'less-loader',
+                args,
               ),
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
