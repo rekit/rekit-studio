@@ -42,6 +42,7 @@ export default class ScriptList extends Component {
   render() {
     return (
       <div className="plugin-scripts-script-list">
+        {this.props.scripts.length === 0 && <p className="no-scripts">No scripts found or package.json is broken.</p>}
         <ul>{this.props.scripts.map(this.renderScriptItem)}</ul>
       </div>
     );

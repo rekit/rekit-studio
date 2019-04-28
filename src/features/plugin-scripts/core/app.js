@@ -1,10 +1,12 @@
+/* global rekit */
 const { getRunning } = require('./studio');
 
 module.exports = {
   getProjectData() {
+    const pkgJson = rekit.core.config.getPkgJson();
     return {
       pluginScripts: {
-        scripts: rekit.core.config.getPkgJson(true).scripts,
+        scripts: (pkgJson && pkgJson.scripts) || {},
         running: getRunning(),
       },
     };
