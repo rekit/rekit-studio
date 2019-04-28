@@ -1,8 +1,25 @@
 const spawn = require('child_process').spawn;
 const fs = require('fs-extra');
 const path = require('path');
-// TODO: remove this hard dependencey
-const debouncedOutput = require('../../../../lib/helpers').debouncedOutput;
+const _ = require('lodash');
+
+const output = [];
+let seed = 0;
+const emit = _.debounce(io => {
+  let toClient = output.length > 300 ? output.slice(-300) : output;
+  toClient = toClient.map(text => {
+    seed++;
+    seed %= 1000000;
+    return { text, key: `test_${seed}` };
+  });
+  io.emit('output', toClient); // max to 300 lines flush to client
+  output.length = 0;
+}, 100);
+
+function debouncedOutput(text, io) {
+  output.push(text);
+  emit(io);
+}
 
 let running = null;
 function config(server, app, args) {
