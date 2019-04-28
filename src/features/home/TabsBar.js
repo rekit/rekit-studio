@@ -223,8 +223,6 @@ export class TabsBar extends Component {
   };
 
   handleDragEnd = result => {
-    console.log('result: ', result);
-
     if (!result.source || !result.destination || result.source.index === result.destination.index) {
       return;
     }
@@ -349,6 +347,7 @@ export class TabsBar extends Component {
                 style={{ ...getListStyle() }}
               >
                 {tabs.map(this.renderTab)}
+                {provided.placeholder}
               </div>
             )}
           </Droppable>
