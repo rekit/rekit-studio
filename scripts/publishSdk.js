@@ -46,6 +46,7 @@ if (process.argv.indexOf('--npm-publish') >= 0) {
   }
   console.log('publish: ', args);
   spawn(npmCmd, args, {
+    stdio: 'inherit',
     cwd: tmpDir,
   });
 } else {
