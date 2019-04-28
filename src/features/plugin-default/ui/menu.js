@@ -26,7 +26,7 @@ export default {
           break;
         case 'folder-alias':
         case 'misc':
-          items.push(menuItems.newFile, menuItems.newFolder);
+          items.push(menuItems.newFile, menuItems.newFolder, menuItems.del);
           break;
         case 'file':
           items.push(menuItems.rename, menuItems.del);
@@ -69,10 +69,10 @@ export default {
           break;
         }
         case 'del-file-folder': {
-          const ele = byId(elementId);
-
+          let ele = byId(elementId);
+          if (ele.target && byId(ele.target)) ele = byId(ele.target);
           Modal.confirm({
-            title: `Are you sure to delete the ${ele.type}?`,
+            title: `Are you sure to delete the ${ele.type} "${ele.name}"?`,
             onOk() {
               if (!ele) {
                 Modal.error({
