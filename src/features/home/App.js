@@ -11,6 +11,7 @@ import { ErrorBoundary } from '../common';
 import { storage } from '../common/utils';
 import { BottomDrawer, TabsBar, SidePanel, QuickOpen } from './';
 import { DialogContainer } from '../core';
+import { ModalContainer } from './';
 import { fetchProjectData } from './redux/actions';
 import plugin from '../../common/plugin';
 
@@ -156,6 +157,7 @@ export class App extends Component {
             </Pane>
           </SplitPane>
           <DialogContainer />
+          <ModalContainer />
           <QuickOpen />
         </div>
       </LocaleProvider>

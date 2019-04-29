@@ -17,4 +17,4 @@ export { default as ImageView } from './ImageView';
 export { default as BottomDrawer } from './BottomDrawer';
 export { default as OutputView } from './OutputView';
 export { default as TermView } from './TermView';
-export { default as DialogPlaceholder } from './DialogPlaceholder';
+export { default as ModalContainer } from './ModalContainer';
