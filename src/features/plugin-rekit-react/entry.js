@@ -8,7 +8,7 @@ const toExport = {
   ...ui,
   route,
   reducer,
-  name: 'rekit-react-ui',
+  name: 'rekit-react',
   appType: 'rekit-react',
 };
 

@@ -8,9 +8,9 @@ const toExport = {
   ...ui,
   route,
   reducer,
-  name: 'rekit-plugin-ui',
+  name: 'rekit-plugin',
   appType: 'rekit-plugin',
-  uiInherit: 'rekit-react-ui',
+  uiInherit: 'rekit-react',
 };
 
 window.__REKIT_PLUGINS.push(toExport);
