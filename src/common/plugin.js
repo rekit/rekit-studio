@@ -16,7 +16,7 @@ export default {
   // _plugins: null,
   _handledInherit: false,
   // _removedPlugins: [],
-  _enabledPlugins: null,
+  _appliedPlugins: null,
   setEnabledPlugins(enabledPlugins) {
     this._enabledPlugins = enabledPlugins.reduce((p, c) => {
       p[c] = true;
@@ -25,6 +25,12 @@ export default {
   },
   getPlugins(prop) {
     console.log('get plugins');
+    if (!this._appliedPlugins) {
+      this._appliedPlugins = window.__REKIT_APPLIED_PLUGINS.reduce((p, c) => {
+        p[c.name] = true;
+        return p;
+      }, {});
+    }
     if (!this._handledInherit) {
       window.__REKIT_PLUGINS = window.__REKIT_PLUGINS.map(p => {
         if (p.uiInherit) {
@@ -44,9 +50,9 @@ export default {
       this._handledInherit = true;
     }
     // if (!this._plugins) this._plugins = window.__REKIT_PLUGINS;
-    if (!prop) return _.compact(this._plugins);
+    // if (!prop) return _.compact(this._plugins);
     return window.__REKIT_PLUGINS.filter(
-      p => (!prop || _.has(p, prop)) && this._enabledPlugins[p.name],
+      p => (!prop || _.has(p, prop)) && this._appliedPlugins[p.name],
     );
   },
   addPlugin(p) {
