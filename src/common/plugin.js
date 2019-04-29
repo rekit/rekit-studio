@@ -13,10 +13,18 @@ import '../features/plugin-rekit-plugin/entry';
 
 // Use global variable to store module state for workaround of HMR.
 export default {
-  _plugins: null,
+  // _plugins: null,
   _handledInherit: false,
-  _removedPlugins: [],
+  // _removedPlugins: [],
+  _enabledPlugins: null,
+  setEnabledPlugins(enabledPlugins) {
+    this._enabledPlugins = enabledPlugins.reduce((p, c) => {
+      p[c] = true;
+      return p;
+    }, {});
+  },
   getPlugins(prop) {
+    console.log('get plugins');
     if (!this._handledInherit) {
       window.__REKIT_PLUGINS = window.__REKIT_PLUGINS.map(p => {
         if (p.uiInherit) {
@@ -35,9 +43,11 @@ export default {
       });
       this._handledInherit = true;
     }
-    if (!this._plugins) this._plugins = window.__REKIT_PLUGINS;
+    // if (!this._plugins) this._plugins = window.__REKIT_PLUGINS;
     if (!prop) return _.compact(this._plugins);
-    return this._plugins.filter(_.property(prop));
+    return window.__REKIT_PLUGINS.filter(
+      p => (!prop || _.has(p, prop)) && this._enabledPlugins[p.name],
+    );
   },
   addPlugin(p) {
     if (_.find(window.__REKIT_PLUGINS, { name: p.name })) {
@@ -48,11 +58,12 @@ export default {
     window.__REKIT_PLUGINS.push(p);
   },
   getPlugin(name) {
-    return _.find([...window.__REKIT_PLUGINS, ...this._removedPlugins], { name });
+    return _.find(window.__REKIT_PLUGINS, { name });
   },
-  removePlugin(name) {
-    const p = this.getPlugin(name);
-    if (!_.find(this._removedPlugins, { name })) this._removedPlugins.push(p);
-    _.remove(window.__REKIT_PLUGINS, { name });
-  },
+  // removePlugin(name) {
+  //   const p = this.getPlugin(name);
+  //   if (!_.find(this._removedPlugins, { name })) this._removedPlugins.push(p);
+  //   _.remove(window.__REKIT_PLUGINS, { name });
+  // },
+  // filterPlugins(prjData) {},
 };

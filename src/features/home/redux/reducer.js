@@ -1,7 +1,5 @@
 import _ from 'lodash';
-import update from 'immutability-helper';
 import Convert from 'ansi-to-html';
-import history from '../../../common/history';
 import initialState from './initialState';
 import { reducer as fetchProjectData } from './fetchProjectData';
 import { reducer as fetchFileContent } from './fetchFileContent';
@@ -16,7 +14,6 @@ import { storage } from '../../common/utils';
 import { reducer as updateProjectDataReducer } from './updateProjectData';
 import { reducer as showDialogReducer } from './showDialog';
 import { reducer as hideDialogReducer } from './hideDialog';
-import plugin from '../../../common/plugin';
 import { reducer as setViewChangedReducer } from './setViewChanged';
 import { reducer as setBottomDrawerVisibleReducer } from './setBottomDrawerVisible';
 import { reducer as clearOutputReducer } from './clearOutput';

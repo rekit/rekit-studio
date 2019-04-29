@@ -35,7 +35,6 @@ function config(server, app, args) {
       flush();
     });
     term.on('exit', () => {
-      console.log('term exit: ', name);
       flush();
       args.io.emit({
         type: 'PLUGIN_SCRIPTS_EXIT',
