@@ -101,7 +101,7 @@ export class Dashboard extends Component {
           <div className="top-badge" key={b.type}>
             <SvgIcon size={28} type={icons(b.type)} fill={colors(b.type)} />
             <label className="count">
-              {_.isFunction(b.count) ? b.count() : typesCount[b.type]}
+              {_.isFunction(b.count) ? b.count() : (typesCount[b.type] || 0)}
             </label>
             <label className="type">{b.name}</label>
           </div>
