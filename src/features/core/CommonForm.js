@@ -31,7 +31,6 @@ export class CommonForm extends Component {
   };
 
   componentDidMount() {
-    console.log('contexxxt:',this.props.actionContext);
     this.getMeta().elements.forEach(ele => {
       if (ele.autoFocus) {
         requestAnimationFrame(() => {
@@ -75,7 +74,6 @@ export class CommonForm extends Component {
       if (errors) {
         return;
       }
-      console.log('Form submit: ', values);
 
       let command = {
         commandName: actionContext.action,

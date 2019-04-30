@@ -3,6 +3,9 @@
 const fs = require('fs-extra');
 const path = require('path');
 
+// build sdk first
+require('./publishSdk')
+
 let destPrj = process.argv[2];
 if (!path.isAbsolute(destPrj)) destPrj = path.join(process.cwd(), destPrj);
 

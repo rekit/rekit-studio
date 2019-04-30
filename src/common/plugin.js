@@ -16,33 +16,31 @@ export default {
   _handledInherit: false,
   _appliedPlugins: null,
   getPlugins(prop) {
-    console.log('get plugins');
     if (!this._appliedPlugins) {
       this._appliedPlugins = window.__REKIT_APPLIED_PLUGINS.reduce((p, c) => {
-        p[c.name] = true;
+        p[c.name] = c;
         return p;
       }, {});
     }
+    const applied = this._appliedPlugins;
     if (!this._handledInherit) {
       window.__REKIT_PLUGINS = window.__REKIT_PLUGINS.map(p => {
-        if (p.uiInherit) {
-          const newPlugin = {
-            __uiInherit: p.uiInherit,
-          };
-          _.castArray(p.uiInherit).forEach(pp => {
-            pp = this.getPlugin(pp);
-            _.merge(newPlugin, pp);
-          });
-          _.merge(newPlugin, p);
-          delete p.uiInherit;
-          return newPlugin;
-        }
-        return p;
+        if (!applied[p.name] || !applied[p.name].uiInherit) return p;
+
+        const newPlugin = {
+          uiInherit: applied[p.name].uiInherit, // for debug purpose only?
+        };
+        _.castArray(applied[p.name].uiInherit).forEach(pp => {
+          pp = this.getPlugin(pp);
+          _.merge(newPlugin, pp);
+        });
+        _.merge(newPlugin, p);
+        return newPlugin;
       });
       this._handledInherit = true;
     }
     return window.__REKIT_PLUGINS.filter(
-      p => (!prop || _.has(p, prop)) && this._appliedPlugins[p.name],
+      p => (!prop || _.has(p, prop)) && applied[p.name],
     );
   },
   addPlugin(p) {

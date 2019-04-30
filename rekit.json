@@ -1,6 +1,7 @@
 {
   "devPort": 6078,
   "appType": "rekit-react",
+  "rekitTest": true,
   "plugins": [],
   "excludeAstFolders": ["src/libs", "build"],
   "moduleAlias": {

@@ -10,7 +10,6 @@ const toExport = {
   reducer,
   name: 'rekit-plugin',
   appType: 'rekit-plugin',
-  uiInherit: 'rekit-react',
 };
 
 window.__REKIT_PLUGINS.push(toExport);
