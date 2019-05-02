@@ -140,20 +140,25 @@ export default class OverviewDiagram extends Component {
   };
 
   drawLabels = nodes => {
-    const labels = nodes.filter(n => n.type === 'feature').map(f => ({
-      id: `label-feature-${f.name}`,
-      text: f.name,
-      href: f.id,
-    }));
+    const labels = nodes
+      .filter(n => n.type === 'feature')
+      .map(f => ({
+        id: `label-feature-${f.name}`,
+        text: f.name,
+        href: f.id,
+      }));
     const drawLabel = d3Selection => {
-      d3Selection
+      const sss = d3Selection
         .style('font-size', 12)
         .style('fill', '#999')
         .style('overflow', 'hidden')
         .style('text-overflow', 'ellipsis')
         .style('cursor', 'default')
-        .attr('dy', -12)
-        .attr('class', d => `label-node feature-${d.id}`)
+        .attr('dy', -8)
+        .attr('class', d => `label-node feature-${d.id}`);
+      // remove existing text path first, so that not duplicated.
+      sss.select('textPath').remove();
+      sss
         .append('textPath')
         .attr('xlink:href', d => `#${d.href}`)
         .style('text-anchor', 'start')
@@ -163,6 +168,7 @@ export default class OverviewDiagram extends Component {
     const labelNodes = this.labelsGroup.selectAll('text').data(labels);
     labelNodes.exit().remove();
     drawLabel(labelNodes.enter().append('svg:text'));
+    drawLabel(labelNodes);
   };
 
   drawLinks = links => {
@@ -176,7 +182,7 @@ export default class OverviewDiagram extends Component {
         .attr(
           'class',
           d =>
-            `path-link od-path ${d.source.feature === d.target.feature ? 'same-feature-dep' : ''}`
+            `path-link od-path ${d.source.feature === d.target.feature ? 'same-feature-dep' : ''}`,
         )
         .attr('d', d => {
           const d3Path = d3.path();
@@ -193,14 +199,16 @@ export default class OverviewDiagram extends Component {
   };
 
   drawPies = nodes => {
-    const pies = nodes.filter(n => n.type === 'feature').map(f => ({
-      id: `${f.id}:pie`,
-      width: f.radius - f.width * 1.5 - 2,
-      x: f.x,
-      y: f.y,
-      startAngle: f.startAngle,
-      endAngle: f.endAngle,
-    }));
+    const pies = nodes
+      .filter(n => n.type === 'feature')
+      .map(f => ({
+        id: `${f.id}:pie`,
+        width: f.radius - f.width * 1.5 - 2,
+        x: f.x,
+        y: f.y,
+        startAngle: f.startAngle,
+        endAngle: f.endAngle,
+      }));
 
     const drawPie = d3Selection => {
       d3Selection

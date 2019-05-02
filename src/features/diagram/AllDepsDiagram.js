@@ -107,9 +107,9 @@ export default class AllDepsDiagram extends Component {
     };
 
     const allNodes = this.nodesGroup.selectAll('path').data(nodes);
-    allNodes.exit().remove();
-    drawNode(allNodes.enter().append('svg:path'));
-    drawNode(allNodes);
+    allNodes.exit().remove(); // remove nodes
+    drawNode(allNodes.enter().append('svg:path')); // first create & new nodes
+    drawNode(allNodes); // update nodes
   };
 
   drawLinks = links => {
@@ -145,7 +145,7 @@ export default class AllDepsDiagram extends Component {
           d3
             .color(colors(d.type))
             .brighter(0.75)
-            .hex()
+            .hex(),
         )
         .attr('fill', 'transparent')
         .attr('class', 'path-group-node a-d-d-path')

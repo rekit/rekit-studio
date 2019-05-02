@@ -77,11 +77,12 @@ export const getAllDepsDiagramData = createSelector(
   (elementById, deps, size) => {
     // All nodes should be in the deps diagram.
     const eles = Object.values(elementById).filter(
-      n => !n.owner && n.type !== 'folder' && n.type !== 'folder-alias' && (n.type === 'file' || n.parts || n.target)
+      // n => n.type === 'file' && n.deps,
+      n => !n.owner && n.type !== 'folder' && n.type !== 'folder-alias' && ((n.type === 'file' && n.deps) || n.parts || n.target)
     );
 
     const groups = _.groupBy(eles, 'type');
-    Object.values(groups).forEach(arr => arr.sort((a,b) => a.name.localeCompare(b.name)));
+    Object.values(groups).forEach(arr => arr.sort((a, b) => a.name.localeCompare(b.name)));
     const groupTypes = Object.keys(groups);
 
     const groupGap = (Math.PI * 2 * 0.4) / eles.length;
@@ -159,5 +160,5 @@ export const getAllDepsDiagramData = createSelector(
     });
 
     return { nodes, links, groups: groupNodes, depsData: deps };
-  }
+  },
 );
