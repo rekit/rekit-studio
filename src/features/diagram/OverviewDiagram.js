@@ -163,7 +163,6 @@ export default class OverviewDiagram extends Component {
     const labelNodes = this.labelsGroup.selectAll('text').data(labels);
     labelNodes.exit().remove();
     drawLabel(labelNodes.enter().append('svg:text'));
-    drawLabel(labelNodes);
   };
 
   drawLinks = links => {
