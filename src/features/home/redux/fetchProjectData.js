@@ -63,7 +63,10 @@ export function reducer(state, action) {
       return {
         ...state,
         projectData: action.data,
-        ...action.data,
+        elements: action.data.elements,
+        elementById: action.data.elementById,
+        projectName: action.data.projectName || 'Unknown Name',
+        config: action.data.config,
         fileContentNeedReload,
         projectDataNeedReload: false,
         fetchProjectDataPending: false,

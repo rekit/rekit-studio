@@ -45,22 +45,22 @@ export const getProjectElements = createSelector(
   }
 );
 
-export const getDepsData = createSelector(elementByIdSelector, elementById => {
-  // const byId = id => elementById[id] || null;
-  const dependencies = {};
-  const dependents = {};
-  const ensureArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
-  Object.values(elementById).forEach(ele => {
-    if (ele.deps && ele.deps.length) {
-      ele.deps.forEach(dep => {
-        if (dep.type !== 'file') return;
-        ensureArray(dependencies, ele.id).push(dep.id);
-        ensureArray(dependents, dep.id).push(ele.id);
-      });
-    }
-  });
-  return { dependencies, dependents };
-});
+// export const getDepsData = createSelector(elementByIdSelector, elementById => {
+//   // const byId = id => elementById[id] || null;
+//   const dependencies = {};
+//   const dependents = {};
+//   const ensureArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
+//   Object.values(elementById).forEach(ele => {
+//     if (ele.deps && ele.deps.length) {
+//       ele.deps.forEach(dep => {
+//         if (dep.type !== 'file') return;
+//         ensureArray(dependencies, ele.id).push(dep.id);
+//         ensureArray(dependents, dep.id).push(ele.id);
+//       });
+//     }
+//   });
+//   return { dependencies, dependents };
+// });
 
 export const getGroupedDepsData = createSelector(elementByIdSelector, elementById => {
   const byId = id => elementById[id] || null;
@@ -100,6 +100,8 @@ export const getGroupedDepsData = createSelector(elementByIdSelector, elementByI
 
   return { dependencies, dependents };
 });
+
+export const getDepsData = getGroupedDepsData;
 
 export const getTypesCount = createSelector(elementByIdSelector, elementById => {
   const count = {};
