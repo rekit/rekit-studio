@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import { getGroupedDepsData } from '../../home/selectors/projectData';
+import { getDepsData } from '../../home/selectors/projectData';
 
 const projectDataSelector = state => state.projectData;
 const sizeSelector = state => state.size;
-const toShowSelector = state => state.toShow;
 
 const padding = size => Math.max(size / 15, 20);
 const nodeWidth = size => Math.max(size / 50, 6);
@@ -69,10 +68,6 @@ const getLink = (source, target) => {
   return { x1, y1, x2, y2, cpx, cpy, source, target };
 };
 
-// If property not exist, init it with an empty array
-const ensureArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
-let toShow;
-
 // Get each element's start angle and the degree of the angle.
 const calcAngles = (eles, containerStart, containerAngle, gapRate, isCircle) => {
   // eleAngle * count + gap * gapCount = containerAngle
@@ -99,45 +94,9 @@ const calcAngles = (eles, containerStart, containerAngle, gapRate, isCircle) => 
   });
 };
 
-const getFeatures = eleById => {
-  // const byId = id => eleById[id];
-  // return Object.values(eleById)
-  //   .filter(ele => ele.type === 'feature')
-  //   // .filter(ele => /home|editor|common|core|layout/.test(ele.name))
-
-  //   .map(f => {
-  //     const elements = {};
-  //     const feature = {
-  //       id: f.id,
-  //       name: f.name,
-  //       dir: f.target,
-  //       type: 'feature',
-  //       elements,
-  //     };
-  //     const children = [...f.children];
-  //     while (children.length) {
-  //       const child = byId(children.pop());
-  //       if (child.children) {
-  //         children.push.apply(children, child.children);
-  //       }
-  //       if (toShow(child)) {
-  //         ensureArray(elements, child.type).push(child);
-  //       }
-  //     }
-  //     feature.weight = getFeatureEleCount({ elements });
-
-  //     return feature;
-  //   });
-};
-
-// const getFeatureEleCount = f => {
-//   return Object.values(f.elements).reduce((c, arr) => c + arr.length, 0);
-// };
-
 const nodeById = {};
 // Get the node diagram data
-const getNode = (ele, index, angles, x, y, radius, width, feature) => {
-  const angle = angles[index];
+const getNode = (ele, angle, x, y, radius, width, groupName) => {
   return (nodeById[ele.id] = {
     id: ele.id,
     name: ele.name,
@@ -148,97 +107,81 @@ const getNode = (ele, index, angles, x, y, radius, width, feature) => {
     endAngle: angle.start + angle.angle,
     x,
     y,
-    feature,
+    groupName,
   });
 };
 
 // Groups sample data:
 //  [{id: 'group1', children: ['child1', 'child2']}]
-
 export const getGroupedDepsDiagramData = createSelector(
   projectDataSelector,
-  getGroupedDepsData,
+  getDepsData,
   sizeSelector,
-  toShowSelector,
-  (projectData, deps, size, _toShow) => {
+  (projectData, deps, size) => {
     // All nodes should be in the deps diagram.
-    toShow = _toShow;
     const byId = id => projectData.elementById[id];
     const x = size / 2;
     const y = size / 2;
     const nodes = [];
     const groups = _.get(projectData, 'diagram.groups') || [];
-    const angles = calcAngles(groups, 0, Math.PI * 2, -3, true);
 
     const radius = size / 2 - padding(size);
     const innerRadius = radius - nodeWidth(size) - 2;
 
+    // Each startAngle and endAngle of groups
+    const angles = calcAngles(groups, 0, Math.PI * 2, -3, true);
     groups.forEach((group, index) => {
-      if (!byId(group.id)) return;
-      const n = getNode(byId(group.id), index, angles, x, y, radius, nodeWidth(size), byId(group.id).name);
+      // Get group nodes
+      const n = getNode(
+        byId(group.id),
+        angles[index],
+        x,
+        y,
+        radius,
+        nodeWidth(size),
+        byId(group.id).name,
+      );
       nodes.push(n);
-      const types = Object.keys(group.children).map(k => ({
-        id: `${group.id}-${k}-container`,
-        type: `v:container-${k}`,
-        name: k,
-        weight: group.children[k].length,
-      }));
-      const angles2 = calcAngles(types, n.startAngle, n.endAngle - n.startAngle, -0.2, false);
-      types.forEach((type, index2) => {
-        const n2 = getNode(type, index2, angles2, x, y, innerRadius, nodeWidth(size), group.name);
+
+      // Get group's children nodes
+      const angles2 = calcAngles(
+        group.children,
+        n.startAngle,
+        n.endAngle - n.startAngle,
+        -0.2,
+        false,
+      );
+      group.children.forEach((cid, index2) => {
+        const child = byId(cid);
+        const n2 = getNode(
+          {
+            ...child,
+            weight: 1,
+          },
+          angles2[index2],
+          x,
+          y,
+          innerRadius,
+          nodeWidth(size),
+          byId(group.id).name,
+        );
         nodes.push(n2);
-        const eles = group.children[type.name].map(ele => ({
-          id: ele.id,
-          type: ele.type,
-          name: ele.name,
-          weight: 1,
-        }));
-        const angles3 = calcAngles(eles, n2.startAngle, n2.endAngle - n2.startAngle, 0.3, false);
-        eles.forEach((ele, index3) => {
-          const n3 = getNode(ele, index3, angles3, x, y, innerRadius, nodeWidth(size), group.name);
-          nodes.push(n3);
-        });
       });
     });
 
     let links = [];
-    Object.values(elementById).forEach(ele => {
+    const allElements = groups.reduce((p, c) => p.concat(c.children), []).map(byId);
+    allElements.forEach(ele => {
       const eleDeps = deps.dependencies[ele.id] || [];
       eleDeps.forEach(dep => {
         const source = nodeById[ele.id];
         const target = nodeById[dep];
         if (source && target) links.push(getLink(source, target));
+        else console.error('overview diagram link: source or target not exist: ', ele.id, dep);
       });
     });
 
     links = _.uniqWith(links, _.isEqual);
     return { nodes, links, depsData: deps, nodeById };
-  }
+  },
 );
-
-// import _ from 'lodash';
-// import { createSelector } from 'reselect';
-// import { getDepsData } from '../../home/selectors/projectData';
-// import plugin from '../../common/plugin';
-
-// export default createSelector(
-//   state => getDepsData(state.prjData),
-//   state => state.size,
-//   state => state.prjData,
-//   (deps, prjData) => {
-//     const pp = plugin.getPlugins('diagram.prepareGroupedData');
-//     const data = pp.length > 0 ? _.last(pp).diagram.prepareGroupedData(prjData) : prjData;
-
-//     const eleById = prjData.elementById;
-//     const byId = id => eleById[id];
-
-//     const groups = data.groups || [];
-//     const nodes = [];
-//     const links = [];
-//     const nodeById = {};
-
-
-
-//     return { nodes, links, deps, nodeById };
-//   },
-// );
