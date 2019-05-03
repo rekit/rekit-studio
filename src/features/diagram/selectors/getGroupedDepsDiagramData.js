@@ -2,9 +2,6 @@ import _ from 'lodash';
 import { createSelector } from 'reselect';
 import { getDepsData } from '../../home/selectors/projectData';
 
-const projectDataSelector = state => state.projectData;
-const sizeSelector = state => state.size;
-
 const padding = size => Math.max(size / 15, 20);
 const nodeWidth = size => Math.max(size / 50, 6);
 
@@ -73,6 +70,7 @@ const calcAngles = (eles, containerStart, containerAngle, gapRate, isCircle) => 
   // eleAngle * count + gap * gapCount = containerAngle
   // gap = eleAngle * gapRate
   // gapCount = isCircle ? count + 1 : count;
+
   const count = eles.length;
   const gapCount = isCircle ? count : count - 1;
   let gap;
@@ -82,9 +80,9 @@ const calcAngles = (eles, containerStart, containerAngle, gapRate, isCircle) => 
 
   const leftAngle = containerAngle - gap * gapCount;
   let start = containerStart;
-  const total = eles.reduce((p, c) => p + c.weight, 0);
+  const total = eles.reduce((p, c) => p + (c.weight || 1), 0);
   return eles.map((ele, index) => {
-    const angle = (ele.weight / total) * leftAngle;
+    const angle = ((ele.weight || 1) / total) * leftAngle;
     const res = {
       start,
       angle,
@@ -114,16 +112,16 @@ const getNode = (ele, angle, x, y, radius, width, groupName) => {
 // Groups sample data:
 //  [{id: 'group1', children: ['child1', 'child2']}]
 export const getGroupedDepsDiagramData = createSelector(
-  projectDataSelector,
-  getDepsData,
-  sizeSelector,
-  (projectData, deps, size) => {
+  state => state.data,
+  state => getDepsData(state.data),
+  state => state.size,
+  (data, deps, size) => {
     // All nodes should be in the deps diagram.
-    const byId = id => projectData.elementById[id];
+    const byId = id => data.elementById[id];
     const x = size / 2;
     const y = size / 2;
     const nodes = [];
-    const groups = _.get(projectData, 'diagram.groups') || [];
+    const groups = (data.groups || []).map(g => ({ ...g, weight: g.children.length }));
 
     const radius = size / 2 - padding(size);
     const innerRadius = radius - nodeWidth(size) - 2;
