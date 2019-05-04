@@ -118,8 +118,8 @@ export default class GroupedDepsDiagram extends Component {
       data: this.props.data,
       size,
     });
+    console.log('diagram data: ', this.diagramData);
     const { nodes, links } = this.diagramData;
-    console.log('diagramdata:', this.diagramData);
     this.drawPies(nodes);
     this.drawNodes(nodes);
     this.drawLabels(nodes);
@@ -142,7 +142,7 @@ export default class GroupedDepsDiagram extends Component {
         })
         .attr('fill', 'transparent')
         .attr('class', 'path-element-node od-path')
-        .style('cursor', 'pointer')// d => (this.toShow(this.byId(d.id)) ? 'pointer' : 'default'))
+        .style('cursor', 'pointer') // d => (this.toShow(this.byId(d.id)) ? 'pointer' : 'default'))
         .attr('d', d => {
           const d3Path = d3.path();
           d3Path.arc(d.x, d.y, d.radius, d.startAngle, d.endAngle);
@@ -192,18 +192,19 @@ export default class GroupedDepsDiagram extends Component {
   };
 
   drawLinks = links => {
+    const { nodeById } = this.diagramData;
     const drawLink = d3Selection => {
       d3Selection
-        .attr('id', d => `${d.source.id}-${d.target.id}`)
+        .attr('id', d => `${d.source}-${d.target}`)
         .attr('marker-end', 'url(#marker)') // eslint-disable-line
         .attr('fill', 'transparent')
         .attr('stroke', '#ccc')
         .attr('stroke-width', '1px')
-        .attr(
-          'class',
-          d =>
-            `path-link od-path ${d.source.feature === d.target.feature ? 'same-feature-dep' : ''}`,
-        )
+        .attr('class', d => {
+          const source = nodeById[d.source];
+          const target = nodeById[d.target];
+          return `path-link od-path ${source.groupId === target.groupId ? 'same-group-dep' : ''}`;
+        })
         .attr('d', d => {
           const d3Path = d3.path();
           d3Path.moveTo(d.x1, d.y1);
@@ -251,52 +252,49 @@ export default class GroupedDepsDiagram extends Component {
   };
 
   hanldeNodeMouseover = (d, index, nodes) => {
-    if (this.toShow(this.byId(d.id))) this.tooltip.show(d, nodes[index]);
+    // if (this.toShow(this.byId(d.id))) this.tooltip.show(d, nodes[index]);
     this.highlightNode(d, nodes[index]);
   };
 
   handleNodeMouseout = (d, index, nodes) => {
-    this.tooltip.hide(d);
+    // this.tooltip.hide(d);
     this.delightNode(d, nodes[index]);
   };
 
   highlightNode = (d, target) => {
     if (d.type.startsWith('v:container-')) return;
+    const { depsData } = this.diagramData;
 
     this.nodesGroup.selectAll('path').attr('opacity', 0.1);
     this.linksGroup.selectAll('path').attr('opacity', 0.1);
     const paths = this.svg.selectAll('path.od-path');
-    const { depsData } = this.diagramData;
 
-    const toHighlight = data => {
-      const { nodeById } = this.diagramData;
-      const relEles = [
-        ...(depsData.dependencies[data.id] || []),
-        ...(depsData.dependents[data.id] || []),
-      ];
+    const toHighlight = {};
 
-      if (d.type === 'feature') {
-        return (
-          data.feature === d.name ||
-          _.get(data, 'source.feature') === d.name || // link out
-          _.get(data, 'target.feature') === d.name || // link in
-          relEles.some(id => nodeById[id] && nodeById[id].feature === d.name)
-        );
-      } else {
-        return (
-          data.id === d.id || // itself
-          data.name === d.feature || // feature node
-          _.get(data, 'source.id') === d.id || // link out
-          _.get(data, 'target.id') === d.id || // link in
-          relEles.includes(d.id)
-        );
-      }
-    };
+    // node itself
+    toHighlight[d.id] = true;
+    if (d.isGroup) {
+      // if it's group, all of its children
+      d.children.forEach(c => (toHighlight[c] = true));
+    } else {
+      // its group node
+      toHighlight[d.groupId] = true;
+    }
+    // dependents or dependencies
+    const deps = [
+      ...(depsData.dependencies[d.id] || []),
+      ...(depsData.dependents[d.id] || []),
+    ].reduce((p, c) => {
+      p[c] = true;
+      return p;
+    }, {});
 
     paths
       .filter(data => {
         if (!data) return false;
-        return toHighlight(data);
+        if (toHighlight[data.id] || deps[data.id]) return true;
+        // related links
+        return data.source && data.target && (toHighlight[data.source] || toHighlight[data.target]);
       })
       .attr('opacity', 1);
 
@@ -318,7 +316,7 @@ export default class GroupedDepsDiagram extends Component {
   render() {
     return (
       <div
-        className="diagram-overview-diagram"
+        className="diagram-grouped-deps-diagram"
         ref={node => {
           this.d3Node = node;
         }}

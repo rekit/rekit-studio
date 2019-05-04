@@ -62,7 +62,7 @@ const getLink = (source, target) => {
   const cpx = jx - m1;
   const cpy = jy + m2;
 
-  return { x1, y1, x2, y2, cpx, cpy, source, target };
+  return { x1, y1, x2, y2, cpx, cpy, source: source.id, target: target.id };
 };
 
 // Get each element's start angle and the degree of the angle.
@@ -75,7 +75,9 @@ const calcAngles = (eles, containerStart, containerAngle, gapRate, isCircle) => 
   const gapCount = isCircle ? count : count - 1;
   let gap;
   if (gapRate === 0) gap = 0;
+  // when gapRate < 0, it means abolute angle value in degree
   else if (gapRate < 0) gap = (Math.PI * 2 * Math.abs(gapRate)) / 360;
+  // when gapRate > 0, it means percent of the node angle
   else gap = containerAngle / (count / gapRate + gapCount);
 
   const leftAngle = containerAngle - gap * gapCount;
@@ -140,6 +142,7 @@ export const getGroupedDepsDiagramData = createSelector(
         byId(group.id).name,
       );
       n.isGroup = true;
+      n.children = group.children;
       nodes.push(n);
 
       // Get group's children nodes
@@ -147,7 +150,7 @@ export const getGroupedDepsDiagramData = createSelector(
         group.children,
         n.startAngle,
         n.endAngle - n.startAngle,
-        -0.2,
+        0.2,
         false,
       );
       group.children.forEach((cid, index2) => {
@@ -164,6 +167,7 @@ export const getGroupedDepsDiagramData = createSelector(
           nodeWidth(size),
           byId(group.id).name,
         );
+        n2.groupId = group.id;
         nodes.push(n2);
       });
     });
