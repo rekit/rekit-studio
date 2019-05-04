@@ -119,11 +119,11 @@ export default class GroupedDepsDiagram extends Component {
       size,
     });
     const { nodes, links } = this.diagramData;
-
-    // this.drawPies(nodes);
+    console.log('diagramdata:', this.diagramData);
+    this.drawPies(nodes);
     this.drawNodes(nodes);
-    // this.drawLabels(nodes);
-    // this.drawLinks(links);
+    this.drawLabels(nodes);
+    this.drawLinks(links);
   };
 
   drawNodes = nodes => {
@@ -161,9 +161,9 @@ export default class GroupedDepsDiagram extends Component {
 
   drawLabels = nodes => {
     const labels = nodes
-      .filter(n => n.type === 'feature')
+      .filter(n => n.isGroup)
       .map(f => ({
-        id: `label-feature-${f.name}`,
+        id: `label-group-${f.name}`,
         text: f.name,
         href: f.id,
       }));
@@ -174,7 +174,7 @@ export default class GroupedDepsDiagram extends Component {
         .style('overflow', 'hidden')
         .style('text-overflow', 'ellipsis')
         .style('cursor', 'default')
-        .attr('dy', -8)
+        .attr('dy', this.diagramData.labelOffset || -10)
         .attr('class', d => `label-node feature-${d.id}`);
       // remove existing text path first, so that not duplicated.
       sss.select('textPath').remove();
@@ -220,14 +220,14 @@ export default class GroupedDepsDiagram extends Component {
 
   drawPies = nodes => {
     const pies = nodes
-      .filter(n => n.type === 'feature')
-      .map(f => ({
-        id: `${f.id}:pie`,
-        width: f.radius - f.width * 1.5 - 2,
-        x: f.x,
-        y: f.y,
-        startAngle: f.startAngle,
-        endAngle: f.endAngle,
+      .filter(n => n.isGroup)
+      .map(g => ({
+        id: `${g.id}:pie`,
+        width: g.radius - g.width * 1.5 - 2,
+        x: g.x,
+        y: g.y,
+        startAngle: g.startAngle,
+        endAngle: g.endAngle,
       }));
 
     const drawPie = d3Selection => {
@@ -236,7 +236,7 @@ export default class GroupedDepsDiagram extends Component {
         .attr('stroke-width', d => d.width)
         .attr('stroke', 'rgba(255, 255, 255, 0.1)')
         .attr('fill', 'transparent')
-        .attr('class', 'feature-pie-node')
+        .attr('class', 'group-pie-node')
         .attr('d', d => {
           const d3Path = d3.path();
           d3Path.arc(d.x, d.y, d.width / 2, d.startAngle, d.endAngle);

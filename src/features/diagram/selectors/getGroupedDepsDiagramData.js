@@ -139,6 +139,7 @@ export const getGroupedDepsDiagramData = createSelector(
         nodeWidth(size),
         byId(group.id).name,
       );
+      n.isGroup = true;
       nodes.push(n);
 
       // Get group's children nodes
@@ -180,6 +181,6 @@ export const getGroupedDepsDiagramData = createSelector(
     });
 
     links = _.uniqWith(links, _.isEqual);
-    return { nodes, links, depsData: deps, nodeById };
+    return { nodes, links, depsData: deps, nodeById, labelOffset: -nodeWidth(size) };
   },
 );
