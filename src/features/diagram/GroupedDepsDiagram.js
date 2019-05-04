@@ -142,7 +142,7 @@ export default class GroupedDepsDiagram extends Component {
         })
         .attr('fill', 'transparent')
         .attr('class', 'path-element-node od-path')
-        .style('cursor', 'pointer') // d => (this.toShow(this.byId(d.id)) ? 'pointer' : 'default'))
+        .style('cursor', d => (d.clickable ? 'pointer' : 'default'))
         .attr('d', d => {
           const d3Path = d3.path();
           d3Path.arc(d.x, d.y, d.radius, d.startAngle, d.endAngle);
@@ -263,7 +263,7 @@ export default class GroupedDepsDiagram extends Component {
 
   handleNodeClick = d => {
     // console.log('node click: ', d);
-    this.props.onNodeClick(d.id);
+    if (d.clickable) this.props.onNodeClick(d.id);
   }
 
   highlightNode = (d, target) => {

@@ -168,6 +168,7 @@ export const getGroupedDepsDiagramData = createSelector(
           byId(group.id).name,
         );
         n2.groupId = group.id;
+        n2.clickable = true;
         nodes.push(n2);
       });
     });
