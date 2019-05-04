@@ -281,13 +281,14 @@ export default class GroupedDepsDiagram extends Component {
       toHighlight[d.groupId] = true;
     }
     // dependents or dependencies
-    const deps = [
-      ...(depsData.dependencies[d.id] || []),
-      ...(depsData.dependents[d.id] || []),
-    ].reduce((p, c) => {
-      p[c] = true;
-      return p;
-    }, {});
+    const deps = {};
+    Object.keys(toHighlight).forEach(eid => {
+      [...(depsData.dependencies[eid] || []), ...(depsData.dependents[eid] || [])].forEach(
+        depId => {
+          deps[depId] = true;
+        },
+      );
+    });
 
     paths
       .filter(data => {
@@ -298,12 +299,12 @@ export default class GroupedDepsDiagram extends Component {
       })
       .attr('opacity', 1);
 
-    if (d.type === 'feature') {
+    if (d.isGroup) {
       paths
-        .filter(data => _.get(data, 'target.feature') === d.name)
+        .filter(data => data.target && d.children.includes(data.target))
         .style('stroke-dasharray', '3, 3');
     } else {
-      paths.filter(data => _.get(data, 'target.id') === d.id).style('stroke-dasharray', '3, 3');
+      paths.filter(data => _.get(data, 'target') === d.id).style('stroke-dasharray', '3, 3');
     }
   };
 
