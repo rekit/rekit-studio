@@ -150,7 +150,7 @@ export default class GroupedDepsDiagram extends Component {
         })
         .on('mouseover', this.hanldeNodeMouseover)
         .on('mouseout', this.handleNodeMouseout)
-        .on('click', this.props.onNodeClick);
+        .on('click', this.handleNodeClick);
     };
 
     const allNodes = this.nodesGroup.selectAll('path').data(nodes);
@@ -260,6 +260,11 @@ export default class GroupedDepsDiagram extends Component {
     // this.tooltip.hide(d);
     this.delightNode(d, nodes[index]);
   };
+
+  handleNodeClick = d => {
+    // console.log('node click: ', d);
+    this.props.onNodeClick(d.id);
+  }
 
   highlightNode = (d, target) => {
     if (d.type.startsWith('v:container-')) return;

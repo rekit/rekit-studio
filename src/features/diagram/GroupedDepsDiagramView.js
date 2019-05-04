@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 import { GroupedDepsDiagram } from './';
+import element from '../../common/element';
 
 export class GroupedDepsDiagramView extends Component {
   static propTypes = {
@@ -25,9 +26,13 @@ export class GroupedDepsDiagramView extends Component {
     return groups;
   }
 
+  handleNodeClick = eleId => {
+    element.show(eleId);
+  }
+
   render() {
     const data = { groups: this.getGroups(), elementById: this.props.projectData.elementById };
-    return <GroupedDepsDiagram data={data} />;
+    return <GroupedDepsDiagram data={data} onNodeClick={this.handleNodeClick} />;
   }
 }
 
