@@ -97,9 +97,9 @@ export default class GroupedDepsDiagram extends Component {
       .attr('d', 'M0,-5L10,0L0,5');
 
     // this.groupsGroup = this.svg.append('svg:g');
+    this.nodesGroup = this.svg.append('svg:g');
     this.pieBgGroup = this.svg.append('svg:g');
     this.linksGroup = this.svg.append('svg:g');
-    this.nodesGroup = this.svg.append('svg:g');
     this.labelsGroup = this.svg.append('svg:g');
 
     this.tooltip = d3Tip()
