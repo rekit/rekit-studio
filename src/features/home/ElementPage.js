@@ -53,7 +53,7 @@ export class ElementPage extends Component {
 
     if (!viewEle) {
       const realEle = ele.target ? this.byId(ele.target) : ele;
-      if (realEle.type === 'file') {
+      if (realEle && realEle.type === 'file') {
         if (/^png|jpg|jpeg|gif|bmp|webp$/i.test(realEle.ext)) return ImageView;
         if (realEle.size < 500000) return CodeView; 
         else return 'TOO_LARGE';
