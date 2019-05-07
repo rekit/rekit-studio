@@ -17,7 +17,6 @@ const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
-const ResolveDllModulePlugin = require('./ResolveDllModulePlugin');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
@@ -255,8 +254,6 @@ module.exports = function(webpackEnv, args = {}) {
         rs: paths.resolveApp('src'),
       },
       plugins: [
-        // If it's plugin, use dll for npm modules
-        isPlugin ? new ResolveDllModulePlugin(args.pluginDir, isEnvDevelopment) : null,
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
         // guards against forgotten dependencies and such.
         PnpWebpackPlugin,

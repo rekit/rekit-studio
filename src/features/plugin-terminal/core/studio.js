@@ -26,7 +26,6 @@ function config(server, app, args) {
   const logs = {};
 
   app.post('/terminals', function(req, res) {
-    console.log('shell:', process.env.SHELL);
     const cols = parseInt(req.query.cols, 10),
       rows = parseInt(req.query.rows, 10),
       term = pty.spawn(getSehll(), [], {
