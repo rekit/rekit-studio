@@ -61,10 +61,11 @@ function config(server, app, args) {
     child.stdout.on('data', onData);
     child.stderr.on('data', onData);
     child.on('exit', () => {
+      const outputFile = path.join(tmpDir, 'testOutput.json');
       io.emit('run-test-status', {
         type: 'exit',
         projectRoot: rekit.core.paths.getProjectRoot(),
-        data: fs.readJsonSync(path.join(tmpDir, 'testOutput.json'), { throw: false }),
+        data: fs.existsSync(outputFile) ? fs.readJsonSync(outputFile, { throw: false }) : null,
       });
       running = null;
     });
