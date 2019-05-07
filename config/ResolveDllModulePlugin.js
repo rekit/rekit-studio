@@ -9,7 +9,7 @@ function ResolveDllModulePlugin(prjDir, isDev) {
 
 ResolveDllModulePlugin.prototype.apply = function(resolver) {
   const target = resolver.ensureHook('existing-file');
-  resolver.getHook('file').tapAsync('ResolveRSModule', (request, resolveContext, callback) => {
+  resolver.getHook('file').tapAsync('ResolveDllModulePlugin', (request, resolveContext, callback) => {
     if (
       request.path.indexOf('/node_modules/') >= 0 &&
       !(this.isDev && request.path.includes('/webpack/buildin/'))
