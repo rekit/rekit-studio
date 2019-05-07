@@ -143,6 +143,7 @@ export const getGroupedDepsDiagramData = createSelector(
       );
       n.isGroup = true;
       n.children = group.children;
+      n.pos = getPos(n);
       nodes.push(n);
 
       // Get group's children nodes
@@ -167,6 +168,7 @@ export const getGroupedDepsDiagramData = createSelector(
           nodeWidth(size),
           byId(group.id).name,
         );
+        n2.pos = getPos(n2);
         n2.groupId = group.id;
         n2.clickable = true;
         nodes.push(n2);

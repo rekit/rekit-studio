@@ -78,9 +78,10 @@ export default class GroupedDepsDiagram extends Component {
     this.pieBgGroup = this.svg.append('svg:g');
     this.linksGroup = this.svg.append('svg:g');
     this.labelsGroup = this.svg.append('svg:g');
+    this.labelsGroup2 = this.svg.append('svg:g');
 
     this.tooltip = d3Tip()
-      .attr('class', 'd3-tip')
+      .attr('class', 'diagram-d3-tip')
       .offset([-10, 0])
       .html(d => d.name);
     this.svg.call(this.tooltip);
@@ -100,6 +101,7 @@ export default class GroupedDepsDiagram extends Component {
     this.drawPies(nodes);
     this.drawNodes(nodes);
     this.drawLabels(nodes);
+    // this.drawLabels2(nodes);
     this.drawLinks(links);
   };
 
@@ -137,6 +139,7 @@ export default class GroupedDepsDiagram extends Component {
   };
 
   drawLabels = nodes => {
+    // Group labels
     const labels = nodes
       .filter(n => n.isGroup)
       .map(f => ({
@@ -166,6 +169,34 @@ export default class GroupedDepsDiagram extends Component {
     labelNodes.exit().remove();
     drawLabel(labelNodes.enter().append('svg:text'));
     drawLabel(labelNodes);
+  };
+
+  drawLabels2 = nodes => {
+    // normal labels
+    const labels2 = nodes.filter(n => !n.isGroup);
+    const drawLabel2 = d3Selection => {
+      d3Selection
+        .style('font-size', 12)
+        .style('fill', '#ddd')
+        .style('background', '#333')
+        .style('overflow', 'hidden')
+        .style('text-overflow', 'ellipsis')
+        .style('cursor', 'default')
+        .attr('text-anchor', 'left')
+        .attr('transform', d => {
+          const radius = d.radius + d.width;
+          const angle = (d.startAngle + d.endAngle) / 2;
+          const x = d.x + radius * Math.cos(angle);
+          const y = d.y + radius * Math.sin(angle);
+          const pos = { x, y, angle };
+          return `translate(${pos.x}, ${pos.y}) rotate(${(pos.angle * 180) / Math.PI})`;
+        })
+        .text(d => d.name);
+    };
+    const labelNodes2 = this.labelsGroup2.selectAll('text').data(labels2);
+    labelNodes2.exit().remove();
+    drawLabel2(labelNodes2.enter().append('svg:text'));
+    drawLabel2(labelNodes2);
   };
 
   drawLinks = links => {
@@ -229,19 +260,19 @@ export default class GroupedDepsDiagram extends Component {
   };
 
   hanldeNodeMouseover = (d, index, nodes) => {
-    // if (this.toShow(this.byId(d.id))) this.tooltip.show(d, nodes[index]);
+    if (!d.isGroup) this.tooltip.show(d, nodes[index]);
     this.highlightNode(d, nodes[index]);
   };
 
   handleNodeMouseout = (d, index, nodes) => {
-    // this.tooltip.hide(d);
+    if (!d.isGroup) this.tooltip.hide(d);
     this.delightNode(d, nodes[index]);
   };
 
   handleNodeClick = d => {
     // console.log('node click: ', d);
     if (d.clickable) this.props.onNodeClick(d.id);
-  }
+  };
 
   highlightNode = (d, target) => {
     if (d.type.startsWith('v:container-')) return;
