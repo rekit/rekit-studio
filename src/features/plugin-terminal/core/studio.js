@@ -1,13 +1,35 @@
 const pty = require('node-pty');
+const os = require('os');
+
+const getSehll = () => {
+  if (process.platform === 'win32') {
+    // For windows 10 use powershell
+    try {
+      const ver = os
+        .release()
+        .split('.')
+        .shift();
+      if (parseInt(ver, 10) >= 10) return 'powershell.exe';
+      // For windows 7 and below, use cmd.exe
+      return 'cmd.exe';
+    } catch (err) {
+      return 'cmd.exe';
+    }
+  } else {
+    // Use system shell for Mac
+    return '/bin/bash';
+  }
+};
 
 function config(server, app, args) {
   const terminals = {};
   const logs = {};
 
   app.post('/terminals', function(req, res) {
+    console.log('shell:', process.env.SHELL);
     const cols = parseInt(req.query.cols, 10),
       rows = parseInt(req.query.rows, 10),
-      term = pty.spawn(process.platform === 'win32' ? 'cmd.exe' : 'bash', [], {
+      term = pty.spawn(getSehll(), [], {
         name: 'xterm-color',
         cols: cols || 80,
         rows: rows || 24,
