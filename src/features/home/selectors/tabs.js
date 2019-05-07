@@ -1,29 +1,15 @@
-import _ from 'lodash';
 import { createSelector } from 'reselect';
 import plugin from '../../../common/plugin';
-import { storage } from '../../common/utils';
 
 const pathnameSelector = state => state.router.location.pathname;
 const elementByIdSelector = state => state.home.elementById;
 const openTabsSelector = state => state.home.openTabs;
-
-let byId;
-
-const getTreeNode = elementId => {
-  const element = byId(elementId);
-  return {
-    ...element,
-    key: elementId,
-    children: element.children && element.children.map(child => getTreeNode(child)),
-  };
-};
 
 export const tabsSelector = createSelector(
   pathnameSelector,
   elementByIdSelector,
   openTabsSelector,
   (pathname, elementById, openTabs) => {
-    byId = id => elementById[id] || null;
     if (!elementById) {
       return {};
     }
@@ -45,14 +31,5 @@ export const tabsSelector = createSelector(
       };
     }
     return { openTabs: [tab] };
-
-    // let { openTabs, historyTabs } = state;
-    // if (!openTabs.includes(tab.key)) {
-    //   openTabs = [...openTabs, tab.key];
-    // }
-    // historyTabs = [tab.key, _.without(historyTabs, tab.key)];
-    // newState = { ...state, openTabs, historyTabs };
-    // storage.session.setItem('openTabs', openTabs);
-    // storage.session.setItem('historyTabs', historyTabs);
   }
 );

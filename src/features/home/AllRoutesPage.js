@@ -24,7 +24,7 @@ export class AllRoutesPage extends Component {
               <dt key={`#${fid}`}>{featureById[fid].name}</dt>,
               featureById[fid].routes.map(r => (
                 <dd key={r.path}>
-                  <a href={r.path} target="_blank">{r.path}</a>
+                  <a href={r.path} target="_blank" rel="noopener noreferrer">{r.path}</a>
                   <span>{` => ${r.component}`}</span>
                 </dd>)
               )

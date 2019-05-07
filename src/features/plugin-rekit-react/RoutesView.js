@@ -15,7 +15,7 @@ export class RoutesView extends Component {
         dataIndex: 'path',
         title: 'Path',
         render: path => (
-          <a href={`http://localhost:${this.props.devPort}${path}`} target="_blank">
+          <a href={`http://localhost:${this.props.devPort}${path}`} target="_blank" rel="noopener noreferrer">
             {path}
           </a>
         ),

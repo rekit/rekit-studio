@@ -4,14 +4,10 @@ import App from '../features/home/App';
 import { PageNotFound } from '../features/common';
 import homeRoute from '../features/home/route';
 import commonRoute from '../features/common/route';
-import rekitCmdsRoute from '../features/rekit-cmds/route';
 import diagramRoute from '../features/diagram/route';
-import rekitToolsRoute from '../features/rekit-tools/route';
 import configRoute from '../features/config/route';
-import layoutRoute from '../features/layout/route';
 import editorRoute from '../features/editor/route';
 import coreRoute from '../features/core/route';
-import tasksRoute from '../features/tasks/route';
 import gitManagerRoute from '../features/git-manager/route';
 import ptyRoute from '../features/pty/route';
 
@@ -20,14 +16,10 @@ import ptyRoute from '../features/pty/route';
 const childRoutes = [
   homeRoute,
   commonRoute,
-  rekitCmdsRoute,
   diagramRoute,
-  rekitToolsRoute,
   configRoute,
-  layoutRoute,
   editorRoute,
   coreRoute,
-  tasksRoute,
   gitManagerRoute,
   ptyRoute,
 ];

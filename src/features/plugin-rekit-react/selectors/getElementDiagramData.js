@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { createSelector } from 'reselect';
 import { getDepsDiagramData } from 'rs/features/diagram/selectors/getDepsDiagramData';
 

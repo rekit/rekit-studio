@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { SvgIcon } from '../common';
 import { Button } from 'antd';
 import { clearOutput } from './redux/actions';
 

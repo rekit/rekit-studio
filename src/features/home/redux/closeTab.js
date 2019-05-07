@@ -1,8 +1,6 @@
 import _ from 'lodash';
-import update from 'immutability-helper';
 import { storage } from '../../common/utils';
 import { HOME_CLOSE_TAB } from './constants';
-const getPaths = tab => _.uniq([tab.urlPath, ...(tab.subTabs || []).map(t => t.urlPath)]);
 
 export function closeTab(tab) {
   return {
@@ -19,16 +17,6 @@ export function reducer(state, action) {
       _.pullAll(openPaths, action.data.paths);
       _.pullAll(historyPaths, action.data.paths);
 
-      // const toClose = { key: action.data.key };
-      // const index1 = _.findIndex(state.openTabs, toClose);
-      // const index2 = _.indexOf(state.historyTabs, toClose.key);
-
-      // const newState = update(state, {
-      //   openTabs: { $splice: [[index1, 1]] },
-      //   historyTabs: { $splice: [[index2, 1]] },
-      // });
-      // storage.session.setItem('openTabs', newState.openTabs);
-      // storage.session.setItem('historyTabs', newState.historyTabs);
       storage.session.setItem('openPaths', openPaths);
       storage.session.setItem('historyPaths', historyPaths);
       return { ...state, openPaths, historyPaths };

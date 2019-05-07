@@ -21,7 +21,7 @@ export default class EditorSider extends Component {
   };
 
   render() {
-    const { width, code, onSelectNode } = this.props;
+    const { code, onSelectNode } = this.props;
     const sizes = storage.local.getItem('editorSiderSizes') || [];
     const panes = [
       <Pane key="outlineview" className="pane" minSize="100px" size={sizes[0] || 1}>

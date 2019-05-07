@@ -7,14 +7,10 @@ import plugin from './plugin';
 import history from './history';
 import homeReducer from '../features/home/redux/reducer';
 import commonReducer from '../features/common/redux/reducer';
-import rekitCmdsReducer from '../features/rekit-cmds/redux/reducer';
 import diagramReducer from '../features/diagram/redux/reducer';
-import rekitToolsReducer from '../features/rekit-tools/redux/reducer';
 import configReducer from '../features/config/redux/reducer';
-import layoutReducer from '../features/layout/redux/reducer';
 import editorReducer from '../features/editor/redux/reducer';
 import coreReducer from '../features/core/redux/reducer';
-import tasksReducer from '../features/tasks/redux/reducer';
 import gitManagerReducer from '../features/git-manager/redux/reducer';
 import ptyReducer from '../features/pty/redux/reducer';
 
@@ -28,14 +24,10 @@ const reducerMap = {
   router: connectRouter(history),
   home: homeReducer,
   common: commonReducer,
-  rekitCmds: rekitCmdsReducer,
   diagram: diagramReducer,
-  rekitTools: rekitToolsReducer,
   config: configReducer,
-  layout: layoutReducer,
   editor: editorReducer,
   core: coreReducer,
-  tasks: tasksReducer,
   gitManager: gitManagerReducer,
   pty: ptyReducer,
 };

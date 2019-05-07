@@ -1,5 +1,3 @@
-import { createSelector } from 'reselect';
-
 const setItem = type => (key, item) => {
   const obj = window[`${type}Storage`];
   return obj.setItem(key, JSON.stringify(item));

@@ -6,9 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Dropdown, Icon, Menu, Modal } from 'antd';
 import * as actions from './redux/actions';
-import history from '../../common/history';
-import { SearchInput, SvgIcon } from '../common';
-import { showCmdDialog } from '../rekit-cmds/redux/actions';
+import { SvgIcon } from '../common';
 import { About, DemoAlert, ProjectExplorer } from './';
 import plugin from '../../common/plugin';
 
@@ -166,7 +164,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions, showCmdDialog }, dispatch),
+    actions: bindActionCreators({ ...actions }, dispatch),
   };
 }
 

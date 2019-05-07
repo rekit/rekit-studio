@@ -1,7 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
 /* global monaco */
 import React, { Component } from 'react';
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import configMonacoEditor from './configMonacoEditor';
 import configMonaco from './configMonaco';

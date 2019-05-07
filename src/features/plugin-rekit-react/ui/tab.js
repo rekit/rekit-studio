@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { matchPath } from 'react-router-dom';
 import store from 'rs/common/store';
 

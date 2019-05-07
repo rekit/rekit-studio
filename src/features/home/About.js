@@ -64,7 +64,7 @@ export class About extends Component {
         <RekitSteps />
         <h3>Rekit Studio architecture</h3>
         <p>
-          Rekit Studio is a web app built with Rekit, it uses Rekit&apos;s <a href="#">feature oriented architecture</a>.
+          Rekit Studio is a web app built with Rekit, it uses Rekit&apos;s feature oriented architecture.
           Actually Rekit Studio is built up with 5 well decoupled features:
         </p>
         <ol className="features-list">

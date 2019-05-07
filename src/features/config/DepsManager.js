@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Spin, message } from 'antd';
+import { Spin } from 'antd';
 import * as actions from './redux/actions';
 import { OutputPanel, Resizer } from '../common';
 import { DepsList } from './';

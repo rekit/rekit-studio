@@ -6,29 +6,6 @@ import d3Tip from 'd3-tip';
 import { getGroupedDepsDiagramData } from './selectors/getGroupedDepsDiagramData';
 import colors from '../../common/colors';
 
-const dummyData = {
-  projectData: {
-    diagram: {
-      groups: [
-        { id: 'g1', children: ['e1', 'e2'] },
-        // { id: 'g2', children: ['e3', 'e4'] },
-        // { id: 'g3', children: ['e5', 'e6'] },
-      ],
-    },
-    elementById: {
-      g1: { name: 'G1', id: 'g1', type: 'feature' },
-      g2: { name: 'G2', id: 'g2', type: 'feature' },
-      g3: { name: 'G3', id: 'g3', type: 'feature' },
-      e1: { name: 'E1', id: 'e1', type: 'action' },
-      e2: { name: 'E2', id: 'e2', type: 'component' },
-      e3: { name: 'E3', id: 'e3', type: 'action' },
-      e4: { name: 'E4', id: 'e4', type: 'component' },
-      e5: { name: 'E5', id: 'e5', type: 'action' },
-      e6: { name: 'E6', id: 'e6', type: 'component' },
-    },
-  },
-};
-
 export default class GroupedDepsDiagram extends Component {
   static propTypes = {
     onNodeClick: PropTypes.func,

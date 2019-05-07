@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Alert, Icon, Tabs } from 'antd';
+import { Alert, Tabs } from 'antd';
 import history from '../../common/history';
 import { CodeEditor } from '../editor';
 
@@ -17,7 +17,7 @@ export class RoutesPage extends Component {
     codeChanged: false,
   };
 
-  handleTabChange = (tabKey) => {
+  handleTabChange = tabKey => {
     const fid = this.props.match.params.feature;
     switch (tabKey) {
       case 'rules':
@@ -29,13 +29,13 @@ export class RoutesPage extends Component {
       default:
         break;
     }
-  }
+  };
 
-  handleCodeChange = (args) => {
+  handleCodeChange = args => {
     this.setState({
       codeChanged: args.hasChange,
     });
-  }
+  };
 
   renderNotFound(fid) {
     return (
@@ -64,12 +64,21 @@ export class RoutesPage extends Component {
         <Tabs activeKey={tabKey} animated={false} onChange={this.handleTabChange}>
           <TabPane tab="Rules" key="rules" className="rules-view" style={{ overflow: 'auto' }}>
             <p>This is a rough overview of routing config defined in a feature. </p>
-            <p>If a route rule isIndex === true and also has a path property then there will be two rules.</p>
-            <p>To edit the rules, please modify the config <Link to={`/${fid}/routes/code`}>code</Link> directly.</p>
-            <p>NOTE: if route path has parameters, you need to modify the link address with correct values after click the route link. </p>
-            {routes.length === 0
-              ? <Alert type="info" message="No routing rules defined." showIcon />
-              :
+            <p>
+              If a route rule isIndex === true and also has a path property then there will be two
+              rules.
+            </p>
+            <p>
+              To edit the rules, please modify the config{' '}
+              <Link to={`/${fid}/routes/code`}>code</Link> directly.
+            </p>
+            <p>
+              NOTE: if route path has parameters, you need to modify the link address with correct
+              values after click the route link.{' '}
+            </p>
+            {routes.length === 0 ? (
+              <Alert type="info" message="No routing rules defined." showIcon />
+            ) : (
               <table>
                 <thead>
                   <tr>
@@ -80,12 +89,23 @@ export class RoutesPage extends Component {
                 <tbody>
                   {routes.map(route => (
                     <tr key={route.path}>
-                      <td><a href={`//localhost:${devPort}${route.path}`} target="_blank">{route.path}</a></td>
-                      <td>{fid}/{route.component}</td>
+                      <td>
+                        <a
+                          href={`//localhost:${devPort}${route.path}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {route.path}
+                        </a>
+                      </td>
+                      <td>
+                        {fid}/{route.component}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
-              </table>}
+              </table>
+            )}
           </TabPane>
           <TabPane tab={`Code${codeChangeMark}`} key="code" style={{ height: '100%' }}>
             <CodeEditor file={codeFile} onStateChange={this.handleCodeChange} />
@@ -104,6 +124,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-)(RoutesPage);
+export default connect(mapStateToProps)(RoutesPage);

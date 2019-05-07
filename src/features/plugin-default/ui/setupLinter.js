@@ -1,6 +1,5 @@
 /* eslint no-use-before-define: 0 */
 import _ from 'lodash';
-import axios from 'axios';
 import store from '../../../common/store';
 import { lint } from '../redux/actions';
 

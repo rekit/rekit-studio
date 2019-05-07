@@ -1,4 +1,3 @@
-export { default as ProjectExplorerOld } from './ProjectExplorerOld';
 export { default as SidePanel } from './SidePanel';
 export { default as App } from './App';
 export { default as RoutesPage } from './RoutesPage';

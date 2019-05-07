@@ -7,15 +7,12 @@
 // https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da.
 
 import initialState from './initialState';
-import Convert from 'ansi-to-html';
 import { reducer as runScriptReducer } from './runScript';
 import { reducer as stopScriptReducer } from './stopScript';
 import { reducer as clearOutputReducer } from './clearOutput';
 import { reducer as setCurrentReducer } from './setCurrent';
 
 const reducers = [runScriptReducer, stopScriptReducer, clearOutputReducer, setCurrentReducer];
-
-const convert = new Convert();
 
 export default function reducer(state = initialState, action) {
   let newState = state;

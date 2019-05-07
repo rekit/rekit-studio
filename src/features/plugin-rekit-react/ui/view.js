@@ -1,4 +1,4 @@
-import { RoutesView, ElementDiagram } from '../';
+import { RoutesView } from '../';
 
 export default {
   getView(element, view) {

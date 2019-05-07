@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Icon, Input, Table, Spin, Menu, Modal } from 'antd';
+import { Button, Icon, Input, Table, Menu, Modal } from 'antd';
 import * as actions from './redux/actions';
 import { showDemoAlert } from '../home/redux/actions';
 
@@ -28,7 +28,11 @@ export class DepsList extends Component {
         title: 'Name',
         render(name) {
           return (
-            <a href={`https://www.npmjs.com/package/${name}`} target="_blank">
+            <a
+              href={`https://www.npmjs.com/package/${name}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {name}
             </a>
           );
@@ -80,7 +84,12 @@ export class DepsList extends Component {
             </div>
           </div>
         ),
-        filterIcon: <Icon type="filter" style={{ color: this.state.statusFilter.length ? '#03a9f4' : '#aaa' }} />,
+        filterIcon: (
+          <Icon
+            type="filter"
+            style={{ color: this.state.statusFilter.length ? '#03a9f4' : '#aaa' }}
+          />
+        ),
         filterDropdownVisible: this.state.statusFilterDropdownVisible,
         onFilterDropdownVisibleChange: visible => {
           this.setState({
@@ -90,7 +99,11 @@ export class DepsList extends Component {
         render(status, record) {
           return (
             <span className={`status-${record.status}`}>
-              {status ? <span className={`status-icon status-icon-${status}`} title={`${status}`} /> : ''}{' '}
+              {status ? (
+                <span className={`status-icon status-icon-${status}`} title={`${status}`} />
+              ) : (
+                ''
+              )}{' '}
               {record.latestVersion}
             </span>
           );
@@ -120,7 +133,11 @@ export class DepsList extends Component {
                 title="Upgrade to the latest version."
                 onClick={() => this.handleUpdatePackage(item.name)}
               />
-              <Icon type="close" title="Remove" onClick={() => this.handleRemovePackage(item.name)} />
+              <Icon
+                type="close"
+                title="Remove"
+                onClick={() => this.handleRemovePackage(item.name)}
+              />
             </div>
           );
         },
@@ -129,7 +146,9 @@ export class DepsList extends Component {
   }
 
   getData() {
-    return this.props.deps.filter(d => !this.state.statusFilter.length || this.state.statusFilter.includes(d.status));
+    return this.props.deps.filter(
+      d => !this.state.statusFilter.length || this.state.statusFilter.includes(d.status),
+    );
   }
 
   handleInputChange = evt => {
@@ -228,7 +247,13 @@ export class DepsList extends Component {
             onPressEnter={this.handleAddPackage}
           />
         </div>
-        <Table columns={this.getColumns()} dataSource={this.getData()} size="small" pagination={false} rowKey="name" />
+        <Table
+          columns={this.getColumns()}
+          dataSource={this.getData()}
+          size="small"
+          pagination={false}
+          rowKey="name"
+        />
       </div>
     );
   }
@@ -248,4 +273,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DepsList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DepsList);

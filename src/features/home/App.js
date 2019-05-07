@@ -7,13 +7,11 @@ import enUS from 'antd/lib/locale-provider/en_US';
 import { Alert, LocaleProvider, message, Modal, Spin } from 'antd';
 import SplitPane from 'rspv2/lib/SplitPane';
 import Pane from 'rspv2/lib/Pane';
-import { ErrorBoundary } from '../common';
 import { storage } from '../common/utils';
 import { BottomDrawer, TabsBar, SidePanel, QuickOpen } from './';
 import { DialogContainer } from '../core';
 import { ModalContainer } from './';
 import { fetchProjectData } from './redux/actions';
-import plugin from '../../common/plugin';
 
 /*
   This is the root component of your app. Here you define the overall layout

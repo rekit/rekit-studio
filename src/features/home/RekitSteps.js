@@ -56,18 +56,18 @@ export default class RekitSteps extends Component {
         </Steps>
         <p>
           Then access{' '}
-          <a href="http://localhost:6075" target="_blank">
+          <a href="http://localhost:6075" target="_blank" rel="noopener noreferrer">
             http://localhost:6075
           </a>{' '}
           for your app.{' '}
-          <a href="http://localhost:6076" target="_blank">
+          <a href="http://localhost:6076" target="_blank" rel="noopener noreferrer">
             http://localhost:6076
           </a>{' '}
           for Rekit Studio.
         </p>
         <p>
           * Alternatively you can use{' '}
-          <a href="https://yarnpkg.com/" target="_blank">
+          <a href="https://yarnpkg.com/" target="_blank" rel="noopener noreferrer">
             Yarn
           </a>{' '}
           as the package manager rather than npm.
