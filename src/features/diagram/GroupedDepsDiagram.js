@@ -141,29 +141,24 @@ export default class GroupedDepsDiagram extends Component {
   drawLabels = nodes => {
     // Group labels
     const labels = nodes
-      .filter(n => n.isGroup)
-      .map(f => ({
-        id: `label-group-${f.name}`,
-        text: f.name,
-        href: f.id,
-      }));
+      .filter(n => n.isGroup);
     const drawLabel = d3Selection => {
       const sss = d3Selection
-        .style('font-size', 12)
+        .style('font-size', d => d.width*1.1)
         .style('fill', '#999')
         .style('overflow', 'hidden')
         .style('text-overflow', 'ellipsis')
         .style('cursor', 'default')
         .attr('dy', this.diagramData.labelOffset || -10)
-        .attr('class', d => `label-node feature-${d.id}`);
+        .attr('class', d => `label-node feature-label-group-${d.name}`);
       // remove existing text path first, so that not duplicated.
       sss.select('textPath').remove();
       sss
         .append('textPath')
-        .attr('xlink:href', d => `#${d.href}`)
+        .attr('xlink:href', d => `#${d.id}`)
         .style('text-anchor', 'start')
         .attr('startOffset', '0%')
-        .text(d => d.text);
+        .text(d => d.name);
     };
     const labelNodes = this.labelsGroup.selectAll('text').data(labels);
     labelNodes.exit().remove();
