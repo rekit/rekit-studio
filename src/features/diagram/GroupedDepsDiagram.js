@@ -111,13 +111,13 @@ export default class GroupedDepsDiagram extends Component {
         .attr('id', d => d.id)
         .attr('stroke-width', d => d.width)
         .attr('stroke', d => {
-          // if (/v:container-/.test(d.type)) {
-          //   return d3
-          //     .color(colors(d.type.replace('v:container-', '')))
-          //     .brighter(0.75)
-          //     .hex();
-          // }
-          return colors(d.type);
+          const color = colors(d.type);
+          return d.isBg
+            ? d3
+                .color(colors(d.type))
+                .brighter(0.85)
+                .hex()
+            : color;
         })
         .attr('fill', 'transparent')
         .attr('class', 'path-element-node od-path')
@@ -140,11 +140,10 @@ export default class GroupedDepsDiagram extends Component {
 
   drawLabels = nodes => {
     // Group labels
-    const labels = nodes
-      .filter(n => n.isGroup);
+    const labels = nodes.filter(n => n.isGroup);
     const drawLabel = d3Selection => {
       const sss = d3Selection
-        .style('font-size', d => d.width*1.1)
+        .style('font-size', d => d.width * 1.1)
         .style('fill', '#999')
         .style('overflow', 'hidden')
         .style('text-overflow', 'ellipsis')
@@ -302,6 +301,8 @@ export default class GroupedDepsDiagram extends Component {
       .filter(data => {
         if (!data) return false;
         if (toHighlight[data.id] || deps[data.id]) return true;
+        // when hover on group, type bg node is highlighted
+        if (d.isGroup && data.groupId === d.id && data.isBg) return true;
         // related links
         return data.source && data.target && (toHighlight[data.source] || toHighlight[data.target]);
       })

@@ -1,6 +1,6 @@
 {
   "name": "rekit-studio",
-  "version": "3.0.0-beta.17",
+  "version": "3.0.0-beta.19",
   "description": "Rekit Studio IDE.",
   "keywords": [
     "rekit",
@@ -36,7 +36,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node ./scripts/start.js -d ../../altus/ui-platform",
+    "start": "node ./scripts/start.js -d ../rekit-studio",
     "build": "node ./scripts/build.js",
     "build:dll": "node ./scripts/buildProdDll.js",
     "build:dev-dll": "node ./scripts/buildDevDll.js",
@@ -44,7 +44,6 @@
     "serveBuild": "node ./bin/index.js",
     "copyToRekit": "node ./scripts/copyToRekit.js",
     "test2": "node -v",
-    "npm:publish": "node ./tools/npm_publish.js",
     "publish:sdk": "node ./scripts/publishSdk.js --npm-publish",
     "test": "node ./tools/run_test.js",
     "build:test": "node ./tools/server.js -m build"

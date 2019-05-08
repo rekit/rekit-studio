@@ -23,11 +23,12 @@ export default {
                 'reducer.js',
                 'style.less',
               ].includes(child.name)
-            )
+            ){
               continue;
+            }
             if (child.children) {
               children.push.apply(children, child.children);
-            } else group.children.push(child.id);
+            } else if (child.type !== 'file' || child.deps) group.children.push(child.id);
           }
           data.groups.push(group);
         });

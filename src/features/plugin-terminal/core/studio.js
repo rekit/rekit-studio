@@ -1,6 +1,9 @@
 const pty = require('node-pty');
+const path = require('path');
+const fs = require('fs');
 const os = require('os');
 
+const shellArgs = [];
 const getSehll = () => {
   if (process.platform === 'win32') {
     // For windows 10 use powershell
@@ -11,12 +14,25 @@ const getSehll = () => {
         .shift();
       if (parseInt(ver, 10) >= 10) return 'powershell.exe';
       // For windows 7 and below, use cmd.exe
-      return 'cmd.exe';
+      return { cmd: 'cmd.exe', args: [] };
     } catch (err) {
-      return 'cmd.exe';
+      return { cmd: 'cmd.exe', args: [] };
     }
   } else {
     // Use system shell for Mac
+
+    let source;
+    ['.bash_profile', '.bashrc']
+      .map(f => path.join(os.homedir(), f))
+      .some(file => {
+        if (fs.existsSync(file)) {
+          source = file;
+          return true;
+        }
+        return false;
+      });
+    console.log('bashrc: ', source);
+    if (source) shellArgs.push('--rcfile', source);
     return '/bin/bash';
   }
 };
@@ -26,15 +42,16 @@ function config(server, app, args) {
   const logs = {};
 
   app.post('/terminals', function(req, res) {
-    const cols = parseInt(req.query.cols, 10),
-      rows = parseInt(req.query.rows, 10),
-      term = pty.spawn(getSehll(), [], {
-        name: 'xterm-color',
-        cols: cols || 80,
-        rows: rows || 24,
-        cwd: rekit.core.paths.getProjectRoot(),
-        env: process.env,
-      });
+    const cols = parseInt(req.query.cols, 10);
+    const rows = parseInt(req.query.rows, 10);
+
+    const term = pty.spawn(getSehll(), shellArgs, {
+      name: 'xterm-color',
+      cols: cols || 80,
+      rows: rows || 24,
+      cwd: rekit.core.paths.getProjectRoot(),
+      env: process.env,
+    });
 
     console.log('Created terminal with PID: ' + term.pid);
     terminals[term.pid] = term;

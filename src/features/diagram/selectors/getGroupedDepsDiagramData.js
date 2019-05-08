@@ -154,6 +154,8 @@ export const getGroupedDepsDiagramData = createSelector(
         0.2,
         false,
       );
+      const bgNodes = [];
+      let currentBgNode;
       group.children.forEach((cid, index2) => {
         const child = byId(cid);
         const n2 = getNode(
@@ -171,8 +173,25 @@ export const getGroupedDepsDiagramData = createSelector(
         n2.pos = getPos(n2);
         n2.groupId = group.id;
         n2.clickable = true;
+        if (!currentBgNode || currentBgNode.type !== n2.type) {
+          if (currentBgNode) {
+            currentBgNode.pos = getPos(currentBgNode);
+            bgNodes.push(currentBgNode);
+          }
+          currentBgNode = Object.assign({}, n2, {
+            id: `bg-node-${group.name}-${n2.type}`,
+            name: n2.type,
+            clickable: false,
+            isBg: true,
+          });
+        } else {
+          currentBgNode.endAngle = n2.endAngle;
+        }
         nodes.push(n2);
       });
+      if (currentBgNode) bgNodes.push(currentBgNode);
+      // Bg nodes should be render first so that it's in back
+      nodes.unshift(...bgNodes);
     });
 
     let links = [];
@@ -183,7 +202,7 @@ export const getGroupedDepsDiagramData = createSelector(
         const source = nodeById[ele.id];
         const target = nodeById[dep];
         if (source && target) links.push(getLink(source, target));
-        else console.error('overview diagram link: source or target not exist: ', ele.id, dep);
+        // else console.error('overview diagram link: source or target not exist: ', ele.id, dep);
       });
     });
 

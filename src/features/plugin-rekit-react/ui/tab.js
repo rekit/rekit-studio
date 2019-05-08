@@ -1,4 +1,3 @@
-import { matchPath } from 'react-router-dom';
 import store from 'rs/common/store';
 
 export default {
@@ -7,17 +6,12 @@ export default {
 
     if (!elementById) return null;
 
-    let match;
-    // Find build page
-    match = matchPath(urlPath, {
-      path: '/tools/build',
-      exact: true,
-    });
-    if (match) {
+    if (urlPath.includes('deps-diagram')){
       return {
-        name: 'Build',
-        key: '#build',
-      };
+        name: 'Deps',
+        key: 'deps-diagram',
+        urlPath,
+      }
     }
 
     return null;
