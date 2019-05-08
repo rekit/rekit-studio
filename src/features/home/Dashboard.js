@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Col, Row } from 'antd';
 import plugin from '../../common/plugin';
-import { AllDepsDiagramView, OverviewDiagramView } from '../diagram';
+import { DepsOverviewDiagramView } from '../diagram';
 import { OverviewWidget } from '../git-manager';
 import { getTypesCount } from './selectors/projectData';
 import { SvgIcon } from '../common';
@@ -40,9 +40,9 @@ export class Dashboard extends Component {
     // const { features, featureById } = this.props.home;
     const p = _.last(plugin.getPlugins('dashboard.OverviewDiagram'));
 
-    let OverviewDiagram = AllDepsDiagramView;
-    if (p && p.dashboard.OverviewDiagram === 'feature') OverviewDiagram = OverviewDiagramView;
-    else if (p) OverviewDiagram = p.dashboard.OverviewDiagram;
+    // let OverviewDiagram = AllDepsDiagramView;
+    // if (p && p.dashboard.OverviewDiagram === 'feature') OverviewDiagram = OverviewDiagramView;
+    // else if (p) OverviewDiagram = p.dashboard.OverviewDiagram;
     return (
       <div className="home-dashboard">
         {this.renderBadges()}
@@ -51,7 +51,7 @@ export class Dashboard extends Component {
             <div className="dashboard-widget">
               <h3>Overview Diagram</h3>
               <div className="widget-container" style={{ overflow: 'hidden' }}>
-                <OverviewDiagram />
+                <DepsOverviewDiagramView />
               </div>
             </div>
           </Col>

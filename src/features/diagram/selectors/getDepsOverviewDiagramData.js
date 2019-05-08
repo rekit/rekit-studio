@@ -113,7 +113,7 @@ const getNode = (ele, angle, x, y, radius, width, groupName) => {
 
 // Groups sample data:
 //  [{id: 'group1', children: ['child1', 'child2']}]
-export const getGroupedDepsDiagramData = createSelector(
+export const getDepsOverviewDiagramData = createSelector(
   state => state.data,
   state => getDepsData(state.data),
   state => state.size,

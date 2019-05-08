@@ -5,5 +5,5 @@ export { default as DepsDiagramView } from './DepsDiagramView';
 export { default as AllDepsDiagram } from './AllDepsDiagram';
 export { default as AllDepsDiagramView } from './AllDepsDiagramView';
 export { default as OverviewDiagramView } from './OverviewDiagramView';
-export { default as GroupedDepsDiagram } from './GroupedDepsDiagram';
-export { default as GroupedDepsDiagramView } from './GroupedDepsDiagramView';
+export { default as DepsOverviewDiagram } from './DepsOverviewDiagram';
+export { default as DepsOverviewDiagramView } from './DepsOverviewDiagramView';

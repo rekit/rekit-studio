@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
-import { GroupedDepsDiagram } from './';
+import { DepsOverviewDiagram } from './';
 import element from '../../common/element';
 import plugin from '../../common/plugin';
 
-export class GroupedDepsDiagramView extends Component {
+export class DepsOverviewDiagramView extends Component {
   static propTypes = {
     projectData: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
@@ -43,7 +43,7 @@ export class GroupedDepsDiagramView extends Component {
   };
 
   render() {
-    return <GroupedDepsDiagram data={this.getData()} onNodeClick={this.handleNodeClick} />;
+    return <DepsOverviewDiagram data={this.getData()} onNodeClick={this.handleNodeClick} />;
   }
 }
 
@@ -64,4 +64,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(GroupedDepsDiagramView);
+)(DepsOverviewDiagramView);

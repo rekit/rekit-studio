@@ -1,15 +1,15 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { GroupedDepsDiagramView } from '../../../src/features/diagram/GroupedDepsDiagramView';
+import { DepsOverviewDiagramView } from '../../../src/features/diagram/GroupedDepsDiagramView';
 
-describe('diagram/GroupedDepsDiagramView', () => {
+describe('diagram/DepsOverviewDiagramView', () => {
   it('renders node with correct class name', () => {
     const props = {
       diagram: {},
       actions: {},
     };
     const renderedComponent = shallow(
-      <GroupedDepsDiagramView {...props} />
+      <DepsOverviewDiagramView {...props} />
     );
 
     expect(

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
-import { getGroupedDepsDiagramData } from './selectors/getGroupedDepsDiagramData';
+import { getDepsOverviewDiagramData } from './selectors/getDepsOverviewDiagramData';
 import colors from '../../common/colors';
 
-export default class GroupedDepsDiagram extends Component {
+export default class DepsOverviewDiagram extends Component {
   static propTypes = {
     onNodeClick: PropTypes.func,
     data: PropTypes.object.isRequired,
@@ -92,7 +92,7 @@ export default class GroupedDepsDiagram extends Component {
   updateDiagram = () => {
     const size = this.getSize();
     this.svg.attr('width', size).attr('height', size);
-    this.diagramData = getGroupedDepsDiagramData({
+    this.diagramData = getDepsOverviewDiagramData({
       data: this.props.data,
       size,
     });
@@ -115,7 +115,7 @@ export default class GroupedDepsDiagram extends Component {
           return d.isBg
             ? d3
                 .color(colors(d.type))
-                .brighter(0.85)
+                .brighter(0.75)
                 .hex()
             : color;
         })
@@ -326,7 +326,7 @@ export default class GroupedDepsDiagram extends Component {
   render() {
     return (
       <div
-        className="diagram-grouped-deps-diagram"
+        className="diagram-deps-overview-diagram"
         ref={node => {
           this.d3Node = node;
         }}
