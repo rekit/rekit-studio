@@ -294,7 +294,7 @@ export class TabsBar extends Component {
         <Menu.Item key="close-self">Close</Menu.Item>
       </Menu>
     );
-    const iconStyle = tab.iconColor ? { fill: tab.iconColor } : null;
+    const iconStyle = tab.iconColor ? { color: tab.iconColor } : null;
     return (
       <Draggable key={tab.key} draggableId={tab.key} index={index}>
         {provided => (

@@ -14,9 +14,11 @@ function getSvgSymbols() {
   if (svgSymbols) return svgSymbols;
   svgSymbols = {};
   const svgSpriteNode = document.getElementById('__SVG_SPRITE_NODE__');
-  _.forEach(svgSpriteNode.children, (child) => {
-    svgSymbols[child.id] = true;
-  });
+  if (svgSpriteNode) {
+    _.forEach(svgSpriteNode.children, child => {
+      svgSymbols[child.id] = true;
+    });
+  }
   return svgSymbols;
 }
 
