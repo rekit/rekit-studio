@@ -194,7 +194,7 @@ export default class DepsOverviewDiagram extends Component {
   };
 
   drawLinks = links => {
-    const { nodeById , noGroup} = this.diagramData;
+    const { nodeById, noGroup } = this.diagramData;
     const drawLink = d3Selection => {
       d3Selection
         .attr('id', d => `${d.source}-${d.target}`)
@@ -222,16 +222,30 @@ export default class DepsOverviewDiagram extends Component {
   };
 
   drawPies = nodes => {
-    const pies = nodes
-      .filter(n => n.isGroup)
-      .map(g => ({
-        id: `${g.id}:pie`,
-        width: g.radius - g.width * 1.5 - 2,
-        x: g.x,
-        y: g.y,
-        startAngle: g.startAngle,
-        endAngle: g.endAngle,
-      }));
+    let pies;
+    if (this.diagramData.noGroup) {
+      pies = nodes
+        .filter(n => n.isBg)
+        .map(g => ({
+          id: `${g.id}:pie`,
+          width: g.radius - g.width * 0.5,
+          x: g.x,
+          y: g.y,
+          startAngle: g.startAngle,
+          endAngle: g.endAngle,
+        }));
+    } else {
+      pies = nodes
+        .filter(n => n.isGroup)
+        .map(g => ({
+          id: `${g.id}:pie`,
+          width: g.radius - g.width * 1.5 - 2,
+          x: g.x,
+          y: g.y,
+          startAngle: g.startAngle,
+          endAngle: g.endAngle,
+        }));
+    }
 
     const drawPie = d3Selection => {
       d3Selection

@@ -1,6 +1,6 @@
 import plugin from './plugin';
 
-let colors = {};
+let colors;
 export default (type, light) => {
   if (!colors) {
     colors = plugin.getPlugins('colors').reduce((prev, curr) => {
