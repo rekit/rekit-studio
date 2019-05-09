@@ -82,7 +82,7 @@ export class ProjectExplorer extends Component {
               });
             }
           }, 100);
-        }
+        },
       );
     }
   }
@@ -143,13 +143,13 @@ export class ProjectExplorer extends Component {
   };
 
   renderTreeNodeTitle(nodeData) {
-    const iconStyle = {};
+    const iconProps = {};
     if (nodeData.iconColor) {
-      iconStyle.fill = nodeData.iconColor;
+      iconProps.style = { color: nodeData.iconColor };
     }
     return (
       <span>
-        {nodeData.icon && <SvgIcon type={nodeData.icon} style={iconStyle} />}
+        {nodeData.icon && <SvgIcon type={nodeData.icon} {...iconProps} />}
         <label>
           {nodeData.name}
           {_.has(nodeData, 'count') ? ` (${nodeData.count})` : ''}
@@ -247,5 +247,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ProjectExplorer);

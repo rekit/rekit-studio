@@ -37,12 +37,6 @@ export class Dashboard extends Component {
   }
 
   render() {
-    // const { features, featureById } = this.props.home;
-    const p = _.last(plugin.getPlugins('dashboard.OverviewDiagram'));
-
-    // let OverviewDiagram = AllDepsDiagramView;
-    // if (p && p.dashboard.OverviewDiagram === 'feature') OverviewDiagram = OverviewDiagramView;
-    // else if (p) OverviewDiagram = p.dashboard.OverviewDiagram;
     return (
       <div className="home-dashboard">
         {this.renderBadges()}

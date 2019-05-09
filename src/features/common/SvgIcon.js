@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 
@@ -6,61 +7,50 @@ import { Icon } from 'antd';
 const files = require.context('!svg-sprite-loader!../../svgicons', false, /.*\.svg$/);
 files.keys().forEach(files);
 
-export default class SvgIcon extends Component {
+let svgSymbols = null;
+
+// Get all loaded svg icon symbols
+function getSvgSymbols() {
+  if (svgSymbols) return svgSymbols;
+  svgSymbols = {};
+  const svgSpriteNode = document.getElementById('__SVG_SPRITE_NODE__');
+  _.forEach(svgSpriteNode.children, (child) => {
+    svgSymbols[child.id] = true;
+  });
+  return svgSymbols;
+}
+
+class SvgIcon extends Component {
   static propTypes = {
     type: PropTypes.string.isRequired,
-    size: PropTypes.number,
     className: PropTypes.string,
     style: PropTypes.object,
-    fill: PropTypes.string,
   };
- 
+
   static defaultProps = {
-    size: null,
     className: '',
     style: null,
-    fill: null,
   };
 
   render() {
-    const { size, type, fill } = this.props;
+    const { type } = this.props;
+    const cssCls = `anticon common-svg-icon common-svg-icon-${type} ${this.props.className || ''}`;
     const props = { ...this.props };
-    delete props.type;
-    delete props.size;
     delete props.className;
-    delete props.fill;
-
-    if (fill) {
-      props.style = {
-        ...props.style,
-        fill,
-      };
-    }
-    if (size) {
-      props.style = {
-        ...props.style,
-        width: `${size}px`,
-        height: `${size}px`,
-      };
-    }
-    const cssCls = `common-svg-icon common-svg-icon-${type} ${this.props.className || ''}`;
-
-    if (/^anticon-/.test(type)) {
-      if (fill) {
-        props.style.color = fill;
-      }
-      if (size) {
-        delete props.style.width;
-        delete props.style.height;
-        props.style.fontSize = `${size}px`;
-      }
-
+    delete props.type;
+    const symbols = getSvgSymbols();
+    if (!symbols[type] || /^anticon-/.test(type)) {
       return <Icon className={cssCls} type={type.replace(/^anticon-/, '')} {...props} />;
     }
     return (
-      <svg className={cssCls} xmlns="http://www.w3.org/2000/svg" {...props}>
-        <use xlinkHref={`#${type}`} />
-      </svg>
+      <i className={cssCls} {...props}>
+        <svg xmlns="http://www.w3.org/2000/svg">
+          <use xlinkHref={`#${type}`} />
+        </svg>
+      </i>
     );
   }
 }
+
+SvgIcon.getSvgSymbols = getSvgSymbols;
+export default SvgIcon;
