@@ -69,7 +69,12 @@ export class ProblemsView extends Component {
       type = 'error';
       color = '#ef5350';
     }
-    return <SvgIcon type={type} size={11} fill={color} />;
+    const style = {
+      color,
+      width: '11px',
+      height: '11px',
+    };
+    return <SvgIcon type={type} style={style} />;
   }
 
   renderFileProblem(file, msgs) {
@@ -86,11 +91,13 @@ export class ProblemsView extends Component {
         <dt onClick={() => this.toggleCollapse(file)}>
           <SvgIcon
             type={isClosed ? 'anticon-caret-right' : 'anticon-caret-down'}
-            size={8}
-            fill="#aaa"
+            style={{ color: '#aaa', width: '8px', height: '8px' }}
             className="error-switcher"
           />
-          <SvgIcon type={ele.icon} size={12} fill={ele.iconColor} />
+          <SvgIcon
+            type={ele.icon}
+            style={{ width: '12px', height: '12px', color: ele.iconColor }}
+          />
           {ele.name} <span className="full-path">{file}</span>
           <Badge count={msgs.length} />
         </dt>
@@ -143,5 +150,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ProblemsView);
