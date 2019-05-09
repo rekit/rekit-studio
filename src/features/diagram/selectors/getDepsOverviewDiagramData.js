@@ -123,28 +123,43 @@ export const getDepsOverviewDiagramData = createSelector(
     const x = size / 2;
     const y = size / 2;
     const nodes = [];
-    const groups = (data.groups || []).map(g => ({ ...g, weight: g.children.length }));
+
+    let groups;
+    let noGroup;
+    let showBgNodes = true;
+    if (data.groups && data.groups.length) {
+      groups = data.groups.map(g => ({ ...g, weight: g.children.length }));
+    } else if (data.elements && data.elements.length) {
+      // no group diagram
+      showBgNodes = _.uniq(data.elements.map(id => byId(id).type)).length > 1;
+      noGroup = true;
+      groups = [
+        {
+          id: 'vv:empty-group',
+          name: '',
+          noShow: true,
+          isGroup: true,
+          type: 'empty',
+          children: data.elements,
+        },
+      ];
+    } else {
+      // empty diagram
+      groups = [];
+    }
 
     const radius = size / 2 - padding(size);
     const innerRadius = radius - nodeWidth(size) - 2;
 
     // Each startAngle and endAngle of groups
-    const angles = calcAngles(groups, 0, Math.PI * 2, -3, true);
+    const angles = calcAngles(groups, 0, Math.PI * 2, noGroup ? 0 : -3, true);
     groups.forEach((group, index) => {
       // Get group nodes
-      const n = getNode(
-        byId(group.id),
-        angles[index],
-        x,
-        y,
-        radius,
-        nodeWidth(size),
-        byId(group.id).name,
-      );
+      const n = getNode(group, angles[index], x, y, radius, nodeWidth(size), group.name);
       n.isGroup = true;
       n.children = group.children;
       n.pos = getPos(n);
-      nodes.push(n);
+      if (!noGroup) nodes.push(n);
 
       // Get group's children nodes
       const angles2 = calcAngles(
@@ -152,7 +167,7 @@ export const getDepsOverviewDiagramData = createSelector(
         n.startAngle,
         n.endAngle - n.startAngle,
         0.2,
-        false,
+        noGroup ? true : false,
       );
       const bgNodes = [];
       let currentBgNode;
@@ -168,30 +183,35 @@ export const getDepsOverviewDiagramData = createSelector(
           y,
           innerRadius,
           nodeWidth(size),
-          byId(group.id).name,
+          group.name,
         );
         n2.pos = getPos(n2);
         n2.groupId = group.id;
         n2.clickable = true;
-        if (!currentBgNode || currentBgNode.type !== n2.type) {
-          if (currentBgNode) {
-            currentBgNode.pos = getPos(currentBgNode);
-            bgNodes.push(currentBgNode);
-          }
-          currentBgNode = Object.assign({}, n2, {
-            id: `bg-node-${group.name}-${n2.type}`,
-            name: n2.type,
-            clickable: false,
-            isBg: true,
-          });
-        } else {
-          currentBgNode.endAngle = n2.endAngle;
-        }
         nodes.push(n2);
+
+        if (showBgNodes) {
+          if (!currentBgNode || currentBgNode.type !== n2.type) {
+            if (currentBgNode) {
+              currentBgNode.pos = getPos(currentBgNode);
+              bgNodes.push(currentBgNode);
+            }
+            currentBgNode = Object.assign({}, n2, {
+              id: `bg-node-${group.name}-${n2.type}`,
+              name: n2.type,
+              clickable: false,
+              isBg: true,
+            });
+          } else {
+            currentBgNode.endAngle = n2.endAngle;
+          }
+        }
       });
-      if (currentBgNode) bgNodes.push(currentBgNode);
-      // Bg nodes should be render first so that it's in back
-      nodes.unshift(...bgNodes);
+      if (showBgNodes) {
+        if (currentBgNode) bgNodes.push(currentBgNode);
+        // Bg nodes should be render first so that it's in back
+        nodes.unshift(...bgNodes);
+      }
     });
 
     let links = [];
@@ -207,6 +227,14 @@ export const getDepsOverviewDiagramData = createSelector(
     });
 
     links = _.uniqWith(links, _.isEqual);
-    return { nodes, links, depsData: deps, nodeById, labelOffset: -nodeWidth(size) };
+    return {
+      nodes,
+      links,
+      depsData: deps,
+      nodeById,
+      labelOffset: -nodeWidth(size),
+      noGroup,
+      showBgNodes,
+    };
   },
 );

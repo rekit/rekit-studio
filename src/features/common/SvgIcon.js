@@ -27,8 +27,8 @@ class SvgIcon extends Component {
     type: PropTypes.string.isRequired,
     className: PropTypes.string,
     style: PropTypes.object,
-    color: PropTypes.object,
-    size: PropTypes.object,
+    color: PropTypes.string,
+    size: PropTypes.number,
   };
 
   static defaultProps = {

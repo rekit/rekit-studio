@@ -13,6 +13,8 @@ import { getTreeData } from './selectors/projectData';
 import { ProjectExplorerContextMenu } from './';
 import plugin from '../../common/plugin';
 import element from '../../common/element';
+import colors from '../../common/colors';
+import icons from '../../common/icons';
 
 const TreeNode = Tree.TreeNode;
 
@@ -142,14 +144,25 @@ export class ProjectExplorer extends Component {
     this.ctxMenu = ctxMenu;
   };
 
-  renderTreeNodeTitle(nodeData) {
-    const iconProps = {};
-    if (nodeData.iconColor) {
-      iconProps.style = { color: nodeData.iconColor };
+  renderTreeNodeIcon(nodeData) {
+    if (_.has(nodeData, 'icon') && !nodeData.icon) return null;
+    const iconProps = {
+      type: nodeData.icon || icons(nodeData.type),
+    };
+    if (_.has(nodeData, 'iconColor')) {
+      // If a an element defines iconColor, then use it, even its value is false/null
+      if (nodeData.iconColor) iconProps.color = nodeData.iconColor;
+    } else {
+      // Ohterwise use system color
+      iconProps.color = colors(nodeData.type);
     }
+    return <SvgIcon {...iconProps} />
+  }
+
+  renderTreeNodeTitle(nodeData) {
     return (
       <span>
-        {nodeData.icon && <SvgIcon type={nodeData.icon} {...iconProps} />}
+        {this.renderTreeNodeIcon(nodeData)}
         <label>
           {nodeData.name}
           {_.has(nodeData, 'count') ? ` (${nodeData.count})` : ''}

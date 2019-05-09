@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 import { DepsOverviewDiagram } from './';
+import getElementsForDepsDiagram from './selectors/getElementsForDepsDiagram';
 import element from '../../common/element';
 import plugin from '../../common/plugin';
 
@@ -13,28 +14,14 @@ export class DepsOverviewDiagramView extends Component {
     actions: PropTypes.object.isRequired,
   };
 
-  // getGroups() {
-  //   const prjData = this.props.projectData;
-
-  //   let groups;
-
-  //   const byId = id => prjData.elementById[id];
-  //   const groups = Object.values(prjData.elementById)
-  //     .filter(ele => ele.type === 'feature')
-  //     .map(f => {
-  //       return {
-  //         id: f.id,
-  //         children: f.children.reduce((p, c) => [...p, ...(byId(c).children || [])], []),
-  //       };
-  //     });
-  //   return groups;
-  // }
-
   getData() {
-    const data = { groups: [], elementById: this.props.projectData.elementById };
+    const data = { groups: [], elements: [], elementById: this.props.projectData.elementById };
     plugin.getPlugins('diagram.overview.processData').forEach(p => {
       p.diagram.overview.processData(data);
     });
+    if (!data.groups.length && !data.elements.length) {
+      data.elements = getElementsForDepsDiagram(data.elementById);
+    }
     return data;
   }
 

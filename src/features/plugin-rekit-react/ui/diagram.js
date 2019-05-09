@@ -7,6 +7,8 @@ export default {
         .forEach(f => {
           const group = {
             id: f.id,
+            name: f.name,
+            type: 'feature',
             children: [],
           };
 

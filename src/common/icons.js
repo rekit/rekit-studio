@@ -1,9 +1,12 @@
 import plugin from './plugin';
 
+let icons;
 export default type => {
-  const icons = plugin.getPlugins('icons').reduce((prev, curr) => {
-    Object.assign(prev, curr.icons);
-    return prev;
-  }, {});
+  if (!icons) {
+    icons = plugin.getPlugins('icons').reduce((prev, curr) => {
+      Object.assign(prev, curr.icons);
+      return prev;
+    }, {});
+  }
   return icons[type] || 'file';
 };

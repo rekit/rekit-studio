@@ -100,7 +100,7 @@ export default class DepsOverviewDiagram extends Component {
     const { nodes, links } = this.diagramData;
     this.drawPies(nodes);
     this.drawNodes(nodes);
-    this.drawLabels(nodes);
+    this.drawGroupLabels(nodes);
     // this.drawLabels2(nodes);
     this.drawLinks(links);
   };
@@ -138,7 +138,7 @@ export default class DepsOverviewDiagram extends Component {
     drawNode(allNodes);
   };
 
-  drawLabels = nodes => {
+  drawGroupLabels = nodes => {
     // Group labels
     const labels = nodes.filter(n => n.isGroup);
     const drawLabel = d3Selection => {
