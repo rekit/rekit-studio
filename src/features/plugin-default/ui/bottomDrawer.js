@@ -10,13 +10,13 @@ export default {
   getPanes() {
     return [
       {
-        tab: 'Output',
+        title: 'Output',
         key: 'output',
         order: 10,
         component: OutputView,
       },
       {
-        tab: <ProblemPaneTitle />,
+        title: <ProblemPaneTitle />,
         key: 'problems',
         order: 1,
         component: ProblemsView,

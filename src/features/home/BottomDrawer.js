@@ -63,7 +63,7 @@ export class BottomDrawer extends Component {
                 })}
                 onClick={evt => this.handleTabClick(evt, pane.key)}
               >
-                {pane.tab}
+                {pane.title || pane.tab}
               </span>
             ))}
           </div>
