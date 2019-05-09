@@ -194,13 +194,13 @@ export default class DepsOverviewDiagram extends Component {
   };
 
   drawLinks = links => {
-    const { nodeById } = this.diagramData;
+    const { nodeById , noGroup} = this.diagramData;
     const drawLink = d3Selection => {
       d3Selection
         .attr('id', d => `${d.source}-${d.target}`)
         .attr('marker-end', 'url(#marker)') // eslint-disable-line
         .attr('fill', 'transparent')
-        .attr('stroke', '#ccc')
+        .attr('stroke', noGroup ? '#999' : '#ccc')
         .attr('stroke-width', '1px')
         .attr('class', d => {
           const source = nodeById[d.source];

@@ -126,6 +126,7 @@ export const getDepsOverviewDiagramData = createSelector(
 
     let groups;
     let noGroup;
+    let groupIdSeed = 0;
     let showBgNodes = true;
     if (data.groups && data.groups.length) {
       groups = data.groups.map(g => ({ ...g, weight: g.children.length }));
@@ -186,7 +187,7 @@ export const getDepsOverviewDiagramData = createSelector(
           group.name,
         );
         n2.pos = getPos(n2);
-        n2.groupId = group.id;
+        n2.groupId = noGroup ? groupIdSeed++ : group.id;
         n2.clickable = true;
         nodes.push(n2);
 
