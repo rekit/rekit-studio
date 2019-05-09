@@ -27,19 +27,32 @@ class SvgIcon extends Component {
     type: PropTypes.string.isRequired,
     className: PropTypes.string,
     style: PropTypes.object,
+    color: PropTypes.object,
+    size: PropTypes.object,
   };
 
   static defaultProps = {
     className: '',
-    style: null,
+    style: {},
   };
 
   render() {
     const { type } = this.props;
     const cssCls = `anticon common-svg-icon common-svg-icon-${type} ${this.props.className || ''}`;
     const props = { ...this.props };
+    props.style = { ...props.style };
+    if (props.size) {
+      props.style.height = `${props.size}px`;
+      props.style.width = `${props.size}px`;
+    }
+    if (props.color) {
+      props.style.color = props.color;
+    }
     delete props.className;
     delete props.type;
+    delete props.size;
+    delete props.color;
+
     const symbols = getSvgSymbols();
     if (!symbols[type] || /^anticon-/.test(type)) {
       return <Icon className={cssCls} type={type.replace(/^anticon-/, '')} {...props} />;

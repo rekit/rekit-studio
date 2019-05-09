@@ -69,12 +69,7 @@ export class ProblemsView extends Component {
       type = 'error';
       color = '#ef5350';
     }
-    const style = {
-      color,
-      width: '11px',
-      height: '11px',
-    };
-    return <SvgIcon type={type} style={style} />;
+    return <SvgIcon type={type} color={color} size={11} />;
   }
 
   renderFileProblem(file, msgs) {

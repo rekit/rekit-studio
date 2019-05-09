@@ -25,9 +25,12 @@ export class Dashboard extends Component {
       <div className="top-badges">
         {badges.map(b => (
           <div className="top-badge" key={b.type}>
-            <SvgIcon size={28} type={icons(b.type)} fill={colors(b.type)} />
+            <SvgIcon
+              style={{ width: '28px', height: '28px', color: colors(b.type) }}
+              type={icons(b.type)}
+            />
             <label className="count">
-              {_.isFunction(b.count) ? b.count() : (typesCount[b.type] || 0)}
+              {_.isFunction(b.count) ? b.count() : typesCount[b.type] || 0}
             </label>
             <label className="type">{b.name}</label>
           </div>

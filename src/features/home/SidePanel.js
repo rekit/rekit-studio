@@ -103,7 +103,7 @@ export class SidePanel extends Component {
           <Menu.Item key={mi.key}>
             {mi.icon && (
               <span>
-                <SvgIcon type={mi.icon} style={{ fill: mi.iconColor }} />
+                <SvgIcon type={mi.icon} style={{ color: mi.iconColor }} />
                 {mi.label}
               </span>
             )}
