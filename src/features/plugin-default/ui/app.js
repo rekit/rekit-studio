@@ -5,6 +5,7 @@ export default {
       // indicates the project appType has no corresponding plugin
       return;
     }
+    const byId = id => prjData.elementById[id];
     Object.values(prjData.elementById).forEach(ele => {
       if (ele.type === 'file') {
         switch (ele.ext) {
@@ -27,6 +28,18 @@ export default {
         }
       } else if (ele.type === 'folder') {
         ele.icon = 'folder';
+      }
+
+      if (ele.parts) {
+        ele.parts.forEach(part => {
+          if (byId(part)) byId(part).owner = ele.id;
+        });
+      }
+      if (ele.children && ele.children.forEach) {
+        ele.children.forEach(cid => {
+          const c = byId(cid);
+          if (c) c.parent = ele.id;
+        });
       }
     });
   },
