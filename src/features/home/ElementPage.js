@@ -55,14 +55,18 @@ export class ElementPage extends Component {
       const realEle = ele.target ? this.byId(ele.target) : ele;
       if (realEle && realEle.type === 'file') {
         if (/^png|jpg|jpeg|gif|bmp|webp$/i.test(realEle.ext)) return ImageView;
-        if (realEle.size < 500000) return CodeView; 
+        if (realEle.size < 500000) return CodeView;
         else return 'TOO_LARGE';
       }
       return null;
     } else if (viewEle.key === 'diagram') {
       // Show default deps diagram for normal js files
       return DepsDiagramViewWrapper;
-    } else if (viewEle.target && this.byId(viewEle.target) && this.byId(viewEle.target).type === 'file') {
+    } else if (
+      viewEle.target &&
+      this.byId(viewEle.target) &&
+      this.byId(viewEle.target).type === 'file'
+    ) {
       return CodeView;
     }
     return null;
@@ -70,20 +74,16 @@ export class ElementPage extends Component {
 
   byId = id => this.props.elementById[id];
 
-  renderNotFound() {
+  renderNotFound(eleId) {
     return (
       <div className="home-element-page error">
-        Element not found, please check URL or if the element exists.
+        Element not found: {eleId}, please check URL or if the element exists.
       </div>
     );
   }
 
   renderNotSupported() {
-    return (
-      <div className="home-element-page error">
-        The element/view is not supported.
-      </div>
-    );
+    return <div className="home-element-page error">The element/view is not supported.</div>;
   }
 
   renderSizeTooLarge() {
@@ -98,13 +98,15 @@ export class ElementPage extends Component {
     const { elementById } = this.props;
     const ele = this.getElement();
     if (!ele) {
-      return this.renderNotFound();
+      const { elementId } = this.props.match.params;
+      const eleId = decodeURIComponent(elementId);
+      return this.renderNotFound(eleId);
     }
 
     const viewEle = this.getViewElement(ele);
 
     if (viewEle && viewEle.target && !this.byId(viewEle.target)) {
-      return this.renderNotFound();
+      return this.renderNotFound(viewEle.target);
     }
 
     const View = this.getView(ele, viewEle);
@@ -143,5 +145,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ElementPage);
