@@ -26,7 +26,8 @@ export class Dashboard extends Component {
         {badges.map(b => (
           <div className="top-badge" key={b.type}>
             <SvgIcon
-              style={{ width: '28px', height: '28px', color: colors(b.type) }}
+              size={28}
+              color={colors(b.type)}
               type={icons(b.type)}
             />
             <label className="count">

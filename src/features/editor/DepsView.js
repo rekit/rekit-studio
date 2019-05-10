@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { SvgIcon } from '../common';
+import { ElementIcon, SvgIcon } from '../common';
 import { getDepsData } from '../home/selectors/projectData';
 
 export class DepsView extends Component {
@@ -20,16 +20,13 @@ export class DepsView extends Component {
     if (!ele) return '';
     let url = `/element/${encodeURIComponent(ele.id)}`;
     let name = ele.name;
-    let icon = ele.icon;
-    let iconColor = ele.iconColor;
+
     if (ele.owner) {
       const owner = byId(ele.owner);
       const view = owner.views ? _.find(owner.views, { target: ele.id }) : null;
       if (view) url = `/element/${encodeURIComponent(owner.id)}/${view.key}`;
       else url = `/element/${encodeURIComponent(owner.id)}/${ele.name}`;
 
-      icon = owner.icon;
-      iconColor = owner.iconColor;
       name = (
         <span>
           {owner.name}
@@ -41,7 +38,7 @@ export class DepsView extends Component {
     return (
       <dd key={url}>
         <Link title={ele.id} to={url}>
-          <SvgIcon type={icon} style={{ fill: iconColor }} />
+          <ElementIcon element={ele.owner ? byId(ele.owner) : ele} />
           {name}
         </Link>
       </dd>

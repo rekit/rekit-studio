@@ -12,7 +12,7 @@ export class TabTitle extends Component {
 
   render() {
     const { running } = this.props;
-    const runningCount = Object.keys(running).length;
+    const runningCount = Object.values(running).filter(Boolean).length;
     return (
       <span className="plugin-scripts-tab-title">
         Scripts{runningCount > 0 ? <span className="running-count">{runningCount}</span> : ''}

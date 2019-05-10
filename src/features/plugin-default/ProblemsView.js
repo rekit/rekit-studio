@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Badge } from 'antd';
-import { SvgIcon } from '../common';
+import { ElementIcon, SvgIcon } from '../common';
 import element from '../../common/element';
 import editorStateMap from '../editor/editorStateMap';
 import { stickTab } from '../home/redux/actions';
@@ -89,10 +89,7 @@ export class ProblemsView extends Component {
             style={{ color: '#aaa', width: '8px', height: '8px' }}
             className="error-switcher"
           />
-          <SvgIcon
-            type={ele.icon}
-            style={{ width: '12px', height: '12px', color: ele.iconColor }}
-          />
+          <ElementIcon element={ele} size={12} style={{marginLeft: '3px'}}/>
           {ele.name} <span className="full-path">{file}</span>
           <Badge count={msgs.length} />
         </dt>

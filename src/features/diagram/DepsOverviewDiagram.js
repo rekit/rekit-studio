@@ -143,7 +143,7 @@ export default class DepsOverviewDiagram extends Component {
     const labels = nodes.filter(n => n.isGroup);
     const drawLabel = d3Selection => {
       const sss = d3Selection
-        .style('font-size', d => d.width * 1.1)
+        .style('font-size', d => d.width * 1.2)
         .style('fill', '#999')
         .style('overflow', 'hidden')
         .style('text-overflow', 'ellipsis')

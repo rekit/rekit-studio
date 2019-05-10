@@ -8,7 +8,7 @@ import { Icon, Dropdown, Menu, Modal } from 'antd';
 import scrollIntoView from 'dom-scroll-into-view';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
-import { SvgIcon } from '../common';
+import { SvgIcon, ElementIcon } from '../common';
 import { closeTab, stickTab, moveTab, setTempTab, removePaths } from './redux/actions';
 import { tabsSelector } from './selectors/tabs';
 import editorStateMap from '../editor/editorStateMap';
@@ -51,6 +51,8 @@ export class TabsBar extends Component {
       this.closeNotExistingTabs(prevProps);
     }
   }
+
+  byId = id => this.props.elementById[id];
 
   updateTempKey(prevProps) {
     // If pathname opens a new tab, then it's a temp tab
@@ -286,6 +288,15 @@ export class TabsBar extends Component {
     );
   };
 
+  renderTabIcon = tab => {
+    if (_.has(tab, 'icon')) return <SvgIcon type={tab.icon} color={tab.iconColor} />;
+    const ele = this.byId(tab.key);
+    return <ElementIcon element={ele} />
+    // const iconType = _.has(tab, 'icon') ? tab.icon : (ele ? icons(ele.type) : null);
+    // const iconColor = _.has(tab, 'iconColor') ? tab.iconColor: (ele ? colors(ele.type) : null);
+    // return iconType && <SvgIcon type={iconType} color={iconColor} />;
+  };
+
   renderTab = (tab, index) => {
     const getMenu = tab => (
       <Menu onClick={args => this.handleMenuClick(tab, args.key)}>
@@ -294,7 +305,7 @@ export class TabsBar extends Component {
         <Menu.Item key="close-self">Close</Menu.Item>
       </Menu>
     );
-    const iconStyle = tab.iconColor ? { color: tab.iconColor } : null;
+    // const iconStyle = tab.iconColor ? { color: tab.iconColor } : null;
     return (
       <Draggable key={tab.key} draggableId={tab.key} index={index}>
         {provided => (
@@ -312,7 +323,7 @@ export class TabsBar extends Component {
                 'is-temp': tab.isTemp,
               })}
             >
-              {tab.icon && <SvgIcon type={tab.icon} style={iconStyle} />}
+              {this.renderTabIcon(tab)}
               <label>{tab.name}</label>
               <Icon type="close" onClick={evt => this.handleClose(evt, tab)} />
             </span>

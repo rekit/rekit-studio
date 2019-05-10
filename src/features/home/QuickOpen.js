@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import fuzzysort from 'fuzzysort';
 import scrollIntoView from 'dom-scroll-into-view';
 import element from '../../common/element';
-import { SvgIcon } from '../common';
+import { ElementIcon } from '../common';
 import { getProjectElements } from './selectors/projectData';
 
 export class QuickOpen extends Component {
@@ -83,7 +83,9 @@ export class QuickOpen extends Component {
 
     const { elementById, elements } = this.props;
     const list = getProjectElements({ elements, elementById }).map(ele => {
-      const position = element.hasViews(ele) ? element.getDefaultView(ele).target : (ele.target || ele.id);// ele.position || (ele.parts && ele.parts[0]) || ele.id;
+      const position = element.hasViews(ele)
+        ? element.getDefaultView(ele).target
+        : ele.target || ele.id; // ele.position || (ele.parts && ele.parts[0]) || ele.id;
       return {
         ...ele,
         position,
@@ -113,9 +115,13 @@ export class QuickOpen extends Component {
 
   handleInputKeyDown = evt => {
     const scrollToSelected = () => {
-      scrollIntoView(this.resultsNode.querySelectorAll('li')[this.state.selectedIndex], this.resultsNode, {
-        onlyScrollIfNeeded: true,
-      });
+      scrollIntoView(
+        this.resultsNode.querySelectorAll('li')[this.state.selectedIndex],
+        this.resultsNode,
+        {
+          onlyScrollIfNeeded: true,
+        },
+      );
     };
     switch (evt.key) {
       case 'Enter':
@@ -126,18 +132,24 @@ export class QuickOpen extends Component {
         evt.preventDefault();
         this.setState(
           {
-            selectedIndex: this.state.selectedIndex < 1 ? this.state.results.length - 1 : this.state.selectedIndex - 1,
+            selectedIndex:
+              this.state.selectedIndex < 1
+                ? this.state.results.length - 1
+                : this.state.selectedIndex - 1,
           },
-          scrollToSelected
+          scrollToSelected,
         );
         break;
       case 'ArrowDown':
         evt.preventDefault();
         this.setState(
           {
-            selectedIndex: this.state.selectedIndex < this.state.results.length - 1 ? this.state.selectedIndex + 1 : 0,
+            selectedIndex:
+              this.state.selectedIndex < this.state.results.length - 1
+                ? this.state.selectedIndex + 1
+                : 0,
           },
-          scrollToSelected
+          scrollToSelected,
         );
         break;
       default:
@@ -167,14 +179,16 @@ export class QuickOpen extends Component {
         </div>
         <div className="quick-open-result" ref={n => (this.resultsNode = n)}>
           <ul>
-            {this.state.results.length === 0 && <li className="no-results is-selected">No results found.</li>}
+            {this.state.results.length === 0 && (
+              <li className="no-results is-selected">No results found.</li>
+            )}
             {this.state.results.slice(0, 50).map((item, i) => (
               <li
                 className={i === this.state.selectedIndex ? 'is-selected' : ''}
                 key={item.target}
                 onClick={() => this.handleItemClick(i)}
               >
-                {item.obj.icon && <SvgIcon type={item.obj.icon} style={{ fill: item.obj.iconColor || '#ccc' }} />}
+                <ElementIcon element={item.obj} />
                 <span dangerouslySetInnerHTML={{ __html: this.highlightMatch(item) }} />
               </li>
             ))}

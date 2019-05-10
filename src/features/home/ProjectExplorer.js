@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { Spin, Tree } from 'antd';
 import scrollIntoView from 'dom-scroll-into-view';
-import { SvgIcon } from '../common';
+import { SvgIcon, ElementIcon } from '../common';
 import { storage } from '../common/utils';
 import { stickTab } from './redux/actions';
 import { getTreeData } from './selectors/projectData';
@@ -162,7 +162,7 @@ export class ProjectExplorer extends Component {
   renderTreeNodeTitle(nodeData) {
     return (
       <span>
-        {this.renderTreeNodeIcon(nodeData)}
+        <ElementIcon element={nodeData} />
         <label>
           {nodeData.name}
           {_.has(nodeData, 'count') ? ` (${nodeData.count})` : ''}
@@ -182,7 +182,6 @@ export class ProjectExplorer extends Component {
       </span>
     );
   }
-  // otherProps={{ onDoubleClick: () => console.log('tree node double click') }}
 
   renderTreeNode = (nodeData, depth = 1) => (
     <TreeNode
