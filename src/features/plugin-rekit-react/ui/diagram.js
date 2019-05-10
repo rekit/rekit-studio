@@ -25,7 +25,7 @@ export default {
                 'reducer.js',
                 'style.less',
               ].includes(child.name)
-            ){
+            ) {
               continue;
             }
             if (child.children) {

@@ -103,7 +103,7 @@ export class SidePanel extends Component {
           <Menu.Item key={mi.key}>
             {mi.icon && (
               <span>
-                <SvgIcon type={mi.icon} style={{ color: mi.iconColor }} />
+                <SvgIcon type={mi.icon} color={mi.iconColor} />
                 {mi.label}
               </span>
             )}
@@ -127,7 +127,7 @@ export class SidePanel extends Component {
         <div className="header">
           <Link className="home-link" to="/" title={this.props.projectRoot}>
             <h5>
-              <SvgIcon type="anticon-home" size={22} /> {projectName}
+              <SvgIcon type="anticon-home" size={20} color="#999" /> {projectName}
             </h5>
           </Link>
           <Dropdown overlay={this.renderMainMenu()}>
