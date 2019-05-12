@@ -9,16 +9,27 @@
 import initialState from './initialState';
 import { reducer as lintReducer } from './lint';
 import { reducer as setProblemsReducer } from './setProblems';
+import { HOME_FETCH_PROJECT_DATA_SUCCESS } from '../../home/redux/constants';
 
-const reducers = [
-  lintReducer,
-  setProblemsReducer,
-];
+const reducers = [lintReducer, setProblemsReducer];
 
 export default function reducer(state = initialState, action) {
   let newState;
   switch (action.type) {
     // Handle cross-topic actions here
+    case HOME_FETCH_PROJECT_DATA_SUCCESS:
+      const problems = { ...state.problems };
+      Object.keys(problems).forEach(key => {
+        if (!action.data.elementById[key]) {
+          delete problems[key];
+        }
+      });
+      newState = {
+        ...state,
+        problems,
+      };
+      break;
+
     default:
       newState = state;
       break;
