@@ -4,20 +4,21 @@
   "rekitTest": true,
   "plugins": [],
   "excludeAstFolders": ["src/libs", "build"],
+  "exclude": [
+    "build",
+    "LICENSE",
+    "babel.config.js",
+    "README.md",
+    "package-lock.json",
+    "Procfile",
+    "dll",
+    "dev-dll",
+    "middleware",
+    "tools",
+    ".*"
+  ],
   "moduleAlias": {
     "rs": "./src"
   },
-  "folders": [
-    "public",
-    "scripts",
-    "config",
-    "bin",
-    "lib"
-  ],
-  "files": [
-    "package.json",
-    "test.js",
-    "rekit.json"
-  ],
   "css": "less"
 }
