@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import { getDepsData } from '../../home/selectors/projectData';
+import { getGroupedDepsData } from '../../home/selectors/projectData';
 
 const padding = size => Math.max(size / 15, 20);
 const nodeWidth = size => Math.max(size / 50, 6);
@@ -115,7 +115,7 @@ const getNode = (ele, angle, x, y, radius, width, groupName) => {
 //  [{id: 'group1', children: ['child1', 'child2']}]
 export const getDepsOverviewDiagramData = createSelector(
   state => state.data,
-  state => getDepsData(state.data),
+  state => getGroupedDepsData(state.data),
   state => state.size,
   (data, deps, size) => {
     // All nodes should be in the deps diagram.
