@@ -48,7 +48,6 @@ export class DepsView extends Component {
   render() {
     const { elements, elementById, file } = this.props;
     const depsData = getDepsData({ elements, elementById });
-    console.log('depsData:', depsData);
     const byId = id => elementById[id];
     const ele = byId(file);
     // const eid = ele.owner || ele.id;
