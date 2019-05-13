@@ -8,7 +8,6 @@ import history from './history';
 import homeReducer from '../features/home/redux/reducer';
 import commonReducer from '../features/common/redux/reducer';
 import diagramReducer from '../features/diagram/redux/reducer';
-import configReducer from '../features/config/redux/reducer';
 import editorReducer from '../features/editor/redux/reducer';
 import coreReducer from '../features/core/redux/reducer';
 import gitManagerReducer from '../features/git-manager/redux/reducer';
@@ -25,7 +24,6 @@ const reducerMap = {
   home: homeReducer,
   common: commonReducer,
   diagram: diagramReducer,
-  config: configReducer,
   editor: editorReducer,
   core: coreReducer,
   gitManager: gitManagerReducer,

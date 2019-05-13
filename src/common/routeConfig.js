@@ -5,7 +5,6 @@ import { PageNotFound } from '../features/common';
 import homeRoute from '../features/home/route';
 import commonRoute from '../features/common/route';
 import diagramRoute from '../features/diagram/route';
-import configRoute from '../features/config/route';
 import editorRoute from '../features/editor/route';
 import coreRoute from '../features/core/route';
 import gitManagerRoute from '../features/git-manager/route';
@@ -17,7 +16,6 @@ const childRoutes = [
   homeRoute,
   commonRoute,
   diagramRoute,
-  configRoute,
   editorRoute,
   coreRoute,
   gitManagerRoute,
