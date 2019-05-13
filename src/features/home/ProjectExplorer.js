@@ -13,6 +13,7 @@ import { getTreeData } from './selectors/projectData';
 import { ProjectExplorerContextMenu } from './';
 import plugin from '../../common/plugin';
 import element from '../../common/element';
+import history from '../../common/history';
 import colors from '../../common/colors';
 import icons from '../../common/icons';
 
@@ -107,9 +108,13 @@ export class ProjectExplorer extends Component {
     }
     storage.local.setItem('explorerExpandedKeys', expandedKeys);
     const ele = this.eleById(key);
-    if (ele && (ele.navigable || ele.type === 'file')) {
-      // history.push(`/element/${encodeURIComponent(ele.id)}`);
-      element.show(ele);
+    if (ele) {
+      if (ele.navigable || ele.type === 'file') {
+        // history.push(`/element/${encodeURIComponent(ele.id)}`);
+        element.show(ele);
+      } else if (ele.link) {
+        history.push(ele.link);
+      }
     }
     plugin.getPlugins('projectExplorer.handleSelect').forEach(p => {
       p.projectExplorer.handleSelect(key);
@@ -156,7 +161,7 @@ export class ProjectExplorer extends Component {
       // Ohterwise use system color
       iconProps.color = colors(nodeData.type);
     }
-    return <SvgIcon {...iconProps} />
+    return <SvgIcon {...iconProps} />;
   }
 
   renderTreeNodeTitle(nodeData) {
