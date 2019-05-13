@@ -2,6 +2,8 @@
 
 .editor-code-editor {
   height: 100%;
+  display: flex;
+  flex-direction: column;
   overflow: hidden; // To get rid of overflowingContentWidgets height from monaco editor
   position: relative;
   .loading-container {
@@ -56,7 +58,7 @@
     }
   }
   .monaco-editor-container {
-    height: ~'calc(100% - 31px)';
+    // height: ~'calc(100% - 31px)';
     position: relative;
   }
   .editor-monaco-editor {
