@@ -16,6 +16,46 @@ const menuItems = {
 };
 
 export default {
+  mainMenu: {
+    fillMenuItems(items) {
+      items.push(
+        {
+          label: 'New File',
+          icon: 'file',
+          iconColor: '#555',
+          key: 'plugin-default-new-file',
+          order: 1,
+        },
+        {
+          label: 'New Folder',
+          icon: 'folder',
+          iconColor: '#555',
+          key: 'plugin-default-new-folder',
+          order: 1,
+        },
+      );
+    },
+    handleMenuClick(key) {
+      switch (key) {
+        case 'plugin-default-new-file':
+          showDialog('core.element.add.file', 'New File', {
+            action: 'add',
+            targetId: null,
+            elementType: 'file',
+          });
+          break;
+        case 'plugin-default-new-folder':
+          showDialog('core.element.add.folder', 'New Folder', {
+            action: 'add',
+            targetId: null,
+            elementType: 'folder',
+          });
+          break;
+        default:
+          break;
+      }
+    },
+  },
   contextMenu: {
     fillMenuItems(items, { elementId }) {
       const ele = byId(elementId);
@@ -95,7 +135,7 @@ export default {
                     title: `Failed to delete the ${ele.type}`,
                     content: err.toString(),
                   });
-                }
+                },
               );
             },
           });

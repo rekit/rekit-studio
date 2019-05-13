@@ -30,7 +30,7 @@ export default {
       case 'core.element.rename.file-folder':
         console.log('args: ', args);
         args.meta.elements.push(
-          newNameMeta({ ...args, initialValue: byId(args.context.targetId).name })
+          newNameMeta({ ...args, initialValue: byId(args.context.targetId).name }),
         );
         break;
       default:
@@ -45,13 +45,15 @@ export default {
     switch (formId) {
       case 'core.element.add.file':
       case 'core.element.add.folder': {
-        let target = byId(context.targetId);
-        let name;
-        if (target.type === 'folder') name = target.id + '/' + values.name;
-        else if (target.type === 'file') name = target.id.replace(/\/[^/]$/, '/' + values.name);
-        else if (target.type === 'folder-alias' && target.target)
-          name = target.target + '/' + values.name;
-        else throw new Error('Unkonwn target type to add a file: ', target.type);
+        let target = context.targetId ? byId(context.targetId) : null;
+        let name = values.name;
+        if (target) {
+          if (target.type === 'folder') name = target.id + '/' + values.name;
+          else if (target.type === 'file') name = target.id.replace(/\/[^/]$/, '/' + values.name);
+          else if (target.type === 'folder-alias' && target.target)
+            name = target.target + '/' + values.name;
+          else throw new Error('Unkonwn target type to add a file: ', target.type);
+        }
         return {
           ...values,
           commandName: 'add',
