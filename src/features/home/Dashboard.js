@@ -8,7 +8,7 @@ import plugin from '../../common/plugin';
 import { DepsOverviewDiagramView } from '../diagram';
 import { OverviewWidget } from '../git-manager';
 import { getTypesCount } from './selectors/projectData';
-import { SvgIcon } from '../common';
+import { SvgIcon, ErrorBoundary } from '../common';
 import colors from '../../common/colors';
 import icons from '../../common/icons';
 
@@ -25,11 +25,7 @@ export class Dashboard extends Component {
       <div className="top-badges">
         {badges.map(b => (
           <div className="top-badge" key={b.type}>
-            <SvgIcon
-              size={28}
-              color={colors(b.type)}
-              type={icons(b.type)}
-            />
+            <SvgIcon size={28} color={colors(b.type)} type={icons(b.type)} />
             <label className="count">
               {_.isFunction(b.count) ? b.count() : typesCount[b.type] || 0}
             </label>
@@ -49,7 +45,9 @@ export class Dashboard extends Component {
             <div className="dashboard-widget">
               <h3>Overview Diagram</h3>
               <div className="widget-container" style={{ overflow: 'hidden' }}>
-                <DepsOverviewDiagramView />
+                <ErrorBoundary>
+                  <DepsOverviewDiagramView />
+                </ErrorBoundary>
               </div>
             </div>
           </Col>

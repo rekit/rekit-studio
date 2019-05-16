@@ -16,17 +16,17 @@ parser.addArgument(['--dir', '-d'], {
   help: 'The project dir to be managed by Rekit Studio.',
 });
 
-parser.addArgument(['--plugin-prj-dir'], {
-  dest: 'pluginPrjDir',
+parser.addArgument(['--plugin-dir'], {
+  dest: 'pluginDir',
   help: 'When starting a project, if load plugins in dev time from plugin projects.',
   defaultValue: null,
 });
 
-parser.addArgument(['--plugins-dir'], {
-  dest: 'pluginsDir',
-  help: 'When starting a project, load plugins from these dirs.',
-  defaultValue: null,
-});
+// parser.addArgument(['--plugins-dir'], {
+//   dest: 'pluginsDir',
+//   help: 'When starting a project, load plugins from these dirs.',
+//   defaultValue: null,
+// });
 
 const args = parser.parseArgs();
 process.stdout.isTTY = true;
