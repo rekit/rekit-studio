@@ -149,20 +149,20 @@ export class ProjectExplorer extends Component {
     this.ctxMenu = ctxMenu;
   };
 
-  renderTreeNodeIcon(nodeData) {
-    if (_.has(nodeData, 'icon') && !nodeData.icon) return null;
-    const iconProps = {
-      type: nodeData.icon || icons(nodeData.type),
-    };
-    if (_.has(nodeData, 'iconColor')) {
-      // If a an element defines iconColor, then use it, even its value is false/null
-      if (nodeData.iconColor) iconProps.color = nodeData.iconColor;
-    } else {
-      // Ohterwise use system color
-      iconProps.color = colors(nodeData.type);
-    }
-    return <SvgIcon {...iconProps} />;
-  }
+  // renderTreeNodeIcon(nodeData) {
+  //   if (_.has(nodeData, 'icon') && !nodeData.icon) return null;
+  //   const iconProps = {
+  //     type: nodeData.icon || icons(nodeData.type),
+  //   };
+  //   if (_.has(nodeData, 'iconColor')) {
+  //     // If a an element defines iconColor, then use it, even its value is false/null
+  //     if (nodeData.iconColor) iconProps.color = nodeData.iconColor;
+  //   } else {
+  //     // Ohterwise use system color
+  //     iconProps.color = colors(nodeData.type);
+  //   }
+  //   return <SvgIcon {...iconProps} />;
+  // }
 
   renderTreeNodeTitle(nodeData) {
     return (

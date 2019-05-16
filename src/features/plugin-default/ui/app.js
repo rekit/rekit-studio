@@ -26,6 +26,7 @@ export default {
           return c1.name.toLowerCase().localeCompare(c2.name.toLowerCase());
     }
     Object.values(prjData.elementById).forEach(ele => {
+      if (ele.icon) return;
       if (ele.type === 'file') {
         switch (ele.ext) {
           case 'js':
