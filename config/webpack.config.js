@@ -17,6 +17,7 @@ const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
+const crypto = require('crypto');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
@@ -53,11 +54,18 @@ module.exports = function(webpackEnv, args = {}) {
 
   // common function to get style loaders
   const getStyleLoaders = (cssOptions, preProcessor, args) => {
+    let styleBase = 0;
+    if (args.pluginDir) {
+      // Convert plugin name to a uniq number as style base.
+      const name = require(path.join(args.pluginDir, 'package.json')).name.replace(/^rekit-plugin/, '');
+      const hashed = crypto.createHash('md5').update(name).digest('hex').substring(0, 6);
+      styleBase = parseInt(hashed, 16);
+    }
     const loaders = [
       {
         loader: require.resolve('style-loader'),
         options: {
-          base: args.pluginDir ? 1000 : 0,
+          base: styleBase,
         },
       },
       {
