@@ -1,9 +1,12 @@
+
 module.exports = io => (req, res) => {
   let error = null;
   try {
     rekit.core.handleCommand(req.body);
     rekit.core.vio.flush();
   } catch (err) {
+    console.log(err);
+    rekit.core.logger.error('Failed to handle core command', err);
     error = {
       error: err.message,
     }
