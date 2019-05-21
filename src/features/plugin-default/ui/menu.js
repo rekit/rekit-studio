@@ -31,7 +31,7 @@ export default {
           icon: 'folder',
           iconColor: '#555',
           key: 'plugin-default-new-folder',
-          order: 1,
+          order: 2,
         },
       );
     },
