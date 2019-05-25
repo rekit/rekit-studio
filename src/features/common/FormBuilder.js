@@ -1,9 +1,61 @@
 /* eslint react/no-multi-comp: 0 */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Form, Icon, Row, Tooltip, Input } from 'antd';
+// import { Col, Form, Icon, Row, Tooltip, Input } from 'antd';
+import {
+  Col,
+  Form,
+  Icon,
+  Row,
+  Tooltip,
+  Input,
+  InputNumber,
+  Radio,
+  Select,
+  DatePicker,
+  Checkbox,
+} from 'antd';
 
+const RadioGroup = Radio.Group;
+const Option = Select.Option;
 const FormItem = Form.Item;
+const componentMap = {
+  input: Input,
+  password: Input.Password,
+  'date-picker': DatePicker,
+  radio: Radio,
+  checkbox: Checkbox,
+  textarea: Input.TextArea,
+  select: Select,
+  number: InputNumber,
+  'radio-group': RadioGroup,
+};
+
+function convertElement(element) {
+  const newElement = { ...element };
+  if (typeof newElement.widget === 'string') {
+    newElement.widget = componentMap[newElement.widget];
+    if (element.widget === 'radio-group') {
+      newElement.widgetProps = {
+        ...newElement.widgetProps,
+        name: element.key,
+      };
+      newElement.children = element.options.map(arr => (
+        <Radio value={arr[0]} key={arr[0]}>
+          {arr[1]}
+        </Radio>
+      ));
+    }
+    if (element.widget === 'select') {
+      newElement.children = element.options.map(arr => (
+        <Option value={arr[0]} key={arr[0]}>
+          {arr[1]}
+        </Option>
+      ));
+    }
+  }
+  return newElement;
+}
 
 const defaultFormItemLayout = {
   labelCol: { span: 8 },
@@ -45,6 +97,8 @@ class FormBuilder extends Component {
   }
 
   renderElement(element) {
+    element = convertElement(element);
+
     const meta = this.getMeta();
 
     // Handle form item props
@@ -140,7 +194,7 @@ class FormBuilder extends Component {
     return (
       <FormItem {...formItemProps}>
         {getFieldDecorator(element.id || element.key, fieldProps)(
-          <ElementWidget {...widgetProps}>{element.children || null}</ElementWidget>
+          <ElementWidget {...widgetProps}>{element.children || null}</ElementWidget>,
         )}
       </FormItem>
     );
@@ -160,7 +214,7 @@ class FormBuilder extends Component {
         cols.push(
           <Col key={j} span={(colspan * eleSpan).toString()}>
             {elements[i]}
-          </Col>
+          </Col>,
         );
         i += 1;
       }
@@ -171,14 +225,17 @@ class FormBuilder extends Component {
           className={`form-builder-row ${this.props.viewMode ? 'form-builder-row-view-mode' : ''}`}
         >
           {cols}
-        </Row>
+        </Row>,
       );
     }
     return rows;
   }
 
   render() {
-    return this.renderLayout(this.getMeta().elements.map(this.renderElement), this.getMeta().elements);
+    return this.renderLayout(
+      this.getMeta().elements.map(this.renderElement),
+      this.getMeta().elements,
+    );
   }
 }
 
