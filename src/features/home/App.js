@@ -10,7 +10,7 @@ import Pane from 'rspv2/lib/Pane';
 import { storage } from '../common/utils';
 import { BottomDrawer, TabsBar, SidePanel, QuickOpen } from './';
 import { DialogContainer } from '../core';
-import { ModalContainer } from './';
+import { ModalContainer, NoPluginAlert } from './';
 import { fetchProjectData } from './redux/actions';
 
 /*
@@ -39,6 +39,10 @@ export class App extends Component {
     openTabs: [],
   };
 
+  state = {
+    missingPlugin: false,
+  };
+
   componentDidMount() {
     this.props.actions
       .fetchProjectData()
@@ -52,6 +56,15 @@ export class App extends Component {
           content: err && (err.message || err.toString()),
         });
       });
+    if (window.__REKIT_NO_PLUGIN_FOR_APP_TYPE) {
+      Modal.error({
+        title: 'Plugin Missing: ' + window.__REKIT_NO_PLUGIN_FOR_APP_TYPE,
+        className: 'home-app_no-plugin-alert',
+        content: <NoPluginAlert plugin={window.__REKIT_NO_PLUGIN_FOR_APP_TYPE} />,
+      });
+      this.setState({ missingPlugin: window.__REKIT_NO_PLUGIN_FOR_APP_TYPE });
+      window.__REKIT_NO_PLUGIN_FOR_APP_TYPE = false;
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -103,9 +116,10 @@ export class App extends Component {
             message="Error: Application Type Not Supported"
             description={
               <span>
-                It seems there's not any Rekit plugin installed to support the current application type:{' '}
-                <span style={{ textDecoration: 'underline' }}>{this.props.config.appType}</span>. Please check and
-                retry.
+                It seems there's not any Rekit plugin installed to support the current application
+                type:{' '}
+                <span style={{ textDecoration: 'underline' }}>{this.props.config.appType}</span>.
+                Please check and retry.
               </span>
             }
             type="error"
@@ -157,6 +171,9 @@ export class App extends Component {
           <DialogContainer />
           <ModalContainer />
           <QuickOpen />
+          {this.state.missingPlugin && (
+            <NoPluginAlert plugin={this.state.missingPlugin} onOk={() => this.setState({ missingPlugin: false })} />
+          )}
         </div>
       </LocaleProvider>
     );

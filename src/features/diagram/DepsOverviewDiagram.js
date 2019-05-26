@@ -96,7 +96,7 @@ export default class DepsOverviewDiagram extends Component {
       data: this.props.data,
       size,
     });
-    console.log('diagram data: ', this.diagramData);
+    // console.log('diagram data: ', this.diagramData);
     const { nodes, links } = this.diagramData;
     this.drawPies(nodes);
     this.drawNodes(nodes);

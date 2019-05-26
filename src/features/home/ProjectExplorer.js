@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { Spin, Tree } from 'antd';
 import scrollIntoView from 'dom-scroll-into-view';
-import { SvgIcon, ElementIcon } from '../common';
+import { ElementIcon } from '../common';
 import { storage } from '../common/utils';
 import { stickTab } from './redux/actions';
 import { getTreeData } from './selectors/projectData';
@@ -14,8 +14,6 @@ import { ProjectExplorerContextMenu } from './';
 import plugin from '../../common/plugin';
 import element from '../../common/element';
 import history from '../../common/history';
-import colors from '../../common/colors';
-import icons from '../../common/icons';
 
 const TreeNode = Tree.TreeNode;
 
