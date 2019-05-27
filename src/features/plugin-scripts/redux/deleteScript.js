@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   PLUGIN_SCRIPTS_DELETE_SCRIPT_BEGIN,
   PLUGIN_SCRIPTS_DELETE_SCRIPT_SUCCESS,
@@ -7,8 +8,9 @@ import {
 
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
 // If you prefer redux-saga, you can use rekit-plugin-redux-saga: https://github.com/supnate/rekit-plugin-redux-saga
-export function deleteScript(args = {}) {
-  return (dispatch) => { // optionally you can have getState as the second argument
+export function deleteScript(name) {
+  return dispatch => {
+    // optionally you can have getState as the second argument
     dispatch({
       type: PLUGIN_SCRIPTS_DELETE_SCRIPT_BEGIN,
     });
@@ -21,9 +23,9 @@ export function deleteScript(args = {}) {
       // doRequest is a placeholder Promise. You should replace it with your own logic.
       // See the real-word example at:  https://github.com/supnate/rekit/blob/master/src/features/home/redux/fetchRedditReactjsList.js
       // args.error here is only for test coverage purpose.
-      const doRequest = args.error ? Promise.reject(new Error()) : Promise.resolve();
+      const doRequest = axios.post('/api/delete-script', { name });
       doRequest.then(
-        (res) => {
+        res => {
           dispatch({
             type: PLUGIN_SCRIPTS_DELETE_SCRIPT_SUCCESS,
             data: res,
@@ -31,7 +33,7 @@ export function deleteScript(args = {}) {
           resolve(res);
         },
         // Use rejectHandler as the second argument so that render errors won't be caught.
-        (err) => {
+        err => {
           dispatch({
             type: PLUGIN_SCRIPTS_DELETE_SCRIPT_FAILURE,
             data: { error: err },

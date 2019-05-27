@@ -71,14 +71,12 @@ function config(server, app, args) {
       if (found) {
         found[0] = newName;
         found[1] = script;
-        pkgJson.scripts = _.fromPairs(entries);
-        // if (oldName) delete pkgJson.scripts[oldName];
-        // pkgJson.scripts[newName] = script;
-        fs.writeFileSync(paths.map('package.json'), JSON.stringify(pkgJson, null, '  '));
-        res.send(JSON.stringify({ oldName, newName, script }));
       } else {
-        res.status(400).send('Script name to update is not found.');
+        entries.push([newName, script]);
       }
+      pkgJson.scripts = _.fromPairs(entries);
+      fs.writeFileSync(paths.map('package.json'), JSON.stringify(pkgJson, null, '  '));
+      res.send(JSON.stringify({ oldName, newName, script }));
     }
     res.end();
   });

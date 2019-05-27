@@ -46,8 +46,6 @@ export default class ScriptList extends Component {
             placement="top"
             title="Edit Script"
             trigger="click"
-            destroyTooltipOnHide={false}
-            ref={n => (window.nnn = n)}
             content={<ScriptEditor script={script} />}
           >
             <Button ghost icon="edit" className="icon-btn" size="small" title="Edit" />
@@ -55,8 +53,6 @@ export default class ScriptList extends Component {
           <Popover
             placement="top"
             trigger="click"
-            destroyTooltipOnHide={false}
-            ref={n => (window.nnn = n)}
             content={<ConfirmDeleteScript script={script} />}
           >
             <Button ghost icon="close" className="icon-btn" size="small" title="Delete" />
@@ -68,10 +64,22 @@ export default class ScriptList extends Component {
   render() {
     return (
       <div className="plugin-scripts-script-list">
+        <div className="script-list-header">
+          Total scripts: {this.props.scripts.length}
+          <Popover
+            placement="top"
+            title="New Script"
+            trigger="click"
+            destroyTooltipOnHide
+            content={<ScriptEditor script={{ name: '', script: '' }} />}
+          >
+            <Button icon="plus" title="New Script" className="icon-btn" />
+          </Popover>
+        </div>
+        <ul>{this.props.scripts.map(this.renderScriptItem)}</ul>
         {this.props.scripts.length === 0 && (
           <p className="no-scripts">No scripts found or package.json is broken.</p>
         )}
-        <ul>{this.props.scripts.map(this.renderScriptItem)}</ul>
       </div>
     );
   }
