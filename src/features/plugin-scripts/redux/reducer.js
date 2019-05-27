@@ -11,8 +11,10 @@ import { reducer as runScriptReducer } from './runScript';
 import { reducer as stopScriptReducer } from './stopScript';
 import { reducer as clearOutputReducer } from './clearOutput';
 import { reducer as setCurrentReducer } from './setCurrent';
+import { reducer as saveScriptReducer } from './saveScript';
+import { reducer as deleteScriptReducer } from './deleteScript';
 
-const reducers = [runScriptReducer, stopScriptReducer, clearOutputReducer, setCurrentReducer];
+const reducers = [runScriptReducer, stopScriptReducer, clearOutputReducer, setCurrentReducer, saveScriptReducer, deleteScriptReducer];
 
 export default function reducer(state = initialState, action) {
   let newState = state;

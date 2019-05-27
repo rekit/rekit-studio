@@ -13,6 +13,10 @@ const initialState = {
   current: undefined,
   output: {},
   running: {},
+  saveScriptPending: false,
+  saveScriptError: null,
+  deleteScriptPending: false,
+  deleteScriptError: null,
 };
 
 export default initialState;

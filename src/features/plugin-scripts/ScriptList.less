@@ -15,6 +15,7 @@
   }
 
   li {
+    position: relative;
     padding: 5px 10px;
     border-bottom: 1px solid #222;
     font-size: 12px;
@@ -61,5 +62,35 @@
   .no-scripts {
     padding: 10px;
     color: #666;
+  }
+
+   .hover-buttons {
+    display: none;
+    background-color: #090909;
+    position: absolute;
+    right: 5px;
+    padding-left: 5px;
+    .btn-run {
+      transform: scale(1.2);
+    }
+  }
+  li:hover .hover-buttons {
+    display: inline;
+  }
+  .icon-btn {
+    font-size: 12px;
+    height: 20px;
+    border: none;
+    padding: 0 3px !important;
+    color: #bbb !important;
+    .anticon-close {
+      color: #bbb;
+    }
+    &:hover {
+      color: @primary-color!important;
+      .anticon-close {
+        color: @primary-color!important;
+      }
+    }
   }
 }

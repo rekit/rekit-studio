@@ -44,3 +44,10 @@ export const getTreeNodeData = (treeData, key) => {
   }
   return null;
 };
+
+// Close current visible antd Popover
+export const closePopover = () => {
+  const clickEvent = document.createEvent('HTMLEvents');
+  clickEvent.initEvent('mousedown', true, true);
+  document.querySelector('.home-side-panel').dispatchEvent(clickEvent); // why document.body not work?
+};

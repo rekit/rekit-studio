@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { SvgIcon } from '../common';
+import { Button, Popover } from 'antd';
+import { SvgIcon, FormBuilder } from '../common';
+import { ScriptEditor, ConfirmDeleteScript } from './';
 
 export default class ScriptList extends Component {
   static propTypes = {
@@ -36,14 +38,39 @@ export default class ScriptList extends Component {
           />
         )}
         <label>{script.name}</label>
-        <label title={script.script} className="script-content">{script.script}</label>
+        <label title={script.script} className="script-content">
+          {script.script}
+        </label>
+        <span className="hover-buttons">
+          <Popover
+            placement="top"
+            title="Edit Script"
+            trigger="click"
+            destroyTooltipOnHide={false}
+            ref={n => (window.nnn = n)}
+            content={<ScriptEditor script={script} />}
+          >
+            <Button ghost icon="edit" className="icon-btn" size="small" title="Edit" />
+          </Popover>
+          <Popover
+            placement="top"
+            trigger="click"
+            destroyTooltipOnHide={false}
+            ref={n => (window.nnn = n)}
+            content={<ConfirmDeleteScript script={script} />}
+          >
+            <Button ghost icon="close" className="icon-btn" size="small" title="Delete" />
+          </Popover>
+        </span>
       </li>
     );
   };
   render() {
     return (
       <div className="plugin-scripts-script-list">
-        {this.props.scripts.length === 0 && <p className="no-scripts">No scripts found or package.json is broken.</p>}
+        {this.props.scripts.length === 0 && (
+          <p className="no-scripts">No scripts found or package.json is broken.</p>
+        )}
         <ul>{this.props.scripts.map(this.renderScriptItem)}</ul>
       </div>
     );

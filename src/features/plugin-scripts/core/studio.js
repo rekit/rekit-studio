@@ -1,4 +1,5 @@
 /* global rekit */
+const fs = require('fs-extra');
 const pty = require('node-pty');
 const _ = require('lodash');
 
@@ -54,6 +55,42 @@ function config(server, app, args) {
       delete terms[name];
     }
     res.send(JSON.stringify({ name }));
+    res.end();
+  });
+
+  app.post('/api/save-script', (req, res) => {
+    const { oldName, newName, script } = req.body;
+    const { paths } = rekit.core;
+    const pkgJson = fs.readJsonSync(paths.map('package.json'));
+    if (!pkgJson.scripts) pkgJson.scripts = {};
+    if (oldName !== newName && pkgJson.scripts[newName]) {
+      res.status(400).send('Script name already exists.');
+    } else {
+      const entries = Object.entries(pkgJson.scripts);
+      const found = _.find(entries, entry => entry[0] === oldName);
+      if (found) {
+        found[0] = newName;
+        found[1] = script;
+        pkgJson.scripts = _.fromPairs(entries);
+        // if (oldName) delete pkgJson.scripts[oldName];
+        // pkgJson.scripts[newName] = script;
+        fs.writeFileSync(paths.map('package.json'), JSON.stringify(pkgJson, null, '  '));
+        res.send(JSON.stringify({ oldName, newName, script }));
+      } else {
+        res.status(400).send('Script name to update is not found.');
+      }
+    }
+    res.end();
+  });
+
+  app.post('/api/delete-script', (req, res) => {
+    const { name } = req.body;
+    const { paths } = rekit.core;
+    const pkgJson = fs.readJsonSync(paths.map('package.json'));
+    if (!pkgJson.scripts) pkgJson.scripts = {};
+    delete pkgJson.scripts[name];
+    fs.writeFileSync(paths.map('package.json'), JSON.stringify(pkgJson, null, '  '));
+    res.send(JSON.stringify({ success: true }));
     res.end();
   });
 }
