@@ -35,7 +35,8 @@ export default class ScriptList extends Component {
             onClick={() => this.props.onStop(script.name)}
           />
         )}
-        <label title={script.script}>{script.name}</label>
+        <label>{script.name}</label>
+        <label title={script.script} className="script-content">{script.script}</label>
       </li>
     );
   };

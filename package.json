@@ -36,7 +36,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node ./scripts/start.js -d ../rekit-studio",
+    "start": "node ./scripts/start.js -d ../r2",
     "build": "node ./scripts/build.js",
     "build:dll": "node ./scripts/buildProdDll.js",
     "build:dev-dll": "node ./scripts/buildDevDll.js",
