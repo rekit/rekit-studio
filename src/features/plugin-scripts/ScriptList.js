@@ -44,18 +44,32 @@ export default class ScriptList extends Component {
         <span className="hover-buttons">
           <Popover
             placement="top"
-            title="Edit Script"
             trigger="click"
-            content={<ScriptEditor script={script} />}
+            destroyTooltipOnHide
+            content={<ScriptEditor title="Edit Script" script={script} />}
           >
-            <Button ghost icon="edit" className="icon-btn" size="small" title="Edit" />
+            <Button
+              ghost
+              icon="edit"
+              className="icon-btn"
+              size="small"
+              title="Edit"
+              onClick={evt => evt.stopPropagation()}
+            />
           </Popover>
           <Popover
             placement="top"
             trigger="click"
             content={<ConfirmDeleteScript script={script} />}
           >
-            <Button ghost icon="close" className="icon-btn" size="small" title="Delete" />
+            <Button
+              ghost
+              icon="close"
+              className="icon-btn"
+              size="small"
+              title="Delete"
+              onClick={evt => evt.stopPropagation()}
+            />
           </Popover>
         </span>
       </li>
@@ -68,10 +82,9 @@ export default class ScriptList extends Component {
           Total scripts: {this.props.scripts.length}
           <Popover
             placement="top"
-            title="New Script"
             trigger="click"
             destroyTooltipOnHide
-            content={<ScriptEditor script={{ name: '', script: '' }} />}
+            content={<ScriptEditor title="New Script" script={{ name: '', script: '' }} />}
           >
             <Button icon="plus" title="New Script" className="icon-btn" />
           </Popover>

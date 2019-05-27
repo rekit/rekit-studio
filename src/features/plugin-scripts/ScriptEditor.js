@@ -55,7 +55,9 @@ export class ScriptEditor extends Component {
         onSubmit={this.handleSubmit}
         className="plugin-scripts-script-editor"
         style={{ width: '300px' }}
+        onClick={evt => evt.stopPropagation()}
       >
+        <h2>{this.props.title}</h2>
         <FormBuilder meta={meta} form={this.props.form} />
         <div className="form-footer">
           <Button onClick={closePopover}>Cancel</Button>
