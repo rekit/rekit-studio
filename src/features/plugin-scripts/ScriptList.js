@@ -79,21 +79,18 @@ export default class ScriptList extends Component {
   render() {
     return (
       <div className="plugin-scripts-script-list">
-        <div className="script-list-header">
-          Total scripts: {this.props.scripts.length}
+        
+        <ul>{this.props.scripts.map(this.renderScriptItem)}</ul>
+        <div className="script-list-toolbar">
           <Popover
             placement="top"
             trigger="click"
             destroyTooltipOnHide
             content={<ScriptEditor title="New Script" script={{ name: '', script: '' }} />}
           >
-            <Button icon="plus" title="New Script" className="icon-btn" />
+            <Button icon="plus" title="New Script" className="icon-btn">New Script</Button>
           </Popover>
         </div>
-        <ul>{this.props.scripts.map(this.renderScriptItem)}</ul>
-        {this.props.scripts.length === 0 && (
-          <p className="no-scripts">No scripts found or package.json is broken.</p>
-        )}
       </div>
     );
   }

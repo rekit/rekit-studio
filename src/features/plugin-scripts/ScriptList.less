@@ -8,21 +8,16 @@
   .scroll-style;
   overflow: auto;
 
-  .script-list-header {
+  .script-list-toolbar {
     padding: 5px 10px;
     color: #aaa;
     white-space: nowrap;
     position: relative;
-    border-bottom: 1px solid #222;
     .icon-btn {
-      position: absolute;
       background-color: #111;
-      right: 10px;
-
+      color:@primary-color!important;
+      padding: 5px;
       transition: none;
-      &:hover {
-        background-color: #333;
-      }
     }
   }
   ul,
@@ -47,7 +42,7 @@
     }
     &.selected {
       background-color: #000;
-      border-right: 2px solid @primary-color;
+      box-shadow: inset -2px 0 0 0 @primary-color;
     }
     &.running .hover-buttons {
       display: none!important;
