@@ -1,6 +1,6 @@
 {
   "name": "rekit-studio",
-  "version": "3.0.0-beta.26",
+  "version": "3.0.0-beta.28",
   "description": "Rekit Studio IDE.",
   "keywords": [
     "rekit",
@@ -36,15 +36,13 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node ./scripts/start.js -d ../app1 -p 6078",
-    "build": "node ./scripts/build.js",
-    "build:dll": "node ./scripts/buildProdDll.js",
+    "start": "node ./scripts/start.js -d ../rekit-plugin-deps-manager -p 6078",
     "build:dev-dll": "node ./scripts/buildDevDll.js",
-    "build:plugins": "node ./scripts/buildPlugins.js",
-    "serveBuild": "node ./bin/index.js",
+    "build:dll": "node ./scripts/buildProdDll.js",
+    "build": "node ./scripts/build.js",
     "publish:sdk": "node ./scripts/publishSdk.js --npm-publish",
-    "test": "node ./tools/run_test.js",
-    "build:test": "node ./tools/server.js -m build"
+    "serveBuild": "node ./bin/index.js -d ../app1 -p 6079",
+    "test": "node ./tools/run_test.js"
   },
   "files": [
     "bin",
