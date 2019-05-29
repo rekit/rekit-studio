@@ -42,7 +42,7 @@
     "build": "node ./scripts/build.js",
     "publish:sdk": "node ./scripts/publishSdk.js --npm-publish",
     "serveBuild": "node ./bin/index.js -d ../app1 -p 6079",
-    "test": "node ./tools/run_test.js"
+    "test": "mvn --version"
   },
   "files": [
     "bin",

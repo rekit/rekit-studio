@@ -14,9 +14,9 @@ const getSehll = () => {
         .shift();
       if (parseInt(ver, 10) >= 10) return 'powershell.exe';
       // For windows 7 and below, use cmd.exe
-      return { cmd: 'cmd.exe', args: [] };
+      return 'cmd.exe';//{ cmd: 'cmd.exe', args: [] };
     } catch (err) {
-      return { cmd: 'cmd.exe', args: [] };
+      return 'cmd.exe';//{ cmd: 'cmd.exe', args: [] };
     }
   } else {
     // Use system shell for Mac

@@ -2,6 +2,8 @@
 const fs = require('fs-extra');
 const pty = require('node-pty');
 const _ = require('lodash');
+const path = require('path');
+const os = require('os');
 
 const terms = {};
 function config(server, app, args) {
@@ -14,11 +16,30 @@ function config(server, app, args) {
     }
     const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
-    const term = pty.spawn(npmCmd, ['run', name], {
-      name: 'xterm-color',
-      cwd: rekit.core.paths.getProjectRoot(),
-      env: process.env,
-    });
+    let term;
+    if (process.platform === 'win32') {
+      term = pty.spawn(npmCmd, ['run', name], {
+        name: 'xterm-color',
+        cwd: rekit.core.paths.getProjectRoot(),
+        env: process.env,
+      });
+    } else {
+      let source;
+      ['.bash_profile', '.bashrc']
+        .map(f => path.join(os.homedir(), f))
+        .some(file => {
+          if (fs.existsSync(file)) {
+            source = file;
+            return true;
+          }
+          return false;
+        });
+      term = pty.spawn('/bin/bash', ['--rcfile', source, '-i', '-c', `npm run '${name}'`], {
+        name: 'xterm-color',
+        cwd: rekit.core.paths.getProjectRoot(),
+        env: process.env,
+      });
+    }
     terms[name] = term;
     const arr = [];
     const flush = _.throttle(data => {
