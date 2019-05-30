@@ -127,7 +127,7 @@ export default {
           ele.icon = iconMap.plugin;
           ele.iconColor = colorMap.plugin;
           const misc = ele.children.pop();
-          // _.pull(byId(misc).children, coreDir, uiDir);
+          _.pull(byId(misc).children, coreDir, uiDir);
 
           const coreDirId = `v:${ele.name}-plugin-core-dir`;
           const uiDirId = `v:${ele.name}-plugin-ui-dir`;
