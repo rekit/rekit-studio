@@ -10,12 +10,17 @@ export class RoutesView extends Component {
   };
 
   getColumns() {
+    const { devPort } = this.props;
     return [
       {
         dataIndex: 'path',
         title: 'Path',
         render: path => (
-          <a href={`http://localhost:${this.props.devPort}${path}`} target="_blank" rel="noopener noreferrer">
+          <a
+            href={`http://${document.location.hostname}:${devPort || 3000}${path}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {path}
           </a>
         ),
@@ -60,10 +65,8 @@ export class RoutesView extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    devPort: state.home.projectData.devPort
+    devPort: state.home.projectData.devPort,
   };
 }
 
-export default connect(
-  mapStateToProps,
-)(RoutesView);
+export default connect(mapStateToProps)(RoutesView);

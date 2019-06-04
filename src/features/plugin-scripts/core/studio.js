@@ -9,6 +9,15 @@ const terms = {};
 function config(server, app, args) {
   app.post('/api/run-script', (req, res) => {
     const name = req.body.name;
+    // let devPort = null;
+    // try {
+    //   const { paths } = rekit.core;
+    //   const pkgJson = fs.readJsonSync(paths.map('package.json'));
+    //   const s = pkgJson.scripts[name];
+    //   if (/PORT=(\d+)/.test(s)) {
+    //     devPort = RegExp.$1;
+    //   }
+    // } catch (err) {}
 
     if (terms[name]) {
       res.send(JSON.stringify({ alreadyRun: true }));
