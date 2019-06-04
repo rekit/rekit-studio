@@ -37,7 +37,6 @@ export class RoutesView extends Component {
   }
 
   render() {
-    console.log('routes: ', this.props.element.routes);
     return (
       <div className="plugin-rekit-react-routes-view">
         <div className="description">
@@ -58,11 +57,10 @@ export class RoutesView extends Component {
   }
 }
 
-
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    devPort: state.home.config.devPort || 3000,
+    devPort: state.home.projectData.devPort
   };
 }
 

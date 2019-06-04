@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popover } from 'antd';
 import classnames from 'classnames';
-import { SvgIcon, FormBuilder } from '../common';
+import { SvgIcon } from '../common';
 import { ScriptEditor, ConfirmDeleteScript } from './';
 
 export default class ScriptList extends Component {
