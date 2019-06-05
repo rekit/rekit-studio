@@ -18,6 +18,8 @@ function config(server, app, args) {
     //     devPort = RegExp.$1;
     //   }
     // } catch (err) {}
+    const { paths } = rekit.core;
+    const useYarn = fs.existsSync(paths.map('yarn.lock'));
 
     if (terms[name]) {
       res.send(JSON.stringify({ alreadyRun: true }));

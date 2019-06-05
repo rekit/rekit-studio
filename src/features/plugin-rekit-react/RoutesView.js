@@ -47,7 +47,7 @@ export class RoutesView extends Component {
         <div className="description">
           <p>
             This is a rough overview of routing config defined in a feature. To edit the rules,
-            please modify the config directly.
+            please modify the code directly.
           </p>
         </div>
         <Table
@@ -57,6 +57,10 @@ export class RoutesView extends Component {
           pagination={false}
           rowKey="path"
         />
+        <p className="port-description">
+          Note: Rekit finds the dev port of the app from package.json start script which includes
+          the pattern PORT=xxx .
+        </p>
       </div>
     );
   }
