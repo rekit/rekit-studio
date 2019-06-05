@@ -86,9 +86,9 @@ export default class ScriptList extends Component {
             placement="top"
             trigger="click"
             destroyTooltipOnHide
-            content={<ScriptEditor title="New Script" script={{ name: '', script: '' }} />}
+            content={<ScriptEditor title="Add Script" script={{ name: '', script: '' }} />}
           >
-            <Button icon="plus" title="New Script" className="icon-btn">New Script</Button>
+            <Button icon="plus" title="Add Script" className="icon-btn">Add Script</Button>
           </Popover>
         </div>
       </div>
