@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Dropdown, Icon, Menu, Modal } from 'antd';
+import { Dropdown, Icon, Menu, Modal, message } from 'antd';
 import * as actions from './redux/actions';
 import { SvgIcon } from '../common';
 import { About, DemoAlert, ProjectExplorer } from './';
@@ -41,7 +41,7 @@ export class SidePanel extends Component {
       {
         icon: 'anticon-reload',
         iconColor: '#555',
-        label: 'Force Reload',
+        label: 'Reload Project Data',
         key: 'force-reload',
         order: 10,
       },
@@ -85,9 +85,14 @@ export class SidePanel extends Component {
       // case 'test-coverage':
       //   history.push('/tools/coverage');
       //   break;
-      case 'force-reload':
-        this.props.actions.fetchProjectData({ force: true });
+      case 'force-reload': {
+        const hide = message.loading('Reloading project data...', 0);
+        this.props.actions.fetchProjectData({ force: true }).then(hide).catch(err => {
+          hide();
+          message.error('Failed to fetch project data.');
+        });
         break;
+      }
       case 'about':
         this.showAbout();
         break;
