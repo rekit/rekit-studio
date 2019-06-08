@@ -25,11 +25,22 @@ function config(server, app, args) {
       res.send(JSON.stringify({ alreadyRun: true }));
       return;
     }
-    const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+    let scriptCmd; // = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+    const argsArray = [];
+    if (process.platform === 'win32') {
+      scriptCmd = useYarn ? 'yarn.cmd' : 'npm.cmd';
+    } else {
+      scriptCmd = useYarn ? 'yarn' : 'npm';
+    }
+    if (useYarn) {
+      argsArray.push(name);
+    } else {
+      argsArray.push('run', name);
+    }
 
     let term;
     if (process.platform === 'win32') {
-      term = pty.spawn(npmCmd, ['run', name], {
+      term = pty.spawn(scriptCmd, argsArray, {
         name: 'xterm-color',
         cwd: rekit.core.paths.getProjectRoot(),
         env: process.env,
@@ -45,11 +56,15 @@ function config(server, app, args) {
           }
           return false;
         });
-      term = pty.spawn('/bin/bash', ['--rcfile', source, '-i', '-c', `npm run '${name}'`], {
-        name: 'xterm-color',
-        cwd: rekit.core.paths.getProjectRoot(),
-        env: process.env,
-      });
+      term = pty.spawn(
+        '/bin/bash',
+        ['--rcfile', source, '-i', '-c', useYarn ? `yarn '${name}'` : `npm run '${name}'`],
+        {
+          name: 'xterm-color',
+          cwd: rekit.core.paths.getProjectRoot(),
+          env: process.env,
+        },
+      );
     }
     terms[name] = term;
     const arr = [];
