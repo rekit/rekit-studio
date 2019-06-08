@@ -12,7 +12,6 @@ import plugin from '../../common/plugin';
 
 export class SidePanel extends Component {
   static propTypes = {
-    // home: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -34,10 +33,6 @@ export class SidePanel extends Component {
 
   getMenuItems() {
     const menuItems = [
-      // { icon: 'book', iconColor: '#29b6f6', text: 'Add Feature', key: 'add-feature' },
-      // { icon: 'notification', iconColor: '#ec407a', text: 'Add Action', key: 'add-action' },
-      // { icon: 'appstore-o', iconColor: '#F08036', text: 'Add Component', key: 'add-component' },
-      // { icon: 'code-o', iconColor: '#555', text: 'Show Output', key: 'show-output' },
       {
         icon: 'anticon-reload',
         iconColor: '#555',
@@ -52,39 +47,12 @@ export class SidePanel extends Component {
     menuItems.sort((m1, m2) => m1.order || 1000 - m2.order || 1000);
     return menuItems;
   }
-  // showOutput() {
-  //   this.props.actions.setBottomDrawerVisible(true);
-  //   requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
-  // }
 
   handleMainMenuClick = evt => {
     plugin
       .getPlugins('menu.mainMenu.handleMenuClick')
       .forEach(p => p.menu.mainMenu.handleMenuClick(evt.key));
     switch (evt.key) {
-      // case 'add-feature':
-      // case 'add-component':
-      // case 'add-action':
-      //   this.props.actions.showCmdDialog('cmd', {
-      //     type: evt.key,
-      //     ...this.cmdContext,
-      //   });
-      //   break;
-      // case 'show-output':
-      //   this.showOutput();
-      //   break;
-      // case 'deps':
-      //   history.push('/config/deps');
-      //   break;
-      // case 'build':
-      //   history.push('/tools/build');
-      //   break;
-      // case 'tests':
-      //   history.push('/tools/tests');
-      //   break;
-      // case 'test-coverage':
-      //   history.push('/tools/coverage');
-      //   break;
       case 'force-reload': {
         const hide = message.loading('Reloading project data...', 0);
         this.props.actions.fetchProjectData({ force: true }).then(hide).catch(err => {
