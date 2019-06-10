@@ -112,42 +112,33 @@ export default {
     const { context, values, formId } = args;
     switch (formId) {
       case 'core.element.add.component':
-        return {
-          ...values,
-          commandName: context.action,
-          type: context.elementType,
+        Object.assign(args, {
           name: `${values.feature}/${values.name}`.replace(/\/+/g, '/'),
-        };
+        });
+        break;
       case 'core.element.add.action':
-        return {
-          ...values,
-          commandName: context.action,
-          type: context.elementType,
+        Object.assign(args, {
           name: `${values.feature}/${values.name}`.replace(/\/+/g, '/'),
-        };
+        });
+        break;
       case 'core.element.move.component-action': {
         const ele = byId(context.targetId);
-        return {
-          ...values,
-          commandName: context.action,
-          type: ele.type,
+        Object.assign(args, {
           source: `${ele.feature}/${ele.name}`,
           target: `${values.feature}/${values.name}`,
-        };
+        });
+        break;
       }
       case 'core.element.move.feature': {
         const ele = byId(context.targetId);
-        return {
-          ...values,
-          commandName: 'move',
-          type: 'feature',
+        Object.assign(args, {
           source: ele.name,
           target: values.name,
-        };
+        });
+        break;
       }
       default:
         break;
     }
-    return args;
   },
 };

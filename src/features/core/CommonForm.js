@@ -75,16 +75,18 @@ export class CommonForm extends Component {
         return;
       }
 
+      // command will be the args of element.add(name, args);
       let command = {
         commandName: actionContext.action,
         type: actionContext.elementType,
         ...values,
+        ..._.omit(actionContext, ['action', 'targetId', 'elementType']),
         context: actionContext,
         formId,
         values,
       };
       plugin.getPlugins('form.processValues').forEach(p => {
-        command = p.form.processValues(command);
+        p.form.processValues(command);
       });
 
       delete command.formId;

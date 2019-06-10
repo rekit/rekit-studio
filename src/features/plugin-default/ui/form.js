@@ -54,28 +54,22 @@ export default {
             name = target.target + '/' + values.name;
           else throw new Error('Unkonwn target type to add a file: ', target.type);
         }
-        return {
-          ...values,
-          commandName: 'add',
-          type: context.elementType,
-          name,
-        };
+        Object.assign(args, { name });
+        break;
       }
       case 'core.element.rename.file-folder':
         const target = byId(context.targetId);
         const arr = context.targetId.split('/');
         arr.pop();
         arr.push(values.name);
-        return {
-          ...values,
-          commandName: 'move',
+        Object.assign(args, {
           type: target.type,
           source: context.targetId,
           target: arr.join('/'),
-        };
+        });
+        break;
       default:
         break;
     }
-    return args;
   },
 };

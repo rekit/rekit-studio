@@ -6,7 +6,7 @@ import { Table } from 'antd';
 export class RoutesView extends Component {
   static propTypes = {
     element: PropTypes.object.isRequired,
-    devPort: PropTypes.number.isRequired,
+    devPort: PropTypes.any.isRequired,
   };
 
   getColumns() {
