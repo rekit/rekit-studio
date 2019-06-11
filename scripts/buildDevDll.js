@@ -10,7 +10,7 @@ function buildDevDll() {
   console.log('Building Rekit Studio dev dll...');
   fs.emptyDirSync(paths.resolveApp('dev-dll'));
 
-  const config = require('../config/webpack.config')('development');
+  const config = require('../config/webpack.config')('development', { isDll: true });
   config.output.filename = `${dllName}.js`;
   config.output.library = dllName;
   config.output.path = paths.resolveApp('dev-dll');

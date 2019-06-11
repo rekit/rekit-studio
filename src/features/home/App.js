@@ -7,6 +7,8 @@ import enUS from 'antd/lib/locale-provider/en_US';
 import { Alert, LocaleProvider, message, Modal, Spin } from 'antd';
 import SplitPane from 'rspv2/lib/SplitPane';
 import Pane from 'rspv2/lib/Pane';
+import { hot } from 'react-hot-loader/root';
+
 import { storage } from '../common/utils';
 import { BottomDrawer, TabsBar, SidePanel, QuickOpen } from './';
 import { DialogContainer } from '../core';
@@ -206,7 +208,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
+export default hot(connect(
   mapStateToProps,
   mapDispatchToProps,
-)(App);
+)(App));

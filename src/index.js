@@ -66,9 +66,9 @@ function renderApp(app) {
 // Force js execution after style loaded
 window.onload = () => renderApp(<Root store={store.getStore()} routeConfig={routeConfig()} />);
 
-if (module.hot) {
-  module.hot.accept('./common/routeConfig', () => {
-    const nextRouteConfig = require('./common/routeConfig').default; // eslint-disable-line
-    renderApp(<Root store={store.getStore()} routeConfig={nextRouteConfig()} />);
-  });
-}
+// if (module.hot) {
+//   module.hot.accept('./common/routeConfig', () => {
+//     const nextRouteConfig = require('./common/routeConfig').default; // eslint-disable-line
+//     renderApp(<Root store={store.getStore()} routeConfig={nextRouteConfig()} />);
+//   });
+// }

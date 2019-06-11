@@ -10,7 +10,7 @@ function buildProdDll() {
   console.log('Building Rekit Studio dll...');
   fs.emptyDirSync(paths.resolveApp('dll'));
 
-  const config = require('../config/webpack.config')('production');
+  const config = require('../config/webpack.config')('production', { isDll: true });
   config.output.filename = `${dllName}.js`;
   config.output.library = dllName;
   config.output.path = paths.resolveApp('dll');
