@@ -28,7 +28,7 @@ export default class DepsOverviewDiagram extends Component {
 
   componentDidUpdate(prevProps) {
     const props = this.props;
-    if (prevProps.elementById !== props.elementById) {
+    if (prevProps.data !== props.data) {
       this.updateDiagram();
     }
   }
@@ -37,17 +37,6 @@ export default class DepsOverviewDiagram extends Component {
     const containerNode = this.d3Node;
     return Math.max(Math.min(containerNode.offsetWidth, containerNode.offsetHeight), 100);
   }
-
-  // byId = id => this.props.elementById[id];
-
-  // toShow = ele => {
-  //   return (
-  //     ele &&
-  //     /^(file|component|action|routes)$/.test(ele.type) &&
-  //     !['index.js', 'constants.js', 'actions.js', 'reducer.js'].includes(ele.name) &&
-  //     (ele.type === 'file' ? /^js|jsx$/.test(ele.ext) : true)
-  //   );
-  // };
 
   initDiagram = () => {
     this.svg = d3
