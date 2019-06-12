@@ -8,6 +8,26 @@ import {
 } from './constants';
 import plugin from '../../../common/plugin';
 
+function sortChildren(c1, c2, elementById) {
+  // Virtual first if no order specified
+  const normalEles = { file: true, folder: true };
+  const byId = id => elementById[id];
+  c1 = byId(c1);
+  c2 = byId(c2);
+  if (c1.order !== c2.order) {
+    if (c1.hasOwnProperty('order') && c2.hasOwnProperty('order')) return c1.order - c2.order;
+    if (c1.hasOwnProperty('order')) return -1;
+    if (c2.hasOwnProperty('order')) return 1;
+  } else if (c1.type !== c2.type) {
+    if (!normalEles[c1.type] && !normalEles[c2.type]) return c1.type.localeCompare(c2.type);
+    if (!normalEles[c1.type]) return -1;
+    if (!normalEles[c2.type]) return 1;
+    if (c1.type === 'folder') return -1; // folder first
+    return 1;
+  }
+  return c1.name.toLowerCase().localeCompare(c2.name.toLowerCase());
+}
+
 export function fetchProjectData(args = {}) {
   return dispatch => {
     dispatch({
@@ -22,6 +42,15 @@ export function fetchProjectData(args = {}) {
           plugin.getPlugins('app.processProjectData').forEach(p => {
             p.app.processProjectData(prjData);
           });
+          
+          // Default sort of elements
+          const { elements, elementById } = prjData;
+          Object.values(elementById, ele => {
+            if (ele && ele.children) {
+              ele.children.sort((c1, c2) => sortChildren(c1,c2, elementById));
+            }
+          });
+          elements.sort((c1, c2) => sortChildren(c1,c2, elementById));
 
           dispatch({
             type: HOME_FETCH_PROJECT_DATA_SUCCESS,

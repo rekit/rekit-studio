@@ -55,6 +55,7 @@ export class CodeEditor extends Component {
   state = {
     notFound: false,
     loadingFile: false,
+    loadingFiles: {},
     loadingEditor: true,
     cursorPos: {
       lineNumber: 1,
@@ -63,10 +64,20 @@ export class CodeEditor extends Component {
     showOutline: !storage.local.getItem('noOutline'),
   };
 
+  setLoading(file, loading) {
+    this.setState({
+      loadingFiles: {
+        ...this.state.loadingFiles,
+        [file]: loading,
+      },
+    });
+  }
+
   async componentWillMount() {
     this.setState({
       loadingFile: true,
     });
+    this.setLoading(this.props.file, true);
     await this.checkAndFetchFileContent(this.props);
     // Todo: check if conflict
     modelManager.setInitialValue(this.props.file, this.getFileContent(this.props.file), true);
@@ -86,7 +97,7 @@ export class CodeEditor extends Component {
         {
           loadingFile: true,
         },
-        () => this.editor.layout()
+        () => this.editor.layout(),
       );
       await this.checkAndFetchFileContent(nextProps);
       // Todo: check if conflict
@@ -259,7 +270,7 @@ export class CodeEditor extends Component {
     this.monacoListeners.push(
       editor.onDidChangeCursorPosition(() => this.setState({ cursorPos: editor.getPosition() })),
       editor.onDidChangeCursorPosition(this.handleEditorCursorScrollerChange),
-      editor.onDidScrollChange(this.handleEditorCursorScrollerChange)
+      editor.onDidScrollChange(this.handleEditorCursorScrollerChange),
     );
     this.setState({
       loadingEditor: false,
@@ -319,7 +330,7 @@ export class CodeEditor extends Component {
       () => {
         this.editor.layout();
         storage.local.setItem('noOutline', !this.state.showOutline);
-      }
+      },
     );
   };
 
@@ -364,38 +375,36 @@ export class CodeEditor extends Component {
               <Icon type="play-circle-o" /> Run test
             </Button>
           )}
-          {hasChange &&
-            !this.state.loadingFile && (
-              <Tooltip
-                title={
-                  <label>
-                    Save{' '}
-                    <span style={{ color: '#888', fontSize: '12px' }}>
-                      ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}
-                      +S)
-                    </span>
-                  </label>
-                }
+          {hasChange && !this.state.loadingFile && (
+            <Tooltip
+              title={
+                <label>
+                  Save{' '}
+                  <span style={{ color: '#888', fontSize: '12px' }}>
+                    ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}
+                    +S)
+                  </span>
+                </label>
+              }
+            >
+              <Button
+                type="primary"
+                size="small"
+                loading={saveFilePending}
+                disabled={saveFilePending}
+                onClick={this.handleSave}
               >
-                <Button
-                  type="primary"
-                  size="small"
-                  loading={saveFilePending}
-                  disabled={saveFilePending}
-                  onClick={this.handleSave}
-                >
-                  <Icon type="save" />
-                </Button>
-              </Tooltip>
-            )}
-          {hasChange &&
-            !this.state.loadingFile && (
-              <Tooltip title="Discard changes">
-                <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>
-                  <Icon type="close-circle" />
-                </Button>
-              </Tooltip>
-            )}
+                <Icon type="save" />
+              </Button>
+            </Tooltip>
+          )}
+          {hasChange && !this.state.loadingFile && (
+            <Tooltip title="Discard changes">
+              <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>
+                <Icon type="close-circle" />
+              </Button>
+            </Tooltip>
+          )}
           {this.hasOutline() && (
             <Tooltip
               title={
@@ -458,19 +467,17 @@ export class CodeEditor extends Component {
               editorDidMount={this.handleEditorDidMount}
             />
           </Pane>
-          {this.editor &&
-            this.hasOutline() &&
-            this.state.showOutline && (
-              <Pane minSize="50px" maxSize="80%" size={editorPaneSizes[1]}>
-                <EditorSider
-                  file={this.props.file}
-                  code={this.editor.getValue()}
-                  width={this.getOutlineWidth()}
-                  onSelectNode={this.handleOutlineSelect}
-                  showDepsView={!!this.props.elementById[this.props.file]}
-                />
-              </Pane>
-            )}
+          {this.editor && this.hasOutline() && this.state.showOutline && (
+            <Pane minSize="50px" maxSize="80%" size={editorPaneSizes[1]}>
+              <EditorSider
+                file={this.props.file}
+                code={this.editor.getValue()}
+                width={this.getOutlineWidth()}
+                onSelectNode={this.handleOutlineSelect}
+                showDepsView={!!this.props.elementById[this.props.file]}
+              />
+            </Pane>
+          )}
         </SplitPane>
       </div>
     );
@@ -493,12 +500,12 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
       { fetchFileContent, saveFile, showDemoAlert, stickTab, setViewChanged },
-      dispatch
+      dispatch,
     ),
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(CodeEditor);
