@@ -9,7 +9,8 @@ import {
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
 // If you prefer redux-saga, you can use rekit-plugin-redux-saga: https://github.com/supnate/rekit-plugin-redux-saga
 export function execCoreCommand(args = {}) {
-  return (dispatch) => { // optionally you can have getState as the second argument
+  return dispatch => {
+    // optionally you can have getState as the second argument
     dispatch({
       type: CORE_EXEC_CORE_COMMAND_BEGIN,
     });
@@ -25,7 +26,17 @@ export function execCoreCommand(args = {}) {
       // const doRequest = args.error ? Promise.reject(new Error()) : Promise.resolve();
       const doRequest = axios.post('/api/core-command', args);
       doRequest.then(
-        (res) => {
+        res => {
+          if (res.data && res.data.error) {
+            dispatch({
+              type: CORE_EXEC_CORE_COMMAND_FAILURE,
+              data: res.data,
+            });
+            reject({
+              message: res.data.error,
+            });
+            return;
+          }
           dispatch({
             type: CORE_EXEC_CORE_COMMAND_SUCCESS,
             data: res,
@@ -33,7 +44,7 @@ export function execCoreCommand(args = {}) {
           resolve(res.data);
         },
         // Use rejectHandler as the second argument so that render errors won't be caught.
-        (err) => {
+        err => {
           dispatch({
             type: CORE_EXEC_CORE_COMMAND_FAILURE,
             data: { error: err },
