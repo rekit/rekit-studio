@@ -9,34 +9,34 @@ export class About extends Component {
     home: PropTypes.object.isRequired,
   };
   renderNormalAbout() {
-    const rekit = this.props.home.rekit;
+    const {rekitStudioVersion, rekitCoreVersion} = this.props.home.projectData;
     return (
       <div className="home-about">
         <div className="header">
           <img className="logo" src={require('../../images/logo.png')} alt="logo" />
           <h3>Rekit Studio</h3>
-          <span className="version">Version: v{rekit.studioVersion}</span>
+          <span className="version">Version: v{rekitStudioVersion}</span>
         </div>
 
         <p>
-          Rekit Studio is an IDE focus on visulizing frontend development.
+          Rekit Studio is a highly extensible IDE focus on visualized frontend development.
         </p>
         <div className="versions">
           <p>
             <label>
-              <a href="https://github.com/supnate/rekit" target="_blank">
+              <a href="https://github.com/rekit/rekit-core" target="_blank">
                 Rekit Core
               </a>{' '}
               version:
             </label>
-            <span> v{rekit.coreVersion}</span>
+            <span> v{rekitCoreVersion}</span>
           </p>
         </div>
 
         <p className="feedback">
-          Any questions or feedback? Please visit: <br />
-          <a href="https://github.com/supnate/rekit" target="_blank">
-            https://github.com/supnate/rekit
+          Learn more about Rekit? Please visit: <br />
+          <a href="https://rekit.org" target="_blank">
+            https://rekit.org
           </a>
         </p>
       </div>
