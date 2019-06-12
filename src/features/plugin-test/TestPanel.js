@@ -30,7 +30,14 @@ export class TestPanel extends Component {
 
   getTests() {
     const { testList, testResult } = this.props.pluginTest;
-    return testList.map(s => ({ name: s, result: testResult[s] }));
+    return testList ? testList.map(s => ({ name: s, result: testResult[s] })) : [];
+  }
+  componentDidMount() {
+    const { elementById, actions, pluginTest } = this.props;
+
+    if (!pluginTest.testList) {
+      actions.listAllTest(elementById);
+    }
   }
 
   componentDidUpdate() {
@@ -80,10 +87,10 @@ export class TestPanel extends Component {
       );
     }
     const failedNumber = tests.filter(
-      t => testResult[t.name] && testResult[t.name].status === 'failed'
+      t => testResult[t.name] && testResult[t.name].status === 'failed',
     ).length;
     const passedNumber = tests.filter(
-      t => testResult[t.name] && testResult[t.name].status === 'passed'
+      t => testResult[t.name] && testResult[t.name].status === 'passed',
     ).length;
     return (
       <div className="test-panel-toolbar">
@@ -97,16 +104,18 @@ export class TestPanel extends Component {
         >
           Run all
         </Button>
-        {tests.length > 0 && <Button
-          icon="caret-right"
-          ghost
-          size="small"
-          className="btn-run-list"
-          title="Run all tests in below list."
-          onClick={this.handleRunList}
-        >
-          Run list
-        </Button>}
+        {tests.length > 0 && (
+          <Button
+            icon="caret-right"
+            ghost
+            size="small"
+            className="btn-run-list"
+            title="Run all tests in below list."
+            onClick={this.handleRunList}
+          >
+            Run list
+          </Button>
+        )}
         {failedNumber > 0 && (
           <Button
             icon="caret-right"
@@ -119,16 +128,18 @@ export class TestPanel extends Component {
             Run failed ({failedNumber})
           </Button>
         )}
-        {tests.length > 0 && <Button
-          icon="close"
-          ghost
-          size="small"
-          className="btn-clear-list"
-          title="Clear tests in the list."
-          onClick={this.props.actions.clearTestList}
-        >
-          Clear list
-        </Button>}
+        {tests.length > 0 && (
+          <Button
+            icon="close"
+            ghost
+            size="small"
+            className="btn-clear-list"
+            title="Clear tests in the list."
+            onClick={this.props.actions.clearTestList}
+          >
+            Clear list
+          </Button>
+        )}
         {tests.length > 0 && (
           <span className="result-summary">
             {failedNumber > 0 && <span className="error-text">{failedNumber} failed </span>}
@@ -184,12 +195,12 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
       { listAllTest, clearTestList, removeTestFromList, runTest, selectTest, dismissRunTestError },
-      dispatch
+      dispatch,
     ),
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(TestPanel);
