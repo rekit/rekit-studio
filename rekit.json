@@ -4,7 +4,6 @@
   "plugins": [],
   "excludeAstFolders": ["src/libs", "build"],
   "exclude": [
-    "build",
     "LICENSE",
     "babel.config.js",
     "README.md",
