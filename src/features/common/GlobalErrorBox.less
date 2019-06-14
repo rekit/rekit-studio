@@ -1,0 +1,31 @@
+@import '../../styles/mixins';
+
+.common-global-error-box {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 8888;
+  background-color: #333;
+
+  .ant-alert {
+    .vertical-center();
+    width: 500px;
+    margin: auto;
+    transform: translateY(-100%);
+    border: none;
+    background-color: #ef5350;
+    color: #fff;
+    .ant-alert-message {
+      color: #fff;
+    }
+    .ant-btn {
+      color: #fff;
+      border-color: #fff;
+      &:hover {
+        border-color:#fff;
+      }
+    }
+  }
+}

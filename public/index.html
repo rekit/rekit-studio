@@ -15,8 +15,15 @@
 
       function ON_REKIT_STUDIO_LOAD() {
         var node = document.getElementById('loading-wrapper');
-        node && node.parentNode.removeChild(node);
-        window.ON_REKIT_STUDIO_LOAD = null; // This func could not be called multiple times
+        if (node) node.style.display = 'none';
+        // node && node.parentNode.removeChild(node);
+        // window.ON_REKIT_STUDIO_LOAD = null; // This func could not be called multiple times
+      }
+
+      function SHOW_GLOBAL_LOADING() {
+        var node = document.getElementById('loading-wrapper');
+        if (node) node.style.display = 'block';
+        // window.ON_REKIT_STUDIO_LOAD = null; // This func could not be called multiple times
       }
     </script>
     <!--
@@ -42,7 +49,7 @@
         top: 0;
         right: 0;
         bottom: 0;
-        background-color: #222;
+        background-color: #333;
         z-index: 9999;
       }
 
@@ -57,51 +64,10 @@
       }
 
       #loading-node svg {
-        position: absolute;
-        left: 124px;
-        top: -70px;
-
-        -webkit-animation-name: spin;
-        -webkit-animation-duration: 1500ms;
-        -webkit-animation-iteration-count: infinite;
-        -webkit-animation-timing-function: linear;
-        -moz-animation-name: spin;
-        -moz-animation-duration: 1500ms;
-        -moz-animation-iteration-count: infinite;
-        -moz-animation-timing-function: linear;
-        -ms-animation-name: spin;
-        -ms-animation-duration: 1500ms;
-        -ms-animation-iteration-count: infinite;
-        -ms-animation-timing-function: linear;
-
         animation-name: spin;
-        animation-duration: 1500ms;
+        animation-duration: 2000ms;
         animation-iteration-count: infinite;
         animation-timing-function: linear;
-      }
-      @-ms-keyframes spin {
-        from {
-          -ms-transform: rotate(0deg);
-        }
-        to {
-          -ms-transform: rotate(360deg);
-        }
-      }
-      @-moz-keyframes spin {
-        from {
-          -moz-transform: rotate(0deg);
-        }
-        to {
-          -moz-transform: rotate(360deg);
-        }
-      }
-      @-webkit-keyframes spin {
-        from {
-          -webkit-transform: rotate(0deg);
-        }
-        to {
-          -webkit-transform: rotate(360deg);
-        }
       }
       @keyframes spin {
         from {
@@ -113,15 +79,11 @@
       }
 
       #loading-node label {
-        font-size: 14px;
-        color: #999;
         display: block;
-        text-align: center;
+        font-size: 14px;
+        color: #aaa;
         font-family: Arial;
-        position: absolute;
-        left: 0;
-        width: 100%;
-        line-height: 12px;
+        margin-top: 30px;
       }
     </style>
   </head>
@@ -131,10 +93,9 @@
     </noscript>
     <div id="loading-wrapper">
       <div id="loading-node">
-        <label id="loading-node-text-label">Loading the project...</label>
         <svg
-          width="50px"
-          height="50px"
+          width="60px"
+          height="60px"
           viewBox="0 0 507 509"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
@@ -193,6 +154,7 @@
             </g>
           </g>
         </svg>
+        <label id="loading-node-text-label">Loading the project...</label>
       </div>
     </div>
     <div id="react-root"></div>

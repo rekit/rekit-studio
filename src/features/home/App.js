@@ -11,6 +11,7 @@ import { hot } from 'react-hot-loader/root';
 
 import { storage } from '../common/utils';
 import { BottomDrawer, TabsBar, SidePanel, QuickOpen } from './';
+import { GlobalErrorBox } from '../common';
 import { DialogContainer } from '../core';
 import { ModalContainer, NoPluginAlert } from './';
 import { fetchProjectData } from './redux/actions';
@@ -75,6 +76,13 @@ export class App extends Component {
     }
   }
 
+  forceRefreshData = () => {
+    if (window.SHOW_GLOBAL_LOADING) {
+      window.SHOW_GLOBAL_LOADING();
+    }
+    this.props.actions.fetchProjectData({ initial: true, force: true });
+  };
+
   getSizesState() {
     return storage.local.getItem('layoutSizes') || {};
   }
@@ -101,19 +109,27 @@ export class App extends Component {
 
   renderFatalError() {
     return (
-      <div className="home-app fatal-error">
-        <Alert
-          type="error"
-          message="Fatal Error"
-          description={
-            <div>
-              <div>{this.props.fatalError}</div>
-              <p>You may need to restart Rekit Studio.</p>
-            </div>
-          }
-        />
-      </div>
+      <GlobalErrorBox
+        message="Failed to Load Project"
+        description={this.props.fatalError}
+        buttonText="Retry"
+        buttonCallback={this.forceRefreshData}
+      />
     );
+    // return (
+    //   <div className="home-app fatal-error">
+    //     <Alert
+    //       type="error"
+    //       message="Fatal Error"
+    //       description={
+    //         <div>
+    //           <div>{this.props.fatalError}</div>
+    //           <p>You may need to restart Rekit Studio.</p>
+    //         </div>
+    //       }
+    //     />
+    //   </div>
+    // );
   }
 
   render() {
@@ -123,7 +139,6 @@ export class App extends Component {
     if (!this.props.projectName) {
       return this.renderLoading();
     }
-    console.log('redn333333er');
     if (window.ON_REKIT_STUDIO_LOAD) {
       window.ON_REKIT_STUDIO_LOAD(); // hide global loading mask
     }
