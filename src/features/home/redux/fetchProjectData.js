@@ -42,15 +42,15 @@ export function fetchProjectData(args = {}) {
           plugin.getPlugins('app.processProjectData').forEach(p => {
             p.app.processProjectData(prjData);
           });
-          
+
           // Default sort of elements
           const { elements, elementById } = prjData;
           Object.values(elementById, ele => {
             if (ele && ele.children) {
-              ele.children.sort((c1, c2) => sortChildren(c1,c2, elementById));
+              ele.children.sort((c1, c2) => sortChildren(c1, c2, elementById));
             }
           });
-          elements.sort((c1, c2) => sortChildren(c1,c2, elementById));
+          elements.sort((c1, c2) => sortChildren(c1, c2, elementById));
 
           dispatch({
             type: HOME_FETCH_PROJECT_DATA_SUCCESS,
@@ -63,7 +63,7 @@ export function fetchProjectData(args = {}) {
           if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
           dispatch({
             type: HOME_FETCH_PROJECT_DATA_FAILURE,
-            data: { error: err },
+            data: { error: err, initial: !!args.initial },
           });
           reject(err);
         },
@@ -105,6 +105,9 @@ export function reducer(state, action) {
     case HOME_FETCH_PROJECT_DATA_FAILURE:
       return {
         ...state,
+        fatalError: action.data.initial
+          ? 'Fetch project failed: ' + action.data.error.message
+          : state.fatalError, // when initial fetch project data, it's fatal error when failed
         fetchProjectDataPending: false,
         fetchProjectDataError: action.data.error,
       };

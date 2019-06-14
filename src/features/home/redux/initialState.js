@@ -63,6 +63,8 @@ const initialState = {
   npmListError: null,
 
   termViewOutput: [],
+
+  fatalError: null,
 };
 
 export default initialState;

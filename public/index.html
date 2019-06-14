@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="theme-color" content="#000000" />
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <script>window.__REKIT_PLUGINS = [];</script>
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <script>
+      window.__REKIT_PLUGINS = [];
+
+      function ON_REKIT_STUDIO_LOAD() {
+        var node = document.getElementById('loading-wrapper');
+        node && node.parentNode.removeChild(node);
+        window.ON_REKIT_STUDIO_LOAD = null; // This func could not be called multiple times
+      }
+    </script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -21,12 +29,174 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Rekit Studio</title>
+    <style type="text/css">
+      html,
+      body {
+        height: 100%;
+        font-family: Arial, 'Hiragino Sans GB', 'Hiragino Sans GB W3', 'Microsoft Yahei';
+      }
+
+      #loading-wrapper {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #222;
+        z-index: 9999;
+      }
+
+      #loading-node {
+        width: 300px;
+        z-index: 9999;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+      }
+
+      #loading-node svg {
+        position: absolute;
+        left: 124px;
+        top: -70px;
+
+        -webkit-animation-name: spin;
+        -webkit-animation-duration: 1500ms;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-timing-function: linear;
+        -moz-animation-name: spin;
+        -moz-animation-duration: 1500ms;
+        -moz-animation-iteration-count: infinite;
+        -moz-animation-timing-function: linear;
+        -ms-animation-name: spin;
+        -ms-animation-duration: 1500ms;
+        -ms-animation-iteration-count: infinite;
+        -ms-animation-timing-function: linear;
+
+        animation-name: spin;
+        animation-duration: 1500ms;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+      @-ms-keyframes spin {
+        from {
+          -ms-transform: rotate(0deg);
+        }
+        to {
+          -ms-transform: rotate(360deg);
+        }
+      }
+      @-moz-keyframes spin {
+        from {
+          -moz-transform: rotate(0deg);
+        }
+        to {
+          -moz-transform: rotate(360deg);
+        }
+      }
+      @-webkit-keyframes spin {
+        from {
+          -webkit-transform: rotate(0deg);
+        }
+        to {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      #loading-node label {
+        font-size: 14px;
+        color: #999;
+        display: block;
+        text-align: center;
+        font-family: Arial;
+        position: absolute;
+        left: 0;
+        width: 100%;
+        line-height: 12px;
+      }
+    </style>
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    <div id="root"></div>
+    <div id="loading-wrapper">
+      <div id="loading-node">
+        <label id="loading-node-text-label">Loading the project...</label>
+        <svg
+          width="50px"
+          height="50px"
+          viewBox="0 0 507 509"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+          <title>Group</title>
+          <desc>Created with Sketch.</desc>
+          <defs>
+            <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+              <stop stop-color="#40C1C5" offset="0%"></stop>
+              <stop stop-color="#79D7DC" offset="100%"></stop>
+            </linearGradient>
+            <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+              <stop stop-color="#A46E46" offset="0%"></stop>
+              <stop stop-color="#CA8F6B" offset="100%"></stop>
+            </linearGradient>
+            <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+              <stop stop-color="#F08036" offset="0%"></stop>
+              <stop stop-color="#FAA881" offset="100%"></stop>
+            </linearGradient>
+            <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+              <stop stop-color="#FBC233" offset="0%"></stop>
+              <stop stop-color="#FEDB67" offset="100%"></stop>
+            </linearGradient>
+          </defs>
+          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g
+              id="Group"
+              transform="translate(253.321158, 254.821158) rotate(45.000000) translate(-253.321158, -254.821158) translate(2.321158, 3.821158)"
+            >
+              <path
+                d="M340.583933,466.997324 C380.120085,428.505743 441.478197,370.530194 441.533589,314.860788 C441.588981,259.191382 396.504916,214.107317 340.83551,214.162709 C285.166104,214.218101 239.992229,259.391976 239.936837,315.061382 C239.881444,370.730788 301.717341,428.583756 340.583933,466.997324 Z"
+                id="Oval"
+                fill="url(#linearGradient-1)"
+                transform="translate(340.735220, 340.579991) scale(1, -1) rotate(45.000000) translate(-340.735220, -340.579991) "
+              ></path>
+              <path
+                d="M159.932473,465.866921 C199.116489,427.718174 259.928103,370.258995 259.983002,315.085419 C260.037901,259.911843 215.355385,215.229327 160.181809,215.284226 C105.008234,215.339125 60.2367085,260.11065 60.1818094,315.284226 C60.1269103,370.457802 121.412054,427.795491 159.932473,465.866921 Z"
+                id="Oval"
+                fill="url(#linearGradient-2)"
+                transform="translate(160.082413, 340.575548) scale(-1, -1) rotate(45.000000) translate(-160.082413, -340.575548) "
+              ></path>
+              <path
+                d="M340.039521,284.992932 C379.223537,246.844184 440.035151,189.385005 440.09005,134.211429 C440.144949,79.0378532 395.462433,34.3553372 340.288857,34.4102363 C285.115281,34.4651354 240.343756,79.2366604 240.288857,134.410236 C240.233958,189.583812 301.519101,246.921502 340.039521,284.992932 Z"
+                id="Oval"
+                fill="url(#linearGradient-3)"
+                transform="translate(340.189460, 159.701559) rotate(45.000000) translate(-340.189460, -159.701559) "
+              ></path>
+              <path
+                d="M159.53928,285.698633 C198.723296,247.549885 259.53491,190.090706 259.589809,134.91713 C259.644708,79.7435542 214.962192,35.0610382 159.788616,35.1159373 C104.61504,35.1708364 59.8435153,79.9423614 59.7886162,135.115937 C59.7337171,190.289513 121.01886,247.627203 159.53928,285.698633 Z"
+                id="Oval"
+                fill="url(#linearGradient-4)"
+                transform="translate(159.689219, 160.407260) scale(-1, 1) rotate(45.000000) translate(-159.689219, -160.407260) "
+              ></path>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div id="react-root"></div>
+
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

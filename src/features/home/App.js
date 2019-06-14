@@ -29,6 +29,7 @@ export class App extends Component {
     config: PropTypes.object,
     openTabs: PropTypes.array,
     projectDataNeedReload: PropTypes.bool.isRequired,
+    fatalError: PropTypes.any,
     fetchProjectDataError: PropTypes.any,
     fetchProjectDataPending: PropTypes.bool.isRequired,
     bottomDrawerVisible: PropTypes.bool.isRequired,
@@ -46,18 +47,9 @@ export class App extends Component {
   };
 
   componentDidMount() {
-    this.props.actions
-      .fetchProjectData()
-      .then(data => {
-        document.title = this.props.projectName;
-      })
-      .catch(err => {
-        console.error(err);
-        Modal.error({
-          title: 'Failed to load project data',
-          content: err && (err.message || err.toString()),
-        });
-      });
+    this.props.actions.fetchProjectData({ initial: true }).then(data => {
+      document.title = this.props.projectName;
+    });
     if (window.__REKIT_NO_PLUGIN_FOR_APP_TYPE) {
       Modal.error({
         title: 'Plugin Missing: ' + window.__REKIT_NO_PLUGIN_FOR_APP_TYPE,
@@ -98,38 +90,64 @@ export class App extends Component {
   };
 
   renderLoading() {
+    return <div className="home-app loading" />;
+    // return (
+    //   <div className="home-app loading">
+    //     <Spin />
+    //     <span style={{ marginLeft: 20 }}>Loading...</span>
+    //   </div>
+    // );
+  }
+
+  renderFatalError() {
     return (
-      <div className="home-app loading">
-        <Spin />
-        <span style={{ marginLeft: 20 }}>Loading...</span>
+      <div className="home-app fatal-error">
+        <Alert
+          type="error"
+          message="Fatal Error"
+          description={
+            <div>
+              <div>{this.props.fatalError}</div>
+              <p>You may need to restart Rekit Studio.</p>
+            </div>
+          }
+        />
       </div>
     );
   }
 
   render() {
+    if (this.props.fatalError) {
+      return this.renderFatalError();
+    }
     if (!this.props.projectName) {
       return this.renderLoading();
     }
-
-    if (!this.props.elementById) {
-      return (
-        <div className="home-app not-supported">
-          <Alert
-            message="Error: Application Type Not Supported"
-            description={
-              <span>
-                It seems there's not any Rekit plugin installed to support the current application
-                type:{' '}
-                <span style={{ textDecoration: 'underline' }}>{this.props.config.appType}</span>.
-                Please check and retry.
-              </span>
-            }
-            type="error"
-            showIcon
-          />
-        </div>
-      );
+    console.log('redn333333er');
+    if (window.ON_REKIT_STUDIO_LOAD) {
+      window.ON_REKIT_STUDIO_LOAD(); // hide global loading mask
     }
+
+    // if (!this.props.elementById) {
+    //   // This seemes to not reached?
+    //   return (
+    //     <div className="home-app not-supported">
+    //       <Alert
+    //         message="Error: Application Type Not Supported"
+    //         description={
+    //           <span>
+    //             It seems there's not any Rekit plugin installed to support the current application
+    //             type:{' '}
+    //             <span style={{ textDecoration: 'underline' }}>{this.props.config.appType}</span>.
+    //             Please check and retry.
+    //           </span>
+    //         }
+    //         type="error"
+    //         showIcon
+    //       />
+    //     </div>
+    //   );
+    // }
 
     const { bottomDrawerVisible } = this.props;
 
@@ -174,7 +192,10 @@ export class App extends Component {
           <ModalContainer />
           <QuickOpen />
           {this.state.missingPlugin && (
-            <NoPluginAlert plugin={this.state.missingPlugin} onOk={() => this.setState({ missingPlugin: false })} />
+            <NoPluginAlert
+              plugin={this.state.missingPlugin}
+              onOk={() => this.setState({ missingPlugin: false })}
+            />
           )}
         </div>
       </LocaleProvider>
@@ -195,6 +216,7 @@ function mapStateToProps(state) {
       'fetchProjectDataPending',
       'bottomDrawerVisible',
       'config',
+      'fatalError',
     ]),
     // router: state.router,
     // location: state.router.location,
@@ -208,7 +230,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default hot(connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(App));
+export default hot(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(App),
+);
