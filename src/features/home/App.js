@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import enUS from 'antd/lib/locale-provider/en_US';
-import { Alert, LocaleProvider, message, Modal, Spin } from 'antd';
+import { LocaleProvider, message, Modal } from 'antd';
 import SplitPane from 'rspv2/lib/SplitPane';
 import Pane from 'rspv2/lib/Pane';
 import { hot } from 'react-hot-loader/root';
