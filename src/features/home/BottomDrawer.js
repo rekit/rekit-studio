@@ -22,7 +22,7 @@ export class BottomDrawer extends Component {
       // let ps = p.bottomDrawer.getPanes();
       // if (!Array.isArray(ps)) ps = [ps];
       // arr.push.apply(arr, ps);
-      arr.push(..._.castArray(p.bottomDrawer.getPanes()));
+      arr.push(..._.castArray(p.bottomDrawer.getPanes(this)));
       return arr;
     }, []);
     panes.sort((p1, p2) => p1.order - p2.order);
