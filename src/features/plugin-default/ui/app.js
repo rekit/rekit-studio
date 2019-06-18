@@ -43,6 +43,7 @@ export default {
       if (ele.type === 'file') {
         switch (ele.ext) {
           case 'js':
+          case 'ts':
           case 'svg':
           case 'html':
           case 'json':
