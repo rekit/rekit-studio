@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppContainer } from 'react-hot-loader';
 import { render } from 'react-dom';
+import { Modal } from 'antd';
 import Root from './Root';
 import routeConfig from './common/routeConfig';
 import store from './common/store';
@@ -11,6 +12,7 @@ if (process.env.NODE_ENV !== 'test') {
   let protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
   const portStr = location.port ? ':' + location.port : '';
   const socketURL = `${protocol}${location.hostname}${portStr}/rekit-studio-socket`;
+
   const ws = new WebSocket(socketURL);
   ws.onopen = () => {
     console.log('[Rekit Studio] socket connected.');
@@ -47,7 +49,13 @@ if (process.env.NODE_ENV !== 'test') {
   ws.onclose = () => {
     console.log('[Rekit Studio] socket closed.');
   };
-  ws.onerror = () => {
+  ws.onerror = evt => {
+    console.log(evt);
+    Modal.warn({
+      title: 'Socket Failed',
+      content:
+        "IDE failed to connect web socket to the backend service. Some features of the IDE will NOT work properly. It's usually caused by proxy settings, please turn off your proxy or by pass socket connection. Then refresh the page",
+    });
     console.error('[Rekit Studio] socket failed.');
   };
 }
