@@ -45,7 +45,7 @@ export function fetchProjectData(args = {}) {
 
           // Default sort of elements
           const { elements, elementById } = prjData;
-          Object.values(elementById, ele => {
+          Object.values(elementById).forEach(ele => {
             if (ele && ele.children) {
               ele.children.sort((c1, c2) => sortChildren(c1, c2, elementById));
             }

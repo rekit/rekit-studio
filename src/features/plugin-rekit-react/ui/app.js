@@ -1,29 +1,29 @@
 import _ from 'lodash';
-const colorMap = {
-  feature: '#0277bd',
-  action: '#ec407a',
-  actions: '#ec407a',
-  'initial-state': '#ec407a',
-  component: '#f08036',
-  components: '#f08036',
-  'folder-alias': '#8d6e63',
-  normal: '#888888',
-  routes: '#26a69a',
-  plugin: '#4CAF50',
-};
+// const colorMap = {
+//   feature: '#0277bd',
+//   action: '#ec407a',
+//   actions: '#ec407a',
+//   'initial-state': '#ec407a',
+//   component: '#f08036',
+//   components: '#f08036',
+//   'folder-alias': '#8d6e63',
+//   normal: '#888888',
+//   routes: '#26a69a',
+//   plugin: '#4CAF50',
+// };
 
-const iconMap = {
-  features: 'rekit',
-  feature: 'book',
-  action: 'notification',
-  actions: 'notification',
-  'initial-state': 'database',
-  component: 'appstore-o',
-  components: 'appstore-o',
-  'folder-alias': 'folder',
-  routes: 'sharealt',
-  plugin: 'plugin',
-};
+// const iconMap = {
+//   features: 'rekit',
+//   feature: 'book',
+//   action: 'notification',
+//   actions: 'notification',
+//   'initial-state': 'database',
+//   component: 'appstore-o',
+//   components: 'appstore-o',
+//   'folder-alias': 'folder',
+//   routes: 'sharealt',
+//   plugin: 'plugin',
+// };
 
 const getFeature = file => {
   return /^(v:)?src\/features\/[\w-_\d]+(\/|$)/.test(file) ? file.split('/')[2] : null;

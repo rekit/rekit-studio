@@ -23,7 +23,6 @@ export default class ElementIcon extends Component {
     if (!element) return null;
     const iconType = _.has(element, 'icon') ? element.icon : icons(element.type);
     const iconColor = _.has(element, 'iconColor') ? element.iconColor : colors(element.type);
-    if (element.type === 'initial-state') console.log(element.type, element,colors(element.type))
     if (!iconType) return null;
     return <SvgIcon {...newProps} type={iconType} color={iconColor} />;
   }
