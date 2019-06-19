@@ -9,6 +9,8 @@ export default {
   folder: '#999',
   feature: '#00C0FF',
   featureInner: '#00C0FF',
-  route: '#26a69a',
-  routes: '#26a69a',
+  route: '#26C6DA',
+  routes: '#26C6DA',
+  'initial-state': '#9CCC65',
+
 };

@@ -47,10 +47,10 @@ export default {
 
     Object.values(prjData.elementById).forEach(ele => {
       ele.feature = ele.type === 'feature' ? ele.name : getFeature(ele.id);
-      if (!ele.icon && ele.type && iconMap[ele.type]) {
-        ele.icon = iconMap[ele.type];
-        ele.iconColor = colorMap[ele.type];
-      }
+      // if (!ele.icon && ele.type && iconMap[ele.type]) {
+      //   // ele.icon = iconMap[ele.type];
+      //   // ele.iconColor = colorMap[ele.type];
+      // }
 
       // if (ele.parts) {
       //   ele.parts.forEach(part => {
@@ -124,8 +124,8 @@ export default {
         const coreDir = `src/features/${ele.name}/core`;
         const uiDir = `src/features/${ele.name}/ui`;
         if (byId(coreDir) && byId(uiDir)) {
-          ele.icon = iconMap.plugin;
-          ele.iconColor = colorMap.plugin;
+          ele.icon = 'plugin';
+          ele.iconColor = '#4CAF50';
           const misc = ele.children.pop();
           _.pull(byId(misc).children, coreDir, uiDir);
 
