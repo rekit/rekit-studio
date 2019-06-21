@@ -104,7 +104,7 @@ export default class DepsOverviewDiagram extends Component {
           return d.isBg
             ? d3
                 .color(colors(d.type))
-                .brighter(0.85)
+                .brighter(1)
                 .hex()
             : color;
         })
