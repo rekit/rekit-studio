@@ -12,6 +12,7 @@ import editorReducer from '../features/editor/redux/reducer';
 import coreReducer from '../features/core/redux/reducer';
 import gitManagerReducer from '../features/git-manager/redux/reducer';
 import ptyReducer from '../features/pty/redux/reducer';
+import pluginTypescriptReducer from '../features/plugin-typescript/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
 // This is used for Rekit cmds to register new features, remove features, etc.
@@ -28,6 +29,7 @@ const reducerMap = {
   core: coreReducer,
   gitManager: gitManagerReducer,
   pty: ptyReducer,
+  pluginTypescript: pluginTypescriptReducer,
 };
 
 export default () => {

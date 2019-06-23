@@ -36,6 +36,8 @@ function configureMonaco(monaco) {
     noSyntaxValidation: false
   });
 
+  // monaco.languages.typescript.typescriptDefaults.addExtraLib(content, "")
+
   plugin.getPlugins('editor.configMonaco').forEach(p => p.editor.configMonaco(monaco));
 }
 

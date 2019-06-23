@@ -10,6 +10,7 @@ import '../features/plugin-scripts/entry';
 import '../features/plugin-test/entry';
 import '../features/plugin-rekit-react/entry';
 import '../features/plugin-rekit-plugin/entry';
+import '../features/plugin-typescript/entry';
 
 // Use global variable to store module state for workaround of HMR.
 export default {
