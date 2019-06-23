@@ -12,6 +12,7 @@ const modelManager = {
     if (!model && !noCreate) {
       model = monaco.editor.createModel(content || initialContent[filePath] || '', null, uri);
       model.updateOptions({ tabSize: 2 });
+      console.log('model crated', filePath);
     }
     return model;
   },
@@ -27,9 +28,9 @@ const modelManager = {
     const model = this.getModel(filePath);
     if (model && model.getValue() !== content) model.setValue(content);
   },
-  setInitialValue(filePath, content) {
+  setInitialValue(filePath, content, createModelIfNotExists) {
     if (initialContent[filePath] === content) return;
-    const model = this.getModel(filePath, content, true);
+    const model = this.getModel(filePath, content, !createModelIfNotExists);
     if (
       model &&
       (!_.has(initialContent, filePath) || model.getValue() === initialContent[filePath])

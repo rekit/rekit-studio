@@ -39,10 +39,10 @@ export default class MonacoEditor extends Component {
     window.addEventListener('resize', this.handleWindowResize);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.editor) this.editor._editingFile = nextProps.file;
-    if (nextProps.file !== this.props.file) {
-      this.editor.setModel(modelManager.getModel(nextProps.file));
+  componentDidUpdate(prevProps) {
+    if (this.editor) this.editor._editingFile = this.props.file;
+    if (this.props.file !== prevProps.file) {
+      this.editor.setModel(modelManager.getModel(this.props.file));
     }
   }
 

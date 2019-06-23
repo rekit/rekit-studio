@@ -19,3 +19,4 @@ export { setBottomDrawerTab } from './setBottomDrawerTab';
 export { setTempTab } from './setTempTab';
 export { removePaths } from './removePaths';
 export { npmList, dismissNpmListError } from './npmList';
+export { fetchFiles, dismissFetchFilesError } from './fetchFiles';

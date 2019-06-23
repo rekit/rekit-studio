@@ -21,6 +21,7 @@ import { reducer as setBottomDrawerTabReducer } from './setBottomDrawerTab';
 import { reducer as setTempTabReducer } from './setTempTab';
 import { reducer as removePathsReducer } from './removePaths';
 import { reducer as npmListReducer } from './npmList';
+import { reducer as fetchFilesReducer } from './fetchFiles';
 
 const convert = new Convert();
 
@@ -45,6 +46,7 @@ const reducers = [
   setTempTabReducer,
   removePathsReducer,
   npmListReducer,
+  fetchFilesReducer,
 ];
 
 // const pascalCase = _.flow(

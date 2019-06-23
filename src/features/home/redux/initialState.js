@@ -65,6 +65,8 @@ const initialState = {
   termViewOutput: [],
 
   fatalError: null,
+  fetchFilesPending: false,
+  fetchFilesError: null,
 };
 
 export default initialState;
