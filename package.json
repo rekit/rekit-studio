@@ -120,7 +120,7 @@
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
     "mini-css-extract-plugin": "^0.5.0",
-    "monaco-editor": "^0.16.2",
+    "monaco-editor": "^0.17.0",
     "nock": "^10.0.6",
     "object-assign": "4.1.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
