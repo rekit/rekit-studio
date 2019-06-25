@@ -28,7 +28,7 @@ function configureMonaco(monaco) {
   monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
 
   monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-    noSemanticValidation: false,
+    noSemanticValidation: true,
     noSyntaxValidation: false
   });
   monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({

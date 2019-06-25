@@ -52,6 +52,7 @@
   ],
   "dependencies": {
     "@babel/traverse": "^7.4.3",
+    "@sourcegraph/vscode-ws-jsonrpc": "0.0.3-fork",
     "argparse": "^1.0.10",
     "body-parser": "^1.18.2",
     "chalk": "2.4.2",
@@ -71,7 +72,8 @@
     "shelljs": "^0.8.2",
     "simple-git": "^1.110.0",
     "socket.io": "^2.2.0",
-    "terminate": "^2.1.2"
+    "terminate": "^2.1.2",
+    "ws": "^6.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",

@@ -57,8 +57,15 @@ module.exports = function(webpackEnv, args = {}) {
     let styleBase = 0;
     if (args.pluginDir) {
       // Convert plugin name to a uniq number as style base.
-      const name = require(path.join(args.pluginDir, 'package.json')).name.replace(/^rekit-plugin/, '');
-      const hashed = crypto.createHash('md5').update(name).digest('hex').substring(0, 6);
+      const name = require(path.join(args.pluginDir, 'package.json')).name.replace(
+        /^rekit-plugin/,
+        '',
+      );
+      const hashed = crypto
+        .createHash('md5')
+        .update(name)
+        .digest('hex')
+        .substring(0, 6);
       styleBase = parseInt(hashed, 16);
     }
     const loaders = [
@@ -260,6 +267,7 @@ module.exports = function(webpackEnv, args = {}) {
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
         rs: paths.resolveApp('src'),
+        vscode: require.resolve('monaco-languageclient/lib/vscode-compatibility'),
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding

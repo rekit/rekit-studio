@@ -8,7 +8,8 @@ import modelManager from './modelManager';
 
 function noop() {}
 let editorInstance = null; // Only one global monaco editor.
-const getEditorNode = () => editorInstance && editorInstance.getDomNode() && editorInstance.getDomNode().parentNode;
+const getEditorNode = () =>
+  editorInstance && editorInstance.getDomNode() && editorInstance.getDomNode().parentNode;
 
 export default class MonacoEditor extends Component {
   static propTypes = {
@@ -26,7 +27,7 @@ export default class MonacoEditor extends Component {
     file: '',
     editorDidMount: noop,
     editorWillMount: noop,
-    onChange: noop
+    onChange: noop,
   };
 
   constructor(props) {
@@ -71,7 +72,7 @@ export default class MonacoEditor extends Component {
         if (!this.__prevent_trigger_change_event) {
           this.props.onChange(value, event);
         }
-      })
+      }),
     );
   }
 
@@ -85,7 +86,7 @@ export default class MonacoEditor extends Component {
       window.require.config({
         paths: {
           vs: '/static/vs',
-        }
+        },
       });
       // Load monaco
       window.require(['vs/editor/editor.main'], () => {
@@ -117,7 +118,7 @@ export default class MonacoEditor extends Component {
         window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__ || [];
       window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__.push({
         window: this,
-        fn: onGotAmdLoader
+        fn: onGotAmdLoader,
       });
     } else if (typeof window.require === 'undefined') {
       const loaderScript = window.document.createElement('script');
@@ -139,11 +140,12 @@ export default class MonacoEditor extends Component {
       const domNode = document.createElement('div');
       domNode.className = 'monaco-editor-node';
       this.containerElement.appendChild(domNode);
-      
+
       editorInstance = monaco.editor.create(domNode, {
         model: null,
-        ...options
+        ...options,
       });
+
       configMonacoEditor(editorInstance, monaco);
       editorInstance.setModel(modelManager.getModel(file));
     } else {
