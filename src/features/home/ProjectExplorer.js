@@ -108,7 +108,6 @@ export class ProjectExplorer extends Component {
     const ele = this.eleById(key);
     if (ele) {
       if (ele.navigable || ele.type === 'file') {
-        // history.push(`/element/${encodeURIComponent(ele.id)}`);
         element.show(ele);
       } else if (ele.link) {
         history.push(ele.link);
