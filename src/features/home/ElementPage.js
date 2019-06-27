@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { CodeEditor } from '../editor';
-import * as actions from './redux/actions';
+import { fetchOtherFile } from './redux/actions';
 import plugin from '../../common/plugin';
 import { DepsDiagramView } from '../diagram';
 import { ImageView } from './';
@@ -74,6 +74,10 @@ export class ElementPage extends Component {
 
   byId = id => this.props.elementById[id];
 
+  fetchOtherFile(id) {
+    console.log('file id not exist but should be able to edit');
+  }
+
   renderNotFound(eleId) {
     return (
       <div className="home-element-page error">
@@ -139,7 +143,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch),
+    actions: bindActionCreators({ fetchOtherFile }, dispatch),
   };
 }
 
