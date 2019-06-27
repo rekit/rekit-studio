@@ -55,4 +55,15 @@ export default {
   getPlugin(name) {
     return _.find(window.__REKIT_PLUGINS, { name });
   },
+  invoke(prop, ...args) {
+    if (!prop) throw new Error('Invoke on plugin should have prop argument');
+    const arr = prop.split('.');
+    arr.pop();
+    const obj = arr.join('.');
+    this.getPlugins(prop).forEach(p=> {
+      const method = _.get(p, prop);
+      if (!_.isFunction(method)) throw new Error('Invoke should be called on function extension point: ' + p.name + '.' + prop);
+      method.apply(obj, args);
+    });
+  }
 };
