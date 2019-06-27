@@ -15,22 +15,22 @@ const ReconnectingWebSocket = require('reconnecting-websocket').default;
 // Config Monaco Editor to support JSX and ESLint
 function configureMonacoEditor(editor, monaco) {
   console.log('editor: ', editor);
-  setTimeout(() => {
-    MonacoServices.install(editor);
-    const url = createUrl('/monaco-lsp-socket');
-    const webSocket = createWebSocket(url);
-    // listen when the web socket is opened
-    listen({
-      webSocket,
-      onConnection: connection => {
-        console.log('start client');
-        // create and start the language client
-        const languageClient = createLanguageClient(connection);
-        const disposable = languageClient.start();
-        connection.onClose(() => disposable.dispose());
-      },
-    });
-  }, 1000);
+  // setTimeout(() => {
+  //   MonacoServices.install(editor);
+  //   const url = createUrl('/monaco-lsp-socket');
+  //   const webSocket = createWebSocket(url);
+  //   // listen when the web socket is opened
+  //   listen({
+  //     webSocket,
+  //     onConnection: connection => {
+  //       console.log('start client');
+  //       // create and start the language client
+  //       const languageClient = createLanguageClient(connection);
+  //       const disposable = languageClient.start();
+  //       connection.onClose(() => disposable.dispose());
+  //     },
+  //   });
+  // }, 1000);
   plugin.getPlugins('editor.config').forEach(p => p.editor.config(editor, monaco));
   setupSyntaxWorker(editor, monaco);
   // setupLinter(editor, monaco);

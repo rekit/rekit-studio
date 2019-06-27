@@ -13,6 +13,7 @@ const initialState = {
   current: undefined,
   output: {},
   running: {},
+  needConfirm: {},
   saveScriptPending: false,
   saveScriptError: null,
   deleteScriptPending: false,
