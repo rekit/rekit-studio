@@ -78,6 +78,11 @@ export class ElementPage extends Component {
     console.log('file id not exist but should be able to edit');
   }
 
+  renderOtherFile() {
+    // Other file means the file is not included in project data
+    // Fox example, show a file in node_modules.
+  }
+
   renderNotFound(eleId) {
     return (
       <div className="home-element-page error">
@@ -104,7 +109,8 @@ export class ElementPage extends Component {
     if (!ele) {
       const { elementId } = this.props.match.params;
       const eleId = decodeURIComponent(elementId);
-      return this.renderNotFound(eleId);
+      return this.renderOtherFile(eleId);
+      // return this.renderNotFound(eleId);
     }
 
     const viewEle = this.getViewElement(ele);

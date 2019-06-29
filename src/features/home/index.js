@@ -18,3 +18,4 @@ export { default as OutputView } from './OutputView';
 export { default as TermView } from './TermView';
 export { default as ModalContainer } from './ModalContainer';
 export { default as NoPluginAlert } from './NoPluginAlert';
+export { default as OtherFileElement } from './OtherFileElement';
