@@ -110,7 +110,6 @@ export class ElementPage extends Component {
       const { elementId } = this.props.match.params;
       const eleId = decodeURIComponent(elementId);
       return this.renderOtherFile(eleId);
-      // return this.renderNotFound(eleId);
     }
 
     const viewEle = this.getViewElement(ele);
