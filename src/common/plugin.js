@@ -60,9 +60,9 @@ export default {
     const arr = prop.split('.');
     arr.pop();
     const obj = arr.join('.');
-    return this.getPlugins(prop).forEach(p=> {
+    return this.getPlugins(prop).map(p=> {
       const method = _.get(p, prop);
-      if (!_.isFunction(method)) throw new Error('Invoke should be called on function extension point: ' + p.name + '.' + prop);
+      if (!_.isFunction(method)) return method;//throw new Error('Invoke should be called on function extension point: ' + p.name + '.' + prop);
       return method.apply(obj, args);
     });
   },
