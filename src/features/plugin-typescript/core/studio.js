@@ -25,7 +25,7 @@ function launch(socket) {
 function config(server, app, ss) {
   app.ws('/lsp-socket/typescript', (ws, req) => {
     const socket = {
-      send: content =>{
+      send: content => {
         ws.send(content, error => {
           if (error) {
             throw error;

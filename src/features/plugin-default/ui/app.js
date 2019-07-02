@@ -48,6 +48,7 @@ export default {
           case 'html':
           case 'json':
           case 'less':
+          case 'tsx':
             ele.icon = `file_type_${ele.ext}`;
             break;
           case 'png':

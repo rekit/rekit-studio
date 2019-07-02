@@ -474,7 +474,7 @@ export class CodeEditor extends Component {
     return (
       <div className="editor-code-editor">
         {this.renderToolbar()}
-        <SplitPane split="vertical" onChange={this.handleResize} onResizeEnd={this.handleResizeEnd}>
+        <SplitPane split="vertical" className="editor-split-pane" onChange={this.handleResize} onResizeEnd={this.handleResizeEnd}>
           <Pane className="monaco-editor-container" size={editorPaneSizes[0]}>
             {(this.state.loadingFile || this.state.loadingEditor) && (
               <div className="loading-container">

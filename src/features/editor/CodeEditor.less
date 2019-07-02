@@ -4,8 +4,12 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden; // To get rid of overflowingContentWidgets height from monaco editor
+  // overflow: hidden; // To get rid of overflowingContentWidgets height from monaco editor
+  overflow: visible; // To get rid of overflowingContentWidgets height from monaco editor
   position: relative;
+  .editor-split-pane {
+    overflow: visible!important;
+  }
   .loading-container {
     position: absolute;
     z-index: 999;
