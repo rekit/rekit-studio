@@ -9,8 +9,11 @@ import plugin from '../../common/plugin';
 import { DepsDiagramView } from '../diagram';
 import { ImageView } from './';
 
-const CodeView = ({ element, viewElement }) => (
-  <CodeEditor file={(viewElement && viewElement.target) || element.target || element.id} />
+const CodeView = ({ element, viewElement, match }) => (
+  <CodeEditor
+    file={(viewElement && viewElement.target) || element.target || element.id}
+    match={match}
+  />
 );
 const DepsDiagramViewWrapper = ({ element, viewElement, elementById }) => (
   <DepsDiagramView elementId={element.id} elementById={elementById} />

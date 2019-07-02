@@ -35,6 +35,8 @@ export class CodeEditor extends Component {
     onError: PropTypes.func,
     onStateChange: PropTypes.func,
     onRunTest: PropTypes.func,
+    match: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -144,13 +146,20 @@ export class CodeEditor extends Component {
     this.monacoListeners.forEach(lis => lis.dispose());
   }
 
-  copmonentDidUpdate(prevProps) {
-    console.log('did update');
+  componentDidUpdate(prevProps) {
+    console.log('did update;');
+    if (this.props.router.location.search !== prevProps.router.location.search) {
+      console.log('search is different');
+      setTimeout(() => {
+        this.setEditorStateFromSearch();
+        this.recoverEditorState();
+      }, 500);
+    }
   }
 
   setEditorStateFromSearch() {
-    const { file } = this.props;
-    const selection = _.mapValues(qs.parse(document.location.search.replace(/^\?*/, '')), v =>
+    const { file, router } = this.props;
+    const selection = _.mapValues(qs.parse(router.location.search.replace(/^\?*/, '')), v =>
       parseInt(v, 10),
     );
     console.log('selection:', selection);
@@ -166,7 +175,7 @@ export class CodeEditor extends Component {
         viewState: {
           firstPosition: {
             column: selection.startColumn,
-            lineNumber: selection.startLineNumber,
+            lineNumber: Math.max(selection.startLineNumber - 5, 0),
           },
         },
         cursorState: [
@@ -174,7 +183,7 @@ export class CodeEditor extends Component {
             inSelectionMode: true,
             position: {
               column: selection.startColumn,
-              lineNumber: selection.startLineNumber
+              lineNumber: selection.startLineNumber,
             },
             selectionStart: {
               column: selection.startColumn,
@@ -182,7 +191,7 @@ export class CodeEditor extends Component {
             },
           },
         ],
-      }
+      },
     });
   }
 
@@ -559,6 +568,7 @@ export class CodeEditor extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
+    router: state.router,
     fileContentById: state.home.fileContentById,
     elementById: state.home.elementById,
     fileContentNeedReload: state.home.fileContentNeedReload,
