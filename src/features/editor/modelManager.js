@@ -20,7 +20,6 @@ const modelManager = {
     if (!model && !noCreate) {
       model = monaco.editor.createModel(content || initialContent[filePath] || '', null, uri);
       model.updateOptions({ tabSize: 2 });
-      console.log('model crated', filePath);
     }
     return model;
   },

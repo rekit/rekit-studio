@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import configMonacoEditor from './configMonacoEditor';
 import configMonaco from './configMonaco';
 import modelManager from './modelManager';
+import editorService from './editorService';
 
 function noop() {}
 let editorInstance = null; // Only one global monaco editor.
@@ -141,10 +142,17 @@ export default class MonacoEditor extends Component {
       domNode.className = 'monaco-editor-node';
       this.containerElement.appendChild(domNode);
 
-      editorInstance = monaco.editor.create(domNode, {
-        model: null,
-        ...options,
-      });
+      editorInstance = monaco.editor.create(
+        domNode,
+        {
+          model: null,
+          ...options,
+        },
+        editorService, // override service
+      );
+      // hack doOpenEditor since didn't find a proper way to override it, though has go through:
+      // https://github.com/Microsoft/monaco-editor/issues/291
+      editorInstance._codeEditorService.doOpenEditor = editorService.doOpenEditor;
 
       configMonacoEditor(editorInstance, monaco);
       editorInstance.setModel(modelManager.getModel(file));

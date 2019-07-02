@@ -15,7 +15,6 @@ const ReconnectingWebSocket = require('reconnecting-websocket').default;
 
 // Config Monaco Editor to support JSX and ESLint
 function configureMonacoEditor(editor, monaco) {
-  // console.log('editor: ', editor);
   setTimeout(() => {
     MonacoServices.install(editor);
     const lsps = plugin.invoke('editor.lsp');

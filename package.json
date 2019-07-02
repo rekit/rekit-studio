@@ -67,6 +67,7 @@
     "lodash": "^4.17.10",
     "node-pty": "^0.8.1",
     "prettier": "^1.16.4",
+    "qs": "^6.7.0",
     "rekit-core": ">3.0.0-beta",
     "reselect": "^4.0.0",
     "shelljs": "^0.8.2",

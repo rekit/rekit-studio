@@ -140,6 +140,8 @@ export class CodeEditor extends Component {
     this.monacoListeners.forEach(lis => lis.dispose());
   }
 
+  copmonentDidUpdate() {}
+
   getFileContent(filePath) {
     return this.props.fileContentById[filePath || this.props.file];
   }

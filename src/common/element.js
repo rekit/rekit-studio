@@ -1,11 +1,13 @@
 import _ from 'lodash';
+import qs from 'qs';
 import history from './history';
 import store from './store';
 import plugin from './plugin';
 
+
 const byId = id => store.getState().home.elementById[id];
 export default {
-  show(ele, view) {
+  show(ele, view, query) {
     if (_.isString(ele)) {
       ele = byId(ele);
     }
@@ -46,6 +48,9 @@ export default {
       }
     }
     if (url === pathname) return 0;
+    if (query) {
+      url += '?' + qs.stringify(query);
+    }
     history.push(url);
     return 1;
   },
