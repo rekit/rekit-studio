@@ -106,7 +106,7 @@ export class CodeEditor extends Component {
       await this.checkAndFetchFileContent(nextProps);
       // Todo: check if conflict
       modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file), true);
-      this.fetchDependencies(nextProps.file);
+      // this.fetchDependencies(nextProps.file);
       this.preventSaveEditorState = false;
       this.recoverEditorState();
       this.setState({
@@ -279,7 +279,7 @@ export class CodeEditor extends Component {
         .fetchFileContent(props.file)
         .then(() => {
           this.setState({ notFound: false });
-          setTimeout(() => this.fetchDependencies(props.file), 100);
+          // setTimeout(() => this.fetchDependencies(props.file), 100);
         })
         .catch(e => {
           message.error(`Failed to load file: ${e.toString()}`);
@@ -294,22 +294,22 @@ export class CodeEditor extends Component {
     }
   }
 
-  fetchDependencies = file => {
-    // fetch all depend modules in the file so that editor could provide intelligent auto complete.
-    const { elementById } = this.props;
-    if (elementById[file] && elementById[file].deps) {
-      const deps = elementById[file].deps;
-      const files = deps
-        .filter(d => d.type === 'file' && /\.(js|jsx|ts|tsx)$/.test(d.id))
-        .map(d => d.id);
-      this.props.actions.fetchFiles(files).then(data => {
-        data.forEach(item => {
-          console.log('set model', item.file);
-          if (window.monaco) modelManager.setInitialValue(item.file, item.content, true);
-        });
-      });
-    }
-  };
+  // fetchDependencies = file => {
+  //   // fetch all depend modules in the file so that editor could provide intelligent auto complete.
+  //   const { elementById } = this.props;
+  //   if (elementById[file] && elementById[file].deps) {
+  //     const deps = elementById[file].deps;
+  //     const files = deps
+  //       .filter(d => d.type === 'file' && /\.(js|jsx|ts|tsx)$/.test(d.id))
+  //       .map(d => d.id);
+  //     this.props.actions.fetchFiles(files).then(data => {
+  //       data.forEach(item => {
+  //         console.log('set model', item.file);
+  //         if (window.monaco) modelManager.setInitialValue(item.file, item.content, true);
+  //       });
+  //     });
+  //   }
+  // };
 
   handleEditorChange = () => {
     const pathname = document.location.pathname;
@@ -349,7 +349,7 @@ export class CodeEditor extends Component {
     });
     // // It needs some time for editor to load its content
     setTimeout(this.recoverEditorState, 30);
-    setTimeout(() => this.fetchDependencies(this.props.file), 100);
+    // setTimeout(() => this.fetchDependencies(this.props.file), 100);
   };
 
   handleEditorCursorScrollerChange = () => {
