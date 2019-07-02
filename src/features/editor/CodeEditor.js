@@ -8,6 +8,7 @@ import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import SplitPane from 'rspv2/lib/SplitPane';
 import Pane from 'rspv2/lib/Pane';
+import qs from 'qs';
 import {
   fetchFileContent,
   fetchFiles,
@@ -135,12 +136,55 @@ export class CodeEditor extends Component {
       }
     }
   }
+  componentDidMount() {
+    this.setEditorStateFromSearch();
+  }
 
   componentWillUnmount() {
     this.monacoListeners.forEach(lis => lis.dispose());
   }
 
-  copmonentDidUpdate() {}
+  copmonentDidUpdate(prevProps) {
+    console.log('did update');
+  }
+
+  setEditorStateFromSearch() {
+    const { file } = this.props;
+    const selection = _.mapValues(qs.parse(document.location.search.replace(/^\?*/, '')), v =>
+      parseInt(v, 10),
+    );
+    console.log('selection:', selection);
+    if (
+      ['startColumn', 'endColumn', 'startLineNumber', 'endLineNumber'].some(
+        k => !_.has(selection, k),
+      )
+    ) {
+      return;
+    }
+    _.merge(editorStateMap, {
+      [file]: {
+        viewState: {
+          firstPosition: {
+            column: selection.startColumn,
+            lineNumber: selection.startLineNumber,
+          },
+        },
+        cursorState: [
+          {
+            inSelectionMode: true,
+            position: {
+              column: selection.startColumn,
+              lineNumber: selection.startLineNumber
+            },
+            selectionStart: {
+              column: selection.startColumn,
+              lineNumber: selection.startLineNumber,
+            },
+          },
+        ],
+      }
+    });
+  }
 
   getFileContent(filePath) {
     return this.props.fileContentById[filePath || this.props.file];
@@ -254,7 +298,7 @@ export class CodeEditor extends Component {
         .map(d => d.id);
       this.props.actions.fetchFiles(files).then(data => {
         data.forEach(item => {
-          console.log('set model', item.file)
+          console.log('set model', item.file);
           if (window.monaco) modelManager.setInitialValue(item.file, item.content, true);
         });
       });
@@ -476,7 +520,12 @@ export class CodeEditor extends Component {
     return (
       <div className="editor-code-editor">
         {this.renderToolbar()}
-        <SplitPane split="vertical" className="editor-split-pane" onChange={this.handleResize} onResizeEnd={this.handleResizeEnd}>
+        <SplitPane
+          split="vertical"
+          className="editor-split-pane"
+          onChange={this.handleResize}
+          onResizeEnd={this.handleResizeEnd}
+        >
           <Pane className="monaco-editor-container" size={editorPaneSizes[0]}>
             {(this.state.loadingFile || this.state.loadingEditor) && (
               <div className="loading-container">
