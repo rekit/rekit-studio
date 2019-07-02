@@ -3,7 +3,9 @@ import axios from 'axios';
 export default {
   configMonaco(monaco) {
     monaco.languages.registerLinkProvider('typescript', {
-      provideLinks(model, tokens) {}
+      provideLinks(model, tokens) {
+        console.log('provide links:');
+      }
     });
   },
 

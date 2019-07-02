@@ -147,13 +147,11 @@ export class CodeEditor extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log('did update;');
     if (this.props.router.location.search !== prevProps.router.location.search) {
-      console.log('search is different');
       setTimeout(() => {
         this.setEditorStateFromSearch();
         this.recoverEditorState();
-      }, 500);
+      }, 200);
     }
   }
 
@@ -162,7 +160,6 @@ export class CodeEditor extends Component {
     const selection = _.mapValues(qs.parse(router.location.search.replace(/^\?*/, '')), v =>
       parseInt(v, 10),
     );
-    console.log('selection:', selection);
     if (
       ['startColumn', 'endColumn', 'startLineNumber', 'endLineNumber'].some(
         k => !_.has(selection, k),
