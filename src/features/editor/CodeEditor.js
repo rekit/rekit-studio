@@ -40,8 +40,8 @@ export class CodeEditor extends Component {
   };
 
   static defaultProps = {
-    onError() {},
-    onStateChange() {},
+    onError() { },
+    onStateChange() { },
     onRunTest: null,
   };
 
@@ -151,6 +151,7 @@ export class CodeEditor extends Component {
       setTimeout(() => {
         this.setEditorStateFromSearch();
         this.recoverEditorState();
+        // this.editor.revealLineInCenter();
       }, 200);
     }
   }

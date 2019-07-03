@@ -3,6 +3,7 @@ const server = require('@sourcegraph/vscode-ws-jsonrpc/lib/server');
 const lsp = require('vscode-languageserver');
 
 function launch(socket) {
+  console.log('launch');
   const { WebSocketMessageReader, WebSocketMessageWriter } = rpc;
   const reader = new WebSocketMessageReader(socket);
   const writer = new WebSocketMessageWriter(socket);
