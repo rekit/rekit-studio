@@ -106,7 +106,6 @@ export class CodeEditor extends Component {
       await this.checkAndFetchFileContent(nextProps);
       // Todo: check if conflict
       modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file), true);
-      // this.fetchDependencies(nextProps.file);
       this.preventSaveEditorState = false;
       this.recoverEditorState();
       this.setState({
