@@ -58,7 +58,7 @@ export class ElementPage extends Component {
       const realEle = ele.target ? this.byId(ele.target) : ele;
       if (realEle && realEle.type === 'file') {
         if (/^png|jpg|jpeg|gif|bmp|webp$/i.test(realEle.ext)) return ImageView;
-        if (realEle.size < 500000) return CodeView;
+        if (realEle.size < 1000000) return CodeView;
         else return 'TOO_LARGE';
       }
       return null;
@@ -105,10 +105,10 @@ export class ElementPage extends Component {
     return <div className="home-element-page error">The element/view is not supported.</div>;
   }
 
-  renderSizeTooLarge() {
+  renderSizeTooLarge(ele) {
     return (
       <div className="home-element-page error">
-        The file size is too large to show, please try other native code editors.
+        The file size is too large to show, please try other native code editors: {ele.id}.
       </div>
     );
   }
@@ -131,7 +131,7 @@ export class ElementPage extends Component {
 
     const View = this.getView(ele, viewEle);
     if (View === 'TOO_LARGE') {
-      return this.renderSizeTooLarge();
+      return this.renderSizeTooLarge(ele);
     }
     if (!View) {
       return this.renderNotSupported();
