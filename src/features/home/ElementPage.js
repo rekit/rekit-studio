@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { CodeEditor } from '../editor';
-import { fetchOtherFile } from './redux/actions';
+import { includeFile } from './redux/actions';
 import plugin from '../../common/plugin';
 import { DepsDiagramView } from '../diagram';
 import { ImageView } from './';
@@ -77,13 +77,20 @@ export class ElementPage extends Component {
 
   byId = id => this.props.elementById[id];
 
-  fetchOtherFile(id) {
-    console.log('file id not exist but should be able to edit');
-  }
-
-  renderOtherFile() {
+  loadOtherFile(file) {
     // Other file means the file is not included in project data
     // Fox example, show a file in node_modules.
+
+    const { includeFilePending, includeFileError, otherFiles } = this.props;
+    if (!includeFilePending && !includeFileError && !otherFiles[file]) {
+      this.props.actions.includeFile(file);
+    }
+    if (includeFileError) {
+      if (_.get(includeFileError, 'response.status') === 404) {
+        return <div className="home-element-page error"> File not found: {file} </div>;
+      }
+    }
+    return <div className="home-element-page loading"> Loading... </div>;
   }
 
   renderNotFound(eleId) {
@@ -112,7 +119,8 @@ export class ElementPage extends Component {
     if (!ele) {
       const { elementId } = this.props.match.params;
       const eleId = decodeURIComponent(elementId);
-      return this.renderOtherFile(eleId);
+      // If element not exists, try to add it to the project.
+      return this.loadOtherFile(eleId);
     }
 
     const viewEle = this.getViewElement(ele);
@@ -144,14 +152,14 @@ export class ElementPage extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    ..._.pick(state.home, ['elementById', 'elements']),
+    ..._.pick(state.home, ['elementById', 'elements', 'includeFilePending', 'includeFileError', 'otherFiles']),
   };
 }
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchOtherFile }, dispatch),
+    actions: bindActionCreators({ includeFile }, dispatch),
   };
 }
 

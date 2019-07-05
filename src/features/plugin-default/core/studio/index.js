@@ -8,6 +8,7 @@ function config(server, app, args) {
   app.post('/api/read-files', require('./readFiles'));
   app.post('/api/save-file', require('./saveFile'));
   app.post('/api/format-code', require('./formatCode'));
+  app.post('/api/include-file', require('./includeFile'));
 }
 
 module.exports = { config };

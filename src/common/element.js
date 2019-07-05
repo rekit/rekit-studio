@@ -3,7 +3,7 @@ import qs from 'qs';
 import history from './history';
 import store from './store';
 import plugin from './plugin';
-
+// import { fetchFileContent } from '../features/home/redux/actions';
 
 const byId = id => store.getState().home.elementById[id];
 export default {
@@ -12,7 +12,20 @@ export default {
       ele = byId(ele);
     }
     if (!ele) {
-      console.error('Element does not exist: ', arguments[0]);
+      const eleId = arguments[0];
+      if (eleId && _.isString(eleId)) {
+        history.push(`/element/${encodeURIComponent(eleId)}`);
+        // store
+        //   .dispatch(fetchFileContent(eleId))
+        //   .then(data => {
+        //     console.log('success:', data);
+        //     store.dispatch();
+        //   })
+        //   .catch(err => {
+        //     message.error(`'Element does not exist: ${eleId}`);
+        //     console.log('Failed: ', err);
+        //   });
+      }
       return;
     }
 
@@ -29,11 +42,14 @@ export default {
       // It's an virtual element, like component/action/page etc.
       url = this.getUrl(ele);
       let tab;
-      plugin.getPlugins('tab.getTab').reverse().some(p => {
-        tab = p.tab.getTab(url);
-        if (!tab) return false;
-        return true;
-      });
+      plugin
+        .getPlugins('tab.getTab')
+        .reverse()
+        .some(p => {
+          tab = p.tab.getTab(url);
+          if (!tab) return false;
+          return true;
+        });
       if (tab) {
         // Find the selected sub taab
         const historyPaths = store.getState().home.historyPaths;

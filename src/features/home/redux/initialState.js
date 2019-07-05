@@ -69,6 +69,10 @@ const initialState = {
   fetchFilesError: null,
   fetchOtherFilePending: false,
   fetchOtherFileError: null,
+  includeFilePending: false,
+  includeFileError: null,
+
+  otherFiles: {},
 };
 
 export default initialState;
