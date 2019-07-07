@@ -294,23 +294,6 @@ export class CodeEditor extends Component {
     }
   }
 
-  // fetchDependencies = file => {
-  //   // fetch all depend modules in the file so that editor could provide intelligent auto complete.
-  //   const { elementById } = this.props;
-  //   if (elementById[file] && elementById[file].deps) {
-  //     const deps = elementById[file].deps;
-  //     const files = deps
-  //       .filter(d => d.type === 'file' && /\.(js|jsx|ts|tsx)$/.test(d.id))
-  //       .map(d => d.id);
-  //     this.props.actions.fetchFiles(files).then(data => {
-  //       data.forEach(item => {
-  //         console.log('set model', item.file);
-  //         if (window.monaco) modelManager.setInitialValue(item.file, item.content, true);
-  //       });
-  //     });
-  //   }
-  // };
-
   handleEditorChange = () => {
     const pathname = document.location.pathname;
     this.props.actions.setViewChanged(pathname, this.hasChange());
