@@ -9,15 +9,6 @@ const terms = {};
 function config(server, app, args) {
   app.post('/api/run-script', (req, res) => {
     const name = req.body.name;
-    // let devPort = null;
-    // try {
-    //   const { paths } = rekit.core;
-    //   const pkgJson = fs.readJsonSync(paths.map('package.json'));
-    //   const s = pkgJson.scripts[name];
-    //   if (/PORT=(\d+)/.test(s)) {
-    //     devPort = RegExp.$1;
-    //   }
-    // } catch (err) {}
     const { paths } = rekit.core;
     const useYarn = fs.existsSync(paths.map('yarn.lock'));
 
@@ -25,7 +16,7 @@ function config(server, app, args) {
       res.send(JSON.stringify({ alreadyRun: true }));
       return;
     }
-    let scriptCmd; // = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+    let scriptCmd;
     const argsArray = [];
     if (process.platform === 'win32') {
       scriptCmd = useYarn ? 'yarn.cmd' : 'npm.cmd';
