@@ -24,14 +24,6 @@ const modelManager = {
     }
     return model;
   },
-  // createModel(filePath, content) {
-  //   const uri = getUri(filePath);
-
-  //   const model = monaco.editor.createModel(content || initialContent[filePath] || '', null, uri);
-  //   // TODO: respect tabSize option in .prettierrc
-  //   model.updateOptions({ tabSize: 2 });
-  //   return model;
-  // },
   reset(filePath) {
     // Set the model content to initial values
     if (!filePath) return;
