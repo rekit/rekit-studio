@@ -40,8 +40,8 @@ export class CodeEditor extends Component {
   };
 
   static defaultProps = {
-    onError() { },
-    onStateChange() { },
+    onError() {},
+    onStateChange() {},
     onRunTest: null,
   };
 
@@ -84,7 +84,9 @@ export class CodeEditor extends Component {
     this.setLoading(this.props.file, true);
     await this.checkAndFetchFileContent(this.props);
     // Todo: check if conflict
-    modelManager.setInitialValue(this.props.file, this.getFileContent(this.props.file));
+    if (this.props.fileContentById[this.props.file]) {
+      modelManager.setInitialValue(this.props.file, this.getFileContent(this.props.file));
+    }
     this.setState({
       // eslint-disable-line
       loadingFile: false,
@@ -105,7 +107,7 @@ export class CodeEditor extends Component {
       );
       await this.checkAndFetchFileContent(nextProps);
       // Todo: check if conflict
-      modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file), true);
+      modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file));
       this.preventSaveEditorState = false;
       this.recoverEditorState();
       this.setState({
@@ -115,7 +117,7 @@ export class CodeEditor extends Component {
       const oldContent = this.getFileContent();
       const hasChange = this.hasChange(); // has changed
       await this.checkAndFetchFileContent(nextProps);
-      modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file), true);
+      modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file));
       this.setState({
         loadingFile: false,
       });
@@ -503,7 +505,8 @@ export class CodeEditor extends Component {
       wrappingIndent: 'same',
     };
     const editorPaneSizes = storage.local.getItem('editorPaneSizes') || ['1', '200px'];
-
+    const { file } = this.props;
+    const editorFile = this.props.fileContentById[file] ? file : '_file_place_holder_for_loading';
     return (
       <div className="editor-code-editor">
         {this.renderToolbar()}
@@ -520,7 +523,7 @@ export class CodeEditor extends Component {
               </div>
             )}
             <MonacoEditor
-              file={this.props.file}
+              file={editorFile}
               options={options}
               onChange={this.handleEditorChange}
               editorDidMount={this.handleEditorDidMount}
@@ -529,7 +532,7 @@ export class CodeEditor extends Component {
           {this.editor && this.hasOutline() && this.state.showOutline && (
             <Pane minSize="50px" maxSize="80%" size={editorPaneSizes[1]}>
               <EditorSider
-                file={this.props.file}
+                file={editorFile}
                 code={this.editor.getValue()}
                 width={this.getOutlineWidth()}
                 onSelectNode={this.handleOutlineSelect}

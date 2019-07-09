@@ -8,7 +8,7 @@ const absFilePath = filePath => {
   if (filePath.startsWith(prjRoot)) return filePath;
   return prjRoot + filePath;
   // store.getState().home.projectData.projectRoot + filePath;
-}
+};
 
 const getUri = _.memoize(file => monaco.Uri.file(file));
 const modelManager = {
@@ -19,10 +19,19 @@ const modelManager = {
     let model = monaco.editor.getModel(uri);
     if (!model && !noCreate) {
       model = monaco.editor.createModel(content || initialContent[filePath] || '', null, uri);
+      // TODO: respect tabSize option in .prettierrc
       model.updateOptions({ tabSize: 2 });
     }
     return model;
   },
+  // createModel(filePath, content) {
+  //   const uri = getUri(filePath);
+
+  //   const model = monaco.editor.createModel(content || initialContent[filePath] || '', null, uri);
+  //   // TODO: respect tabSize option in .prettierrc
+  //   model.updateOptions({ tabSize: 2 });
+  //   return model;
+  // },
   reset(filePath) {
     // Set the model content to initial values
     if (!filePath) return;

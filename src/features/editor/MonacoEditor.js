@@ -43,7 +43,8 @@ export default class MonacoEditor extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.editor) this.editor._editingFile = this.props.file;
-    if (this.props.file !== prevProps.file) {
+    if (this.props.file !== prevProps.file && this.editor) {
+      console.log('file changed:', prevProps.file, this.props.file);
       this.editor.setModel(modelManager.getModel(this.props.file));
     }
   }
