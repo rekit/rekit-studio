@@ -279,7 +279,6 @@ export class CodeEditor extends Component {
         .fetchFileContent(props.file)
         .then(() => {
           this.setState({ notFound: false });
-          // setTimeout(() => this.fetchDependencies(props.file), 100);
         })
         .catch(e => {
           message.error(`Failed to load file: ${e.toString()}`);
@@ -332,7 +331,6 @@ export class CodeEditor extends Component {
     });
     // // It needs some time for editor to load its content
     setTimeout(this.recoverEditorState, 30);
-    // setTimeout(() => this.fetchDependencies(this.props.file), 100);
   };
 
   handleEditorCursorScrollerChange = () => {
