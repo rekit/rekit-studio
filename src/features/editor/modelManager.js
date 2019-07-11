@@ -1,13 +1,11 @@
 import _ from 'lodash';
 import store from '../../common/store';
-// import * as monaco from 'monaco-editor';
 
 const initialContent = {};
 const absFilePath = filePath => {
   const prjRoot = store.getState().home.projectData.projectRoot;
   if (filePath.startsWith(prjRoot)) return filePath;
   return prjRoot + filePath;
-  // store.getState().home.projectData.projectRoot + filePath;
 };
 
 const getUri = _.memoize(file => monaco.Uri.file(file));
@@ -18,6 +16,10 @@ const modelManager = {
     const uri = getUri(filePath);
     let model = monaco.editor.getModel(uri);
     if (!model && !noCreate) {
+      console.log('get model: ', filePath, content, initialContent[filePath]);
+      if (!initialContent[filePath]) {
+        debugger;
+      }
       model = monaco.editor.createModel(content || initialContent[filePath] || '', null, uri);
       // TODO: respect tabSize option in .prettierrc
       model.updateOptions({ tabSize: 2 });
