@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import store from '../../common/store';
 
-const initialContent = {};
+// Use absFilePath as the uri so that LSP could use it.
 const absFilePath = filePath => {
   const prjRoot = store.getState().home.projectData.projectRoot;
   if (filePath.startsWith(prjRoot)) return filePath;
@@ -11,16 +11,14 @@ const absFilePath = filePath => {
 const getUri = _.memoize(file => monaco.Uri.file(file));
 const modelManager = {
   getModel(filePath, content, noCreate) {
-    filePath = absFilePath(filePath);
+    const absPath = absFilePath(filePath);
+    // filePath = absPath(filePath);
     if (!window.monaco) return null;
-    const uri = getUri(filePath);
+    const uri = getUri(absPath);
     let model = monaco.editor.getModel(uri);
     if (!model && !noCreate) {
-      console.log('get model: ', filePath, content, initialContent[filePath]);
-      if (!initialContent[filePath]) {
-        debugger;
-      }
-      model = monaco.editor.createModel(content || initialContent[filePath] || '', null, uri);
+      const { fileContentById } = store.getState().home;
+      model = monaco.editor.createModel(content || fileContentById[filePath] || '', null, uri);
       // TODO: respect tabSize option in .prettierrc
       model.updateOptions({ tabSize: 2 });
     }
@@ -29,30 +27,15 @@ const modelManager = {
   reset(filePath) {
     // Set the model content to initial values
     if (!filePath) return;
-    filePath = absFilePath(filePath);
-    // delete initialContent[filePath];
+    const { fileContentById } = store.getState().home;
     const model = this.getModel(filePath, null, true);
-    if (model && model.getValue() !== this.getInitialValue(filePath))
-      model.setValue(this.getInitialValue(filePath) || '');
+    if (model && model.getValue() !== fileContentById[filePath])
+      model.setValue(fileContentById[filePath] || '');
   },
   setValue(filePath, content) {
     filePath = absFilePath(filePath);
-    const model = this.getModel(filePath);
+    const model = this.getModel(filePath, null, true);
     if (model && model.getValue() !== content) model.setValue(content);
-  },
-  setInitialValue(filePath, content, createModelIfNotExists) {
-    filePath = absFilePath(filePath);
-    if (initialContent[filePath] === content) return;
-    const model = this.getModel(filePath, content, !createModelIfNotExists);
-    if (
-      model &&
-      (!_.has(initialContent, filePath) || model.getValue() === initialContent[filePath])
-    ) {
-      initialContent[filePath] = content; // this line should be before model.setValue
-      model.setValue(content);
-    } else {
-      initialContent[filePath] = content;
-    }
   },
   getValue(filePath) {
     filePath = absFilePath(filePath);
@@ -65,21 +48,13 @@ const modelManager = {
     return !!this.getModel(filePath, null, true);
   },
   isChanged(filePath) {
-    filePath = absFilePath(filePath);
+    const { fileContentById } = store.getState().home;
     return (
       filePath &&
-      _.has(initialContent, filePath) &&
+      _.has(fileContentById, filePath) &&
       this.hasModel(filePath) &&
-      initialContent[filePath] !== this.getValue(filePath)
+      fileContentById[filePath] !== this.getValue(filePath)
     );
-  },
-  getInitialValue(filePath) {
-    filePath = absFilePath(filePath);
-    return initialContent[filePath] || null;
-  },
-  save(filePath) {
-    filePath = absFilePath(filePath);
-    initialContent[filePath] = this.getValue(filePath);
   },
 };
 

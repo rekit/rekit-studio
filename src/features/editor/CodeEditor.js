@@ -83,10 +83,7 @@ export class CodeEditor extends Component {
     });
     this.setLoading(this.props.file, true);
     await this.checkAndFetchFileContent(this.props);
-    // TODO: check if conflict
-    // if (this.props.fileContentById[this.props.file]) {
-    modelManager.setInitialValue(this.props.file, this.getFileContent(this.props.file));
-    // }
+    modelManager.setValue(this.props.file, this.getFileContent());
     this.setState({
       loadingFile: false,
     });
@@ -104,20 +101,16 @@ export class CodeEditor extends Component {
     }
 
     if (props.file !== prevProps.file) {
-      console.log('file changed: ', props.file, prevProps.file);
       this.preventSaveEditorState = true;
       this.setState({ loadingFile: true }, () => this.editor.layout());
       await this.checkAndFetchFileContent(props);
-      modelManager.setInitialValue(props.file, this.getFileContent(props.file));
       this.preventSaveEditorState = false;
       this.recoverEditorState();
       this.setState({ loadingFile: false });
-    } else if (props.fileContentNeedReload[props.file]) {
-      console.log('need reload:', props.file)
+    } else if (props.fileContentNeedReload[props.file] && !props.fetchFileContentPending) {
       const oldContent = this.getFileContent();
       const hasChange = this.hasChange(); // has changed
       await this.checkAndFetchFileContent(props);
-      modelManager.setInitialValue(props.file, this.getFileContent(props.file));
       this.setState({
         loadingFile: false,
       });
@@ -133,92 +126,18 @@ export class CodeEditor extends Component {
           okText: 'Yes',
           cancelText: 'No',
           onOk: () => {
-            modelManager.reset(props.file);
+            modelManager.setValue(props.file, newContent);
           },
         });
+      } else if (!hasChange) {
+        modelManager.setValue(props.file, newContent);
       }
     }
   }
 
-  // async componentWillReceiveProps(nextProps) {
-  //   const { props } = this;
-  //   if (props.file !== nextProps.file) {
-  //     // When file is changed, prevent saving before its state is restored.
-  //     this.preventSaveEditorState = true;
-  //     this.setState(
-  //       {
-  //         loadingFile: true,
-  //       },
-  //       () => this.editor.layout(),
-  //     );
-  //     await this.checkAndFetchFileContent(nextProps);
-  //     // Todo: check if conflict
-  //     modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file));
-  //     this.preventSaveEditorState = false;
-  //     this.recoverEditorState();
-  //     this.setState({
-  //       loadingFile: false,
-  //     });
-  //   } else if (nextProps.fileContentNeedReload[nextProps.file]) {
-  //     const oldContent = this.getFileContent();
-  //     const hasChange = this.hasChange(); // has changed
-  //     await this.checkAndFetchFileContent(nextProps);
-  //     modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file));
-  //     this.setState({
-  //       loadingFile: false,
-  //     });
-  //     const newContent = this.getFileContent();
-  //     if (
-  //       hasChange &&
-  //       oldContent !== newContent &&
-  //       newContent !== modelManager.getValue(nextProps.file)
-  //     ) {
-  //       Modal.confirm({
-  //         title: 'The file has changed on disk.',
-  //         content: 'Do you want to reload it?',
-  //         okText: 'Yes',
-  //         cancelText: 'No',
-  //         onOk: () => {
-  //           modelManager.reset(nextProps.file);
-  //         },
-  //       });
-  //     }
-  //   }
-  // }
-  // componentDidMount() {
-  //   this.setEditorStateFromSearch();
-  // }
-
   componentWillUnmount() {
     this.monacoListeners.forEach(lis => lis.dispose());
   }
-
-  async showFile(file) {
-    this.setState({
-      loadingFile: true,
-    });
-    this.setLoading(this.props.file, true);
-    await this.checkAndFetchFileContent(this.props);
-    // Todo: check if conflict
-    if (this.props.fileContentById[this.props.file]) {
-      modelManager.setInitialValue(this.props.file, this.getFileContent(this.props.file));
-    }
-    this.setState({
-      // eslint-disable-line
-      loadingFile: false,
-    });
-    this.props.onStateChange({ hasChange: false });
-  }
-
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.router.location.search !== prevProps.router.location.search) {
-  //     setTimeout(() => {
-  //       this.setEditorStateFromSearch();
-  //       this.recoverEditorState();
-  //       // this.editor.revealLineInCenter();
-  //     }, 200);
-  //   }
-  // }
 
   setEditorStateFromSearch() {
     const { file, router } = this.props;
@@ -415,7 +334,6 @@ export class CodeEditor extends Component {
     this.props.actions
       .saveFile(this.props.file, this.editor.getValue())
       .then(() => {
-        modelManager.setInitialValue(this.props.file, this.editor.getValue());
         this.props.actions.setViewChanged(document.location.pathname, false);
       })
       .catch(() => {
