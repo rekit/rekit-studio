@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import SplitPane from 'rspv2';
 import SplitPane from 'rspv2/lib/SplitPane';
 import Pane from 'rspv2/lib/Pane';
 import { Button } from 'antd';

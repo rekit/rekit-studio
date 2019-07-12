@@ -513,7 +513,7 @@ export class CodeEditor extends Component {
           {this.editor && this.hasOutline() && this.state.showOutline && (
             <Pane minSize="50px" maxSize="80%" size={editorPaneSizes[1]}>
               <EditorSider
-                file={editorFile}
+                file={this.props.file}
                 code={this.editor.getValue()}
                 width={this.getOutlineWidth()}
                 onSelectNode={this.handleOutlineSelect}
