@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import plugin from '../../common/plugin';
 import setupSyntaxWorker from './setupSyntaxWorker';
-// import setupLinter from './setupLinter';
 import { listen } from '@sourcegraph/vscode-ws-jsonrpc';
 import {
   MonacoLanguageClient,
