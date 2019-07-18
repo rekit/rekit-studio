@@ -74,7 +74,7 @@ function createWebSocket(url) {
     maxRetries: Infinity,
     debug: false,
   };
-  // return new WebSocket(url);
+
   return new ReconnectingWebSocket(url, undefined, socketOptions);
 }
 
