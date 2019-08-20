@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Checkbox, Select } from 'antd';
+import { Input, Checkbox, Select, Radio } from 'antd';
 import store from 'rs/common/store';
 
 const Option = Select.Option;
@@ -64,6 +64,7 @@ const newNameMeta = args => ({
 
 export default {
   fillMeta(args) {
+    console.log('args: ', args);
     switch (args.formId) {
       case 'core.element.add.feature':
         args.meta.elements.push(nameMeta(args));
@@ -82,11 +83,33 @@ export default {
             initialValue: false,
           },
           {
-            key: 'urlPath',
-            label: 'Url Path',
-            widget: Input,
+            key: 'componentType',
+            label: 'Component Type',
+            tooltip: 'Since React 16.8, you can choose functional component with hooks.',
+            widget: 'radio-group',
+            options: [['functional', 'Functional'], ['class', 'Class']],
+            initialValue: 'functional',
           },
         );
+        if (!args.values.componentType || args.values.componentType === 'functional') {
+          args.meta.elements.push({
+            key: 'hooks',
+            label: 'Hooks',
+            widget: 'checkbox-group',
+            tooltip: 'Which frequently used hooks to import in the component',
+            options: [
+              ['useEffect', 'useEffect'],
+              ['useState', 'useState'],
+              ['useMemo', 'useMemo'],
+            ],
+            initialValue: ['useEffect'],
+          });
+        }
+        args.meta.elements.push({
+          key: 'urlPath',
+          label: 'Url Path',
+          widget: Input,
+        });
 
         break;
       case 'core.element.move.component-action': {

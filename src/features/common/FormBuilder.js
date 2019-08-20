@@ -17,6 +17,7 @@ import {
 } from 'antd';
 
 const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
 const componentMap = {
@@ -29,6 +30,8 @@ const componentMap = {
   select: Select,
   number: InputNumber,
   'radio-group': RadioGroup,
+  'checkbox-group': CheckboxGroup,
+  
 };
 
 function convertElement(element) {
@@ -44,6 +47,15 @@ function convertElement(element) {
         <Radio value={arr[0]} key={arr[0]}>
           {arr[1]}
         </Radio>
+      ));
+    }
+    if (element.widget === 'checkbox-group') {
+      // newElement.widgetProps = {
+      //   ...newElement.widgetProps,
+
+      // };
+      newElement.children = element.options.map(arr => (
+        <Checkbox value={arr[0]} key={arr[0]}>{arr[1]}</Checkbox>
       ));
     }
     if (element.widget === 'select') {
