@@ -3,11 +3,12 @@ const server = require('@sourcegraph/vscode-ws-jsonrpc/lib/server');
 const lsp = require('vscode-languageserver');
 
 function launch(socket) {
-  console.log('launch');
   const { WebSocketMessageReader, WebSocketMessageWriter } = rpc;
   const reader = new WebSocketMessageReader(socket);
   const writer = new WebSocketMessageWriter(socket);
-  const tsServerPath = require.resolve('javascript-typescript-langserver/lib/language-server-stdio.js');
+  const tsServerPath = require.resolve(
+    'javascript-typescript-langserver/lib/language-server-stdio.js',
+  );
   const socketConnection = server.createConnection(reader, writer, () => socket.dispose());
   const serverConnection = server.createServerProcess('typescript', 'node', [tsServerPath]);
   server.forward(socketConnection, serverConnection, message => {
@@ -45,6 +46,6 @@ function config(server, app, ss) {
       ws.on('open', () => launch(socket));
     }
   });
-};
+}
 
 module.exports = { config };
