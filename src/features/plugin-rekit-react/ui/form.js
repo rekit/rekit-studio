@@ -127,12 +127,21 @@ export default {
             widget: Switch,
             initialValue: false,
           },
+          args.values.async
+            ? {
+                key: 'allowAutoEffect',
+                label: 'Auto Effect',
+                widget: Switch,
+                initialValue: false,
+                tooltip: 'Whether to allow auto effect in the hook.',
+              }
+            : null,
           {
-            key: 'useSelector',
-            label: 'Use Selector',
-            tooltip: 'Return values from store in the hook',
-            widget: Select,
-            widgetProps: { mode: 'tags', open: false, tokenSeparators: [' '] },
+            key: 'selector',
+            label: 'Selector',
+            tooltip: 'Export values from store in the hook. Use comma to separate values.',
+            widget: Input,
+            // widgetProps: { mode: 'tags', open: false, tokenSeparators: [' '] },
           },
         );
 

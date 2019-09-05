@@ -64,6 +64,8 @@ export class CommonForm extends Component {
       })
     );
 
+    meta.elements = meta.elements.filter(Boolean);
+
     return meta;
   }
 
