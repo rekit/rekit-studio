@@ -1,6 +1,5 @@
-// Rekit uses a new approach to organizing actions and reducers. That is
-// putting related actions and reducers in one file. See more at:
-// https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { PTY_CLEAR_OUTPUT } from './constants';
 
@@ -9,6 +8,13 @@ export function clearOutput(id) {
     type: PTY_CLEAR_OUTPUT,
     data: { id },
   };
+}
+
+export function useClearOutput() {
+  const dispatch = useDispatch();
+  const output = useSelector(state => state.pty.output);
+  const boundAction = useCallback((...args) => dispatch(clearOutput(...args)), [dispatch]);
+  return { output, clearOutput: boundAction };
 }
 
 export function reducer(state, action) {

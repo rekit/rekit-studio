@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   PLUGIN_SCRIPTS_STOP_SCRIPT_BEGIN,
   PLUGIN_SCRIPTS_STOP_SCRIPT_SUCCESS,
@@ -45,6 +47,13 @@ export function stopScript(name) {
 
     return promise;
   };
+}
+
+export function useStopScript() {
+  const dispatch = useDispatch();
+  const running = useSelector(state => state.pluginScripts.running);
+  const boundAction = useCallback((...args) => dispatch(stopScript(...args)), [dispatch]);
+  return { running, stopScript: boundAction };
 }
 
 // Async action saves request error by default, this method is used to dismiss the error info.

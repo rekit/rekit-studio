@@ -1,0 +1,1 @@
+export { useClearOutput } from './clearOutput';

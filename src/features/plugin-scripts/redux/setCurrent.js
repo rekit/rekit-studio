@@ -1,7 +1,5 @@
-// Rekit uses a new approach to organizing actions and reducers. That is
-// putting related actions and reducers in one file. See more at:
-// https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da
-
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PLUGIN_SCRIPTS_SET_CURRENT } from './constants';
 
 export function setCurrent(name) {
@@ -10,7 +8,12 @@ export function setCurrent(name) {
     data: { current: name },
   };
 }
-
+export function useSetCurrent() {
+  const dispatch = useDispatch();
+  const current = useSelector(state => state.pluginScripts.current);
+  const boundAction = useCallback((...args) => dispatch(setCurrent(...args)), [dispatch]);
+  return { current, setCurrent: boundAction };
+}
 export function reducer(state, action) {
   switch (action.type) {
     case PLUGIN_SCRIPTS_SET_CURRENT:

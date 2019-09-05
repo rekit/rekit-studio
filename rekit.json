@@ -11,8 +11,7 @@
     "Procfile",
     "dll",
     "middleware",
-    "tools",
-    ".*"
+    "tools"
   ],
   "moduleAlias": {
     "rs": "./src"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Checkbox, Select, Radio } from 'antd';
+import { Input, Checkbox, Switch, Select, Radio } from 'antd';
 import store from 'rs/common/store';
 
 const Option = Select.Option;
@@ -73,9 +73,30 @@ export default {
         args.meta.elements.push(newNameMeta({ initialValue: byId(args.context.targetId).name }));
         break;
       case 'core.element.add.component':
+        args.meta.elements.push(featureMeta(args), nameMeta(args), {
+          key: 'componentType',
+          label: 'Component Type',
+          tooltip: 'Since React 16.8, you can choose functional component with hooks.',
+          widget: 'radio-group',
+          options: [['functional', 'Functional'], ['class', 'Class']],
+          initialValue: 'functional',
+        });
+        if (!args.values.componentType || args.values.componentType === 'functional') {
+          args.meta.elements.push({
+            key: 'hooks',
+            label: 'Hooks',
+            widget: 'checkbox-group',
+            tooltip:
+              'Which hooks to import in the component, here is a list of frequently used hooks, you can mannually import others in the code.',
+            options: [
+              ['useEffect', 'useEffect'],
+              ['useState', 'useState'],
+              ['useCallback', 'useCallback'],
+            ],
+            initialValue: ['useEffect'],
+          });
+        }
         args.meta.elements.push(
-          featureMeta(args),
-          nameMeta(args),
           {
             key: 'connect',
             label: 'Connect to Store',
@@ -83,33 +104,11 @@ export default {
             initialValue: false,
           },
           {
-            key: 'componentType',
-            label: 'Component Type',
-            tooltip: 'Since React 16.8, you can choose functional component with hooks.',
-            widget: 'radio-group',
-            options: [['functional', 'Functional'], ['class', 'Class']],
-            initialValue: 'functional',
+            key: 'urlPath',
+            label: 'Url Path',
+            widget: Input,
           },
         );
-        if (!args.values.componentType || args.values.componentType === 'functional') {
-          args.meta.elements.push({
-            key: 'hooks',
-            label: 'Hooks',
-            widget: 'checkbox-group',
-            tooltip: 'Which frequently used hooks to import in the component',
-            options: [
-              ['useEffect', 'useEffect'],
-              ['useState', 'useState'],
-              ['useMemo', 'useMemo'],
-            ],
-            initialValue: ['useEffect'],
-          });
-        }
-        args.meta.elements.push({
-          key: 'urlPath',
-          label: 'Url Path',
-          widget: Input,
-        });
 
         break;
       case 'core.element.move.component-action': {
@@ -119,12 +118,23 @@ export default {
         break;
       }
       case 'core.element.add.action':
-        args.meta.elements.push(featureMeta(args), nameMeta(args), {
-          key: 'async',
-          label: 'Async',
-          widget: Checkbox,
-          initialValue: false,
-        });
+        args.meta.elements.push(
+          featureMeta(args),
+          nameMeta(args),
+          {
+            key: 'async',
+            label: 'Async',
+            widget: Switch,
+            initialValue: false,
+          },
+          {
+            key: 'useSelector',
+            label: 'Use Selector',
+            tooltip: 'Return values from store in the hook',
+            widget: Select,
+            widgetProps: { mode: 'tags', open: false, tokenSeparators: [' '] },
+          },
+        );
 
         break;
       default:

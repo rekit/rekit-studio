@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   PLUGIN_SCRIPTS_RUN_SCRIPT_BEGIN,
   PLUGIN_SCRIPTS_RUN_SCRIPT_SUCCESS,
@@ -39,12 +41,19 @@ export function runScript(name) {
             data: { error: err },
           });
           reject(err);
-        }
+        },
       );
     });
 
     return promise;
   };
+}
+
+export function useRunScript() {
+  const dispatch = useDispatch();
+  const running = useSelector(state => state.pluginScripts.running);
+  const boundAction = useCallback((...args) => dispatch(runScript(...args)), [dispatch]);
+  return { running, runScript: boundAction };
 }
 
 // Async action saves request error by default, this method is used to dismiss the error info.
