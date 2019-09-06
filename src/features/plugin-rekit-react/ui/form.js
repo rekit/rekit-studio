@@ -100,6 +100,7 @@ export default {
           {
             key: 'connect',
             label: 'Connect to Store',
+            tooltip: 'Whether to connect to redux store, for class component, use connect, for functional component, use hooks.',
             widget: Checkbox,
             initialValue: false,
           },
