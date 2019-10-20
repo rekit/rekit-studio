@@ -14,6 +14,7 @@ function configureMonaco(monaco) {
     allowJs: true,
     typeRoots: ['node_modules/@types']
   };
+  monaco.languages.typescript.javascriptDefaults.setCompilerOptions({ noLib: true, allowNonTsExtensions: true });
 
   monaco.languages.typescript.typescriptDefaults.setMaximumWorkerIdleTime(-1);
   monaco.languages.typescript.javascriptDefaults.setMaximumWorkerIdleTime(-1);
@@ -29,11 +30,11 @@ function configureMonaco(monaco) {
 
   monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
     noSemanticValidation: true,
-    noSyntaxValidation: false
+    noSyntaxValidation: true
   });
   monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
     noSemanticValidation: true,
-    noSyntaxValidation: false
+    noSyntaxValidation: true
   });
 
   // monaco.languages.typescript.typescriptDefaults.addExtraLib(content, "")

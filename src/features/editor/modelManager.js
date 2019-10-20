@@ -12,7 +12,6 @@ const getUri = _.memoize(file => monaco.Uri.file(file));
 const modelManager = {
   getModel(filePath, content, noCreate) {
     const absPath = absFilePath(filePath);
-    // filePath = absPath(filePath);
     if (!window.monaco) return null;
     const uri = getUri(absPath);
     let model = monaco.editor.getModel(uri);

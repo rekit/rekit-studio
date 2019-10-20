@@ -1,6 +1,6 @@
 {
   "name": "rekit-studio",
-  "version": "3.0.0-beta.33",
+  "version": "3.0.0-beta.35",
   "description": "Rekit Studio IDE.",
   "keywords": [
     "rekit",
@@ -36,7 +36,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node ./scripts/start.js -d ../r2 -p 6078",
+    "start": "node ./scripts/start.js -d ../my-ts -p 6078",
     "build:dev-dll": "node ./scripts/buildDevDll.js",
     "build:dll": "node ./scripts/buildProdDll.js",
     "build": "node ./scripts/build.js",
@@ -124,11 +124,12 @@
     "jest-pnp-resolver": "^1.2.1",
     "jest-resolve": "^24.7.0",
     "jest-watch-typeahead": "^0.3.0",
+    "js-plugin": "^1.0.2",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
     "mini-css-extract-plugin": "^0.5.0",
-    "monaco-editor": "^0.14.3",
-    "monaco-languageclient": "^0.9.0",
+    "monaco-editor": "^0.18.0",
+    "monaco-languageclient": "^0.10.1",
     "nock": "^10.0.6",
     "normalize-url": "^4.3.0",
     "object-assign": "4.1.1",

@@ -64,7 +64,6 @@ const newNameMeta = args => ({
 
 export default {
   fillMeta(args) {
-    console.log('args: ', args);
     switch (args.formId) {
       case 'core.element.add.feature':
         args.meta.elements.push(nameMeta(args));
@@ -125,14 +124,14 @@ export default {
           {
             key: 'async',
             label: 'Async',
-            widget: Switch,
+            widget: Checkbox,
             initialValue: false,
           },
           args.values.async
             ? {
                 key: 'allowAutoEffect',
                 label: 'Auto Effect',
-                widget: Switch,
+                widget: Checkbox,
                 initialValue: false,
                 tooltip: 'Whether to allow auto effect in the hook.',
               }
