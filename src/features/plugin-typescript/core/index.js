@@ -1,5 +1,6 @@
 
 module.exports = {
   name: 'typescript',
-  studio: require('./studio'),
+  // disable lsp for 3.0
+  // studio: require('./studio'),
 };

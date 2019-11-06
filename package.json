@@ -36,7 +36,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node ./scripts/start.js -d ../my-ts -p 6078",
+    "start": "node ./scripts/start.js -d ../a7 -p 6078",
     "build:dev-dll": "node ./scripts/buildDevDll.js",
     "build:dll": "node ./scripts/buildProdDll.js",
     "build": "node ./scripts/build.js",
