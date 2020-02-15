@@ -1,7 +1,7 @@
 {
   "name": "rekit-studio",
-  "version": "3.0.0-beta.35",
-  "description": "Rekit Studio IDE.",
+  "version": "3.0.0-beta.36",
+  "description": "Rekit Studio Web IDE.",
   "keywords": [
     "rekit",
     "react",

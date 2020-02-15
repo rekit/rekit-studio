@@ -1,7 +1,7 @@
 /* eslint no-restricted-globals: 0, prefer-spread: 0, no-continue: 0, no-use-before-define: 0 */
 /* global self, babylon */
 self.Prism = { disableWorkerMessageHandler: true };
-self.importScripts(['/static/libs/prism-1.16.0.js']);
+self.importScripts(['/static/libs/prism-1.19.0.js']);
 
 function getLineNumberAndOffset(start, lines) {
   let line = 0;
@@ -139,18 +139,18 @@ function flattenTagToken(token) {
         content: '</',
         length: 2,
       },
-      {
+      token.content[0].content[1] ? {
         type: 'end-tag-name',
         content: token.content[0].content[1],
         length: token.content[0].content[1].length,
-      },
+      } : null,
       ...token.content.slice(1, token.content.length - 1),
       {
         type: 'end-tag-end',
         content: '>',
         length: 1,
       },
-    ];
+    ].filter(Boolean);
   }
 
   let arr = [...token.content];
