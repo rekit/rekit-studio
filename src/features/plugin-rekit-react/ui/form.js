@@ -113,6 +113,7 @@ export default {
         break;
       case 'core.element.move.component-action': {
         const ele = byId(args.context.targetId);
+        if (!ele) return;
         args.meta.elements.push(featureMeta(args), newNameMeta({ initialValue: ele.name }));
 
         break;

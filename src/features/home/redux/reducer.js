@@ -23,6 +23,7 @@ import { reducer as removePathsReducer } from './removePaths';
 import { reducer as npmListReducer } from './npmList';
 import { reducer as fetchFilesReducer } from './fetchFiles';
 import { reducer as includeFileReducer } from './includeFile';
+import { reducer as removeFileContentReducer } from './removeFileContent';
 
 const convert = new Convert();
 
@@ -49,6 +50,7 @@ const reducers = [
   npmListReducer,
   fetchFilesReducer,
   includeFileReducer,
+  removeFileContentReducer,
 ];
 
 // const pascalCase = _.flow(

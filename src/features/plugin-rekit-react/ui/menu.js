@@ -3,7 +3,7 @@ import store from 'rs/common/store';
 import * as actions from 'rs/features/core/redux/actions';
 
 const showDialog = (...args) => store.dispatch(actions.showDialog(...args));
-const execCoreCommand = args => store.dispatch(actions.execCoreCommand(args));
+const execCoreCommand = (...args) => store.dispatch(actions.execCoreCommand(...args));
 
 const byId = id => store.getState().home.elementById[id];
 
@@ -111,7 +111,6 @@ export default {
             title: 'Are you sure to delete the element?',
             onOk() {
               const ele = byId(elementId);
-              console.log('delete: ', ele);
               if (!ele) {
                 Modal.error({
                   title: 'No element to delete',
@@ -140,7 +139,7 @@ export default {
                 commandName: 'remove',
                 type: ele.type,
                 name,
-              }).then(
+              }, ele).then(
                 () => {
                   message.success('Delete element success.');
                 },

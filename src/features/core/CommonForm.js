@@ -71,7 +71,7 @@ export class CommonForm extends Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
-    const { actionContext, formId } = this.props;
+    const { actionContext, formId, elementById } = this.props;
     this.props.form.validateFieldsAndScroll((errors, values) => {
       if (errors) {
         return;
@@ -98,7 +98,7 @@ export class CommonForm extends Component {
       this.setState({ pending: true });
       // if (/^add|move|update$/.test(context.action)) {
       this.props.actions
-        .execCoreCommand(command)
+        .execCoreCommand(command, elementById[actionContext.targetId])
         .then(res => {
           if (res.error) {
             this.setState({ pending: false });
@@ -158,6 +158,7 @@ export class CommonForm extends Component {
 function mapStateToProps(state) {
   return {
     dialog: state.dialog,
+    elementById: state.home.elementById,
   };
 }
 

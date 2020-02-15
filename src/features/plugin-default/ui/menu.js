@@ -3,7 +3,7 @@ import store from '../../../common/store';
 import * as actions from '../../core/redux/actions';
 
 const showDialog = (...args) => store.dispatch(actions.showDialog(...args));
-const execCoreCommand = args => store.dispatch(actions.execCoreCommand(args));
+const execCoreCommand = (...args) => store.dispatch(actions.execCoreCommand(...args));
 
 const byId = id => store.getState().home.elementById[id];
 
@@ -126,7 +126,7 @@ export default {
                 commandName: 'remove',
                 type: ele.type,
                 name,
-              }).then(
+              }, ele).then(
                 () => {
                   message.success(`Delete ${ele.type} success.`);
                 },

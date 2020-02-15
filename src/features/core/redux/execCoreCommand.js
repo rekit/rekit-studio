@@ -8,7 +8,7 @@ import {
 
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
 // If you prefer redux-saga, you can use rekit-plugin-redux-saga: https://github.com/supnate/rekit-plugin-redux-saga
-export function execCoreCommand(args = {}) {
+export function execCoreCommand(args = {}, targetElement) {
   return dispatch => {
     // optionally you can have getState as the second argument
     dispatch({
@@ -39,7 +39,11 @@ export function execCoreCommand(args = {}) {
           }
           dispatch({
             type: CORE_EXEC_CORE_COMMAND_SUCCESS,
-            data: res,
+            data: {
+              result: res.data,
+              args,
+              targetElement,
+            },
           });
           resolve(res.data);
         },

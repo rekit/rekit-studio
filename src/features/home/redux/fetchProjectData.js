@@ -89,8 +89,16 @@ export function reducer(state, action) {
 
     case HOME_FETCH_PROJECT_DATA_SUCCESS: {
       const fileContentNeedReload = _.mapValues(state.fileContentById, () => true);
+      const fileContentById = { ...state.fileContentById };
+      Object.keys(fileContentById).forEach(k => {
+        // if file no longer exist, delete file content cache.
+        if (!action.data.elementById[k]) {
+          delete fileContentById[k];
+        }
+      });
       return {
         ...state,
+        fileContentById,
         projectData: action.data,
         elements: action.data.elements,
         elementById: action.data.elementById,

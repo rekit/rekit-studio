@@ -21,3 +21,4 @@ export { removePaths } from './removePaths';
 export { npmList, dismissNpmListError } from './npmList';
 export { fetchFiles, dismissFetchFilesError } from './fetchFiles';
 export { includeFile, dismissIncludeFileError } from './includeFile';
+export { removeFileContent } from './removeFileContent';

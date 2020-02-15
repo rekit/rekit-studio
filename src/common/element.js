@@ -105,4 +105,25 @@ export default {
     if (_.isString(ele)) ele = byId(ele);
     return _.find(ele.views, { target });
   },
+
+  getChildrenRecursively(ele) {
+    const elementsToRemove = [ele];
+    const children = [];
+    while (elementsToRemove.length > 0) {
+      const ele = elementsToRemove.pop();
+      if (!ele) continue;
+      if (typeof ele === 'string') {
+        children.push(ele);
+      } else {
+        if (ele.parts) {
+          elementsToRemove.push(...ele.parts);
+        }
+        if (ele.children) {
+          elementsToRemove.push(...ele.children);
+        }
+        children.push(ele.id);
+      } 
+    }
+    return children;
+  },
 };
