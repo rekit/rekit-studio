@@ -42,7 +42,6 @@ export default function reducer(state = initialState, action) {
     // Handle cross-topic actions here
     case CORE_EXEC_CORE_COMMAND_SUCCESS: {
       // after delete content, should remove edit models for the element.
-      console.log('exe cmd success action: ', action);
       setTimeout(() => cleanEditorState(action.data), 50);
       newState = state;
       break;
