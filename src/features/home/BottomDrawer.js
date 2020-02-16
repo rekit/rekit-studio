@@ -50,7 +50,7 @@ export class BottomDrawer extends Component {
   render() {
     const panes = this.getPanes();
     const { bottomDrawerVisible, bottomDrawerTab } = this.props;
-    const currentPane = _.find(panes, { key: bottomDrawerTab }) || _.find(panes, { key: 'output' });
+    const currentPane = _.find(panes, { key: bottomDrawerTab }) || _.find(panes, { key: 'scripts' }) || _.find(panes, { key: 'output' });
     return (
       <div className="home-bottom-drawer">
         <div className="toolbar" onClick={this.handleToolbarClick}>
