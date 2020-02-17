@@ -19,9 +19,9 @@ export function reducer(state, action) {
       _.pullAll(historyPaths, action.data.paths);
 
       const fileContentById = { ...state.fileContentById };
-      action.data.files.forEach(f => {
-        if (fileContentById[f]) delete fileContentById[f];
-      });
+      // action.data.files.forEach(f => {
+      //   if (fileContentById[f]) delete fileContentById[f];
+      // });
 
       storage.session.setItem('openPaths', openPaths);
       storage.session.setItem('historyPaths', historyPaths);
