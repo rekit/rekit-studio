@@ -3,9 +3,10 @@ import { storage } from '../../common/utils';
 import { HOME_CLOSE_TAB } from './constants';
 
 export function closeTab(tab) {
+  const all = [tab, ...(tab.subTabs || [])];
   return {
     type: HOME_CLOSE_TAB,
-    data: { paths: [tab.urlPath, ...(tab.subTabs || []).map(t => t.urlPath)] },
+    data: { paths: all.map(t => t.urlPath) },
   };
 }
 
@@ -16,6 +17,7 @@ export function reducer(state, action) {
       const historyPaths = state.historyPaths.slice();
       _.pullAll(openPaths, action.data.paths);
       _.pullAll(historyPaths, action.data.paths);
+      
 
       storage.session.setItem('openPaths', openPaths);
       storage.session.setItem('historyPaths', historyPaths);
