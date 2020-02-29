@@ -6,6 +6,13 @@ const path = require('path');
 const os = require('os');
 
 const terms = {};
+
+const notifyRekitApp = () => {
+  if (process.send) process.send({ type: 'update-running-scripts', data: Object.keys(terms) }); // used by Rekit App
+}
+
+// if (process.send) process.send({ type: 'rekit-studio-error', error: err && err.stack }); // used by Rekit App
+
 function config(server, app, args) {
   app.post('/api/run-script', (req, res) => {
     const name = req.body.name;
@@ -58,6 +65,7 @@ function config(server, app, args) {
       );
     }
     terms[name] = term;
+    notifyRekitApp();
     const arr = [];
     const flush = _.throttle(data => {
       args.io.emit({
@@ -80,6 +88,7 @@ function config(server, app, args) {
         data: { name },
       });
       delete terms[name];
+      notifyRekitApp();
     });
 
     res.send(name);
@@ -91,6 +100,7 @@ function config(server, app, args) {
     if (term) {
       term.kill();
       delete terms[name];
+      notifyRekitApp();
     }
     res.send(JSON.stringify({ name }));
     res.end();
