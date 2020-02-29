@@ -4,6 +4,9 @@ const { paths } = require('rekit-core').core;
 const git = require('simple-git')();
 
 let watcher;
+const notifyRekitApp = (status) => {
+  if (process.send) process.send({ type: 'update-git-status', data: status }); // used by Rekit App
+}
 const track = _.debounce(io => {
   git.checkIsRepo((err1, isRepo) => {
     if (err1) return;
@@ -12,6 +15,7 @@ const track = _.debounce(io => {
         type: 'GIT_MANAGER_GIT_STATUS',
         data: null,
       });
+      notifyRekitApp(null);
       return;
     }
     git.status((err, status) => {
@@ -20,6 +24,7 @@ const track = _.debounce(io => {
           type: 'GIT_MANAGER_GIT_STATUS',
           data: status,
         });
+        notifyRekitApp(status);
       }
     });
   });
