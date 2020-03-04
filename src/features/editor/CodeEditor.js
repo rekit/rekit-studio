@@ -100,6 +100,9 @@ export class CodeEditor extends Component {
       }, 200);
     }
 
+    const hasChange = this.hasChange(); // has changed
+    const oldContent = this.getFileContent();
+
     if (props.file !== prevProps.file) {
       this.preventSaveEditorState = true;
       this.setState({ loadingFile: true }, () => this.editor.layout());
@@ -108,30 +111,28 @@ export class CodeEditor extends Component {
       this.recoverEditorState();
       this.setState({ loadingFile: false });
     } else if (props.fileContentNeedReload[props.file] && !props.fetchFileContentPending) {
-      const oldContent = this.getFileContent();
-      const hasChange = this.hasChange(); // has changed
       await this.checkAndFetchFileContent(props);
       this.setState({
         loadingFile: false,
       });
-      const newContent = this.getFileContent();
-      if (
-        hasChange &&
-        oldContent !== newContent &&
-        newContent !== modelManager.getValue(props.file)
-      ) {
-        Modal.confirm({
-          title: 'The file has changed on disk.',
-          content: 'Do you want to reload it?',
-          okText: 'Yes',
-          cancelText: 'No',
-          onOk: () => {
-            modelManager.setValue(props.file, newContent);
-          },
-        });
-      } else if (!hasChange) {
-        modelManager.setValue(props.file, newContent);
-      }
+    }
+    const newContent = this.getFileContent();
+    if (
+      hasChange &&
+      oldContent !== newContent &&
+      newContent !== modelManager.getValue(props.file)
+    ) {
+      Modal.confirm({
+        title: 'The file has changed on disk.',
+        content: 'Do you want to reload it?',
+        okText: 'Yes',
+        cancelText: 'No',
+        onOk: () => {
+          modelManager.setValue(props.file, newContent);
+        },
+      });
+    } else if (!hasChange) {
+      modelManager.setValue(props.file, newContent);
     }
   }
 
@@ -254,7 +255,13 @@ export class CodeEditor extends Component {
 
   checkAndFetchFileContent() {
     // Check if content exists or need reload, if yes then fetch it.
-    const { fileContentById, fileContentNeedReload, fetchFileContentPending, file, actions } = this.props;
+    const {
+      fileContentById,
+      fileContentNeedReload,
+      fetchFileContentPending,
+      file,
+      actions,
+    } = this.props;
     if (
       (!_.has(fileContentById, file) || fileContentNeedReload[file]) &&
       !fetchFileContentPending
@@ -487,7 +494,9 @@ export class CodeEditor extends Component {
     };
     const editorPaneSizes = storage.local.getItem('editorPaneSizes') || ['1', '200px'];
     const { file } = this.props;
-    const editorFile = _.has(this.props.fileContentById, file) ? file : '_file_place_holder_for_loading';
+    const editorFile = _.has(this.props.fileContentById, file)
+      ? file
+      : '_file_place_holder_for_loading';
     return (
       <div className="editor-code-editor">
         {this.renderToolbar()}
