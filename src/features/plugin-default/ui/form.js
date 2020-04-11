@@ -28,9 +28,9 @@ export default {
         args.meta.elements.push(nameMeta());
         break;
       case 'core.element.rename.file-folder':
-        console.log('args: ', args);
+        const targetEle = byId(args.context.targetId);
         args.meta.elements.push(
-          newNameMeta({ ...args, initialValue: byId(args.context.targetId).name }),
+          newNameMeta({ ...args, initialValue: targetEle && targetEle.name }),
         );
         break;
       default:
