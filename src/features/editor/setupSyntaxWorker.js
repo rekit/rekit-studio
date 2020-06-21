@@ -24,8 +24,10 @@ function setupSyntaxWorker(_editor, _monaco) {
 }
 
 function syntaxHighlight() {
-  if (!editor.getModel()) return; // all models disposed
-  if (/typescript|javascript/i.test(editor.getModel().getModeId())) {
+  // console.log('editor.getModel', editor.getModel().getModelId());
+  // if (!editor.getModel()) return; // all models disposed
+  // if (/typescript|javascript/i.test(editor.getModel().getModeId())) {
+  if (/\.(js|jsx|ts|tsx|mjs|cjs)$/.test(editor._editingFile)) {
     syntaxWorker.postMessage({
       code: editor.getValue(),
     });
@@ -38,17 +40,14 @@ function updateDecorations(classifications) {
       classification.startLine,
       classification.start,
       classification.endLine,
-      classification.end
+      classification.end,
     ),
     options: {
-      inlineClassName: classification.kind
-    }
+      inlineClassName: classification.kind,
+    },
   }));
 
-  lastDecorations = editor.deltaDecorations(
-    lastDecorations || [],
-    decorations
-  );
+  lastDecorations = editor.deltaDecorations(lastDecorations || [], decorations);
 }
 
 export default setupSyntaxWorker;

@@ -6,6 +6,7 @@ import configMonacoEditor from './configMonacoEditor';
 import configMonaco from './configMonaco';
 import modelManager from './modelManager';
 import editorService from './editorService';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 function noop() {}
 let editorInstance = null; // Only one global monaco editor.
@@ -78,65 +79,65 @@ export default class MonacoEditor extends Component {
   }
 
   afterViewInit() {
-    if (window.monaco !== undefined) {
-      this.initMonaco();
-      return;
-    }
-    const loaderUrl = '/static/vs/loader.js';
-    const onGotAmdLoader = () => {
-      window.require.config({
-        paths: {
-          vs: '/static/vs',
-        },
-      });
-      // Load monaco
-      window.require(['vs/editor/editor.main'], () => {
-        this.initMonaco();
-      });
+    // if (window.monaco !== undefined) {
+    this.initMonaco();
+    //   return;
+    // }
+    // const loaderUrl = '/static/vs/loader.js';
+    // const onGotAmdLoader = () => {
+    //   window.require.config({
+    //     paths: {
+    //       vs: '/static/vs',
+    //     },
+    //   });
+    //   // Load monaco
+    //   window.require(['vs/editor/editor.main'], () => {
+    //     this.initMonaco();
+    //   });
 
-      // Call the delayed callbacks when AMD loader has been loaded
-      if (window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__) {
-        window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__ = false;
-        const loaderCallbacks = window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__;
+    //   // Call the delayed callbacks when AMD loader has been loaded
+    //   if (window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__) {
+    //     window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__ = false;
+    //     const loaderCallbacks = window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__;
 
-        if (loaderCallbacks && loaderCallbacks.length) {
-          let currentCallback = loaderCallbacks.shift();
+    //     if (loaderCallbacks && loaderCallbacks.length) {
+    //       let currentCallback = loaderCallbacks.shift();
 
-          while (currentCallback) {
-            currentCallback.fn.call(currentCallback.context);
-            currentCallback = loaderCallbacks.shift();
-          }
-        }
-      }
-    };
+    //       while (currentCallback) {
+    //         currentCallback.fn.call(currentCallback.context);
+    //         currentCallback = loaderCallbacks.shift();
+    //       }
+    //     }
+    //   }
+    // };
 
     // Load AMD loader if necessary
-    if (window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__) {
-      // We need to avoid loading multiple loader.js when there are multiple editors loading
-      // concurrently, delay to call callbacks except the first one
-      // eslint-disable-next-line max-len
-      window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__ =
-        window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__ || [];
-      window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__.push({
-        window: this,
-        fn: onGotAmdLoader,
-      });
-    } else if (typeof window.require === 'undefined') {
-      const loaderScript = window.document.createElement('script');
-      loaderScript.type = 'text/javascript';
-      loaderScript.src = loaderUrl;
-      loaderScript.addEventListener('load', onGotAmdLoader);
-      window.document.body.appendChild(loaderScript);
-      window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__ = true;
-    } else {
-      onGotAmdLoader();
-    }
+    // if (window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__) {
+    //   // We need to avoid loading multiple loader.js when there are multiple editors loading
+    //   // concurrently, delay to call callbacks except the first one
+    //   // eslint-disable-next-line max-len
+    //   window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__ =
+    //     window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__ || [];
+    //   window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__.push({
+    //     window: this,
+    //     fn: onGotAmdLoader,
+    //   });
+    // } else if (typeof window.require === 'undefined') {
+    //   const loaderScript = window.document.createElement('script');
+    //   loaderScript.type = 'text/javascript';
+    //   loaderScript.src = loaderUrl;
+    //   loaderScript.addEventListener('load', onGotAmdLoader);
+    //   window.document.body.appendChild(loaderScript);
+    //   window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__ = true;
+    // } else {
+    //   onGotAmdLoader();
+    // }
   }
 
   initMonaco() {
     const { theme, options, file } = this.props;
-    configMonaco(window.monaco);
-    this.editorWillMount(window.monaco);
+    configMonaco(monaco);
+    this.editorWillMount(monaco);
     if (!editorInstance) {
       const domNode = document.createElement('div');
       domNode.className = 'monaco-editor-node';

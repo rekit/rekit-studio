@@ -15,7 +15,7 @@ export default {
       count: () => getRoutesCount(store.getState().home.elementById),
     },
     { type: 'component', name: 'Components' },
-    { type: 'action', name: 'Acttions' },
+    { type: 'action', name: 'Actions' },
   ],
   OverviewDiagram: 'feature',
 };

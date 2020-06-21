@@ -15,25 +15,25 @@ const ReconnectingWebSocket = require('reconnecting-websocket').default;
 // Config Monaco Editor to support JSX and ESLint
 function configureMonacoEditor(editor, monaco) {
   // Disable lsp for 3.0
-  // setTimeout(() => {
-  //   MonacoServices.install(editor);
-  //   const lsps = plugin.invoke('editor.lsp');
-  //   lsps.forEach(item => {
-  //     const url = createUrl(`/lsp-socket/${item.socketPath}`);
-  //     const webSocket = createWebSocket(url);
-  //     // listen when the web socket is opened
-  //     listen({
-  //       webSocket,
-  //       onConnection: connection => {
-  //         console.log('start client');
-  //         // create and start the language client
-  //         const languageClient = createLanguageClient(connection, item);
-  //         const disposable = languageClient.start();
-  //         connection.onClose(() => disposable.dispose());
-  //       },
-  //     });
-  //   });
-  // }, 100);
+  setTimeout(() => {
+    MonacoServices.install(editor);
+    const lsps = plugin.invoke('editor.lsp');
+    lsps.forEach(item => {
+      const url = createUrl(`/lsp-socket/${item.socketPath}`);
+      const webSocket = createWebSocket(url);
+      // listen when the web socket is opened
+      listen({
+        webSocket,
+        onConnection: connection => {
+          console.log('start client');
+          // create and start the language client
+          const languageClient = createLanguageClient(connection, item);
+          const disposable = languageClient.start();
+          connection.onClose(() => disposable.dispose());
+        },
+      });
+    });
+  }, 100);
   plugin.getPlugins('editor.config').forEach(p => p.editor.config(editor, monaco));
   setupSyntaxWorker(editor, monaco);
   // setupLinter(editor, monaco);
