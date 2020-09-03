@@ -65,7 +65,7 @@
     "import-from": "^2.1.0",
     "javascript-typescript-langserver": "^2.11.3",
     "lodash": "^4.17.15",
-    "node-pty": "^0.8.1",
+    "node-pty": "^0.9.0",
     "prettier": "^1.16.4",
     "qs": "^6.7.0",
     "rekit-core": ">3.0.0-beta",
