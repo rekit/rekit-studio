@@ -4,7 +4,6 @@ import element from '../../common/element';
 export default {
   doOpenEditor: function(editor, input) {
     const state = store.getState().home;
-    console.log('open editor: ', input);
     const { path, scheme } = input.resource;
     console.log(path, scheme);
     if (!path || scheme !== 'file') return;
