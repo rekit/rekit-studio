@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import * as fit from 'xterm/lib/addons/fit/fit';
-import * as attach from 'xterm/lib/addons/attach/attach';
-import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
+// import * as fit from 'xterm/lib/addons/fit/fit';
+// import * as attach from 'xterm/lib/addons/attach/attach';
+// import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
 import { Terminal } from 'xterm';
-
+import { FitAddon } from 'xterm-addon-fit';
+import { AttachAddon } from 'xterm-addon-attach';
+import { WebLinksAddon } from 'xterm-addon-web-links';
 // let protocol, socketURL, socket, pid;
 
 const terms = {};
@@ -28,11 +30,16 @@ const terminalOptions = {
 };
 
 function createTerminal(node, id) {
-  Terminal.applyAddon(attach);
-  Terminal.applyAddon(fit);
-  Terminal.applyAddon(winptyCompat);
+  // Terminal.applyAddon(attach);
+  // Terminal.applyAddon(fit);
+  // Terminal.applyAddon(winptyCompat);
   const term = new Terminal(terminalOptions);
-  term.on('resize', function(size) {
+  const fitAddon = new FitAddon();
+  term.loadAddon(fitAddon);
+  term.loadAddon(new WebLinksAddon());
+  // terminal.open(containerElement);
+
+  term.onResize(function(size) {
     if (!term.pid) {
       return;
     }
@@ -48,20 +55,25 @@ function createTerminal(node, id) {
     protocol + location.hostname + (location.port ? ':' + location.port : '') + '/terminals/';
 
   term.open(node);
-  term.fit();
+  // term.fit();
+  fitAddon.fit();
+  term.fit = () => fitAddon.fit();
+
   term.focus();
 
   // fit is called within a setTimeout, cols and rows need this.
   requestAnimationFrame(function() {
     fetch('/terminals?cols=' + term.cols + '&rows=' + term.rows, { method: 'POST' }).then(function(
-      res
+      res,
     ) {
       res.text().then(function(processId) {
         term.pid = processId;
         socketURL += processId;
         const socket = new WebSocket(socketURL);
         socket.onopen = () => {
-          term.attach(socket);
+          // term.attach(socket);
+          const attachAddon = new AttachAddon(socket);
+          term.loadAddon(attachAddon);
           term._initialized = true;
         };
       });

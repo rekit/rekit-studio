@@ -56,6 +56,7 @@
     "argparse": "^1.0.10",
     "body-parser": "^1.18.2",
     "chalk": "2.4.2",
+    "chokidar": "^3.5.1",
     "compression": "^1.7.3",
     "cross-env": "^5.2.0",
     "express": "^4.0.1",
@@ -65,7 +66,7 @@
     "import-from": "^2.1.0",
     "javascript-typescript-langserver": "^2.11.3",
     "lodash": "^4.17.15",
-    "node-pty": "^0.8.1",
+    "node-pty": "^0.10.0",
     "prettier": "^1.16.4",
     "qs": "^6.7.0",
     "rekit-core": ">3.0.0-beta",
@@ -76,7 +77,8 @@
     "terminate": "^2.1.2",
     "typescript": "^3.5.2",
     "vscode-jsonrpc": "^4.0.0",
-    "ws": "^6.2.1"
+    "ws": "^6.2.1",
+    "xterm-addon-fit": "^0.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
@@ -167,7 +169,13 @@
     "whatwg-fetch": "^3.0.0",
     "workbox-webpack-plugin": "^4.1.1",
     "worker-loader": "^2.0.0",
-    "xterm": "^3.10.1"
+    "xterm": "^4.11.0",
+    "xterm-addon-attach": "^0.6.0",
+    "xterm-addon-web-links": "^0.4.0"
+  },
+  "resolutions": {
+    "fsevents": "2.3.2",
+    "**/fsevents": "2.3.2"
   },
   "browserslist": [
     ">0.2%",

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as fit from 'xterm/lib/addons/fit/fit';
-import * as attach from 'xterm/lib/addons/attach/attach';
-import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
+// import * as fit from 'xterm/lib/addons/fit/fit';
+// import * as attach from 'xterm/lib/addons/attach/attach';
+// import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
 import { Terminal } from 'xterm';
+import { FitAddon } from 'xterm-addon-fit';
+import { AttachAddon } from 'xterm-addon-attach';
+import { WebLinksAddon } from 'xterm-addon-web-links';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { npmList } from './redux/actions';
@@ -30,10 +33,14 @@ const terminalOptions = {
 };
 
 function createTerminal(node, id) {
-  Terminal.applyAddon(attach);
-  Terminal.applyAddon(fit);
-  Terminal.applyAddon(winptyCompat);
+  // Terminal.applyAddon(attach);
+  // Terminal.applyAddon(fit);
+  // Terminal.applyAddon(winptyCompat);
   const term = new Terminal(terminalOptions);
+  const fitAddon = new FitAddon();
+  term.loadAddon(fitAddon);
+  term.loadAddon(new WebLinksAddon());
+  term.fit = () => fitAddon.fit();
   term.open(node);
   term.fit();
   term.focus();

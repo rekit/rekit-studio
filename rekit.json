@@ -7,7 +7,6 @@
     "LICENSE",
     "babel.config.js",
     "README.md",
-    "package-lock.json",
     "Procfile",
     "dll",
     "middleware",
