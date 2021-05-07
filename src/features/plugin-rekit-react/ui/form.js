@@ -92,7 +92,7 @@ export default {
               ['useState', 'useState'],
               ['useCallback', 'useCallback'],
             ],
-            initialValue: ['useEffect'],
+            initialValue: [],
           });
         }
         args.meta.elements.push(
