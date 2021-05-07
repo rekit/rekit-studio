@@ -2,10 +2,13 @@ import React from 'react';
 import { AppContainer } from 'react-hot-loader';
 import { render } from 'react-dom';
 import { Modal } from 'antd';
+import axios from 'axios';
 import Root from './Root';
 import routeConfig from './common/routeConfig';
 import store from './common/store';
 import './styles/index.less';
+
+axios.defaults.headers.common['Authorization'] = window.__REKIT_TOKEN;
 
 if (process.env.NODE_ENV !== 'test') {
   const location = document.location;
