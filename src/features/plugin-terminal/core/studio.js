@@ -1,6 +1,6 @@
 const pty = require('node-pty');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 const os = require('os');
 
 const shellArgs = [];
@@ -14,25 +14,17 @@ const getSehll = () => {
         .shift();
       if (parseInt(ver, 10) >= 10) return 'powershell.exe';
       // For windows 7 and below, use cmd.exe
-      return 'cmd.exe';//{ cmd: 'cmd.exe', args: [] };
+      return 'cmd.exe'; //{ cmd: 'cmd.exe', args: [] };
     } catch (err) {
-      return 'cmd.exe';//{ cmd: 'cmd.exe', args: [] };
+      return 'cmd.exe'; //{ cmd: 'cmd.exe', args: [] };
     }
+  } else if (fs.existsSync('/bin/zsh')) {
+    // zsh for new mac
+    shellArgs.push('--login')
+    return '/bin/zsh';
   } else {
-    // Use system shell for Mac
-
-    let source;
-    ['.bash_profile', '.bashrc']
-      .map(f => path.join(os.homedir(), f))
-      .some(file => {
-        if (fs.existsSync(file)) {
-          source = file;
-          return true;
-        }
-        return false;
-      });
-    console.log('bashrc: ', source);
-    if (source) shellArgs.push('--rcfile', source);
+    // Use bash for old Mac os
+    shellArgs.push('--login');
     return '/bin/bash';
   }
 };
