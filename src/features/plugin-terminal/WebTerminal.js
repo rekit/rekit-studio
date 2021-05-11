@@ -47,7 +47,12 @@ function createTerminal(node, id) {
       rows = size.rows,
       url = '/terminals/' + term.pid + '/size?cols=' + cols + '&rows=' + rows;
 
-    fetch(url, { method: 'POST' });
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        authorization: window.__REKIT_TOKEN,
+      },
+    });
   });
   const location = document.location;
   const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
@@ -63,15 +68,17 @@ function createTerminal(node, id) {
 
   // fit is called within a setTimeout, cols and rows need this.
   requestAnimationFrame(function() {
-    fetch('/terminals?cols=' + term.cols + '&rows=' + term.rows, { method: 'POST' }).then(function(
-      res,
-    ) {
+    fetch('/terminals?cols=' + term.cols + '&rows=' + term.rows, {
+      method: 'POST',
+      headers: {
+        authorization: window.__REKIT_TOKEN,
+      },
+    }).then(function(res) {
       res.text().then(function(processId) {
         term.pid = processId;
         socketURL += processId;
-        const socket = new WebSocket(socketURL);
+        const socket = new WebSocket(socketURL, window.__REKIT_TOKEN);
         socket.onopen = () => {
-          // term.attach(socket);
           const attachAddon = new AttachAddon(socket);
           term.loadAddon(attachAddon);
           term._initialized = true;
