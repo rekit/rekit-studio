@@ -9,6 +9,7 @@ module.exports = (req, res) => {
     res.statusCode = 403;
     res.write('Forbidden: not allowed to access file out of the project.');
     res.end();
+    return;
   }
 
   if (!vio.fileExists(file)) {
