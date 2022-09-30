@@ -100,7 +100,7 @@
     "connected-react-router": "^6.3.2",
     "copy-webpack-plugin": "^5.0.2",
     "css-loader": "^2.1.1",
-    "d3": "^5.6.0",
+    "d3": "^7.6.1",
     "d3-tip": "^0.9.1",
     "dotenv": "^7.0.0",
     "dotenv-expand": "^5.1.0",
